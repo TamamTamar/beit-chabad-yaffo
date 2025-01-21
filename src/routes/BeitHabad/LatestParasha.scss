@@ -1,0 +1,138 @@
+.latest-parasha {
+  background-color: #fcfcfc; // רקע בהיר יותר כמו בקומפוננטת "אודות"
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  padding: 0;
+  direction: rtl; // מגדיר יישור עברי
+  width: 95%; // רוחב מוגדל ל-95%, כמו בקומפוננטת "אודות"
+  max-width: 1800px;
+  margin: 16px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin-top: 50px;
+  margin-bottom: 50px;
+
+  .parasha-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex; // שימוש ב-Flex כדי לוודא שהתמונה והטקסט בצדדים
+    align-items: stretch;
+    width: 100%;
+
+    .parasha-card {
+      display: flex;
+      flex-direction: row-reverse; // מבטיח שהתמונה תהיה מצד שמאל והטקסט מצד ימין
+      width: 100%; // לוודא שהכרטיסייה תתפוס את כל רוחב הלינק
+
+      .parasha-image-wrapper {
+        flex: 1;
+        min-width: 300px; // לתת לתמונה מספיק רוחב כמו בקומפוננטת "אודות"
+      }
+
+      .parasha-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0 16px 16px 0; // קצוות מעוגלים בצד ימין בלבד (לשמור על אחידות)
+      }
+
+      .parasha-details {
+        flex: 2;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: right; // מיישר את כל הטקסט לימין
+      }
+
+      .parasha-title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 16px;
+      }
+
+      .parasha-mini-text {
+        font-size: 18px;
+        color: #555;
+        margin-bottom: 16px;
+      }
+
+      .parasha-source {
+        font-size: 16px;
+        font-style: italic;
+        color: #888;
+      }
+    }
+  }
+
+  p {
+    font-size: 1rem;
+    color: #777;
+    text-align: center;
+  }
+
+  /* התאמות למובייל */
+  @media (max-width: 768px) {
+    .parasha-link {
+      flex-direction: column; // מעבר לפריסה אנכית במובייל
+      align-items: center;
+
+      .parasha-card {
+        flex-direction: column; // שינוי פריסת הכרטיסייה לאנכית
+
+        .parasha-image-wrapper {
+          width: 100%; // התמונה תתפוס את כל הרוחב
+          min-width: auto;
+        }
+
+        .parasha-image {
+          border-radius: 16px 16px 0 0; // מעגל קצוות בחלק העליון
+        }
+
+        .parasha-details {
+          padding: 16px;
+          text-align: center; // טקסט מיושר למרכז במובייל
+        }
+
+        .parasha-title {
+          font-size: 22px;
+          margin-bottom: 12px;
+        }
+
+        .parasha-mini-text {
+          font-size: 16px;
+          margin-bottom: 12px;
+        }
+
+        .parasha-source {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .parasha-link {
+      .parasha-card {
+        .parasha-details {
+          padding: 12px;
+
+          .parasha-title {
+            font-size: 20px;
+          }
+
+          .parasha-mini-text {
+            font-size: 14px;
+          }
+
+          .parasha-source {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+}

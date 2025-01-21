@@ -1,0 +1,125 @@
+.create-parasha-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #f9fafb;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    direction: rtl;
+
+    .create-parasha-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+        color: #1a202c;
+        margin-bottom: 1rem;
+    }
+
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        .parasha-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+
+            .parasha-input,
+            .parasha-textarea,
+            .parasha-input-file {
+                width: 100%;
+                padding: 0.8rem;
+                border: 1px solid #cbd5e0;
+                border-radius: 6px;
+                font-size: 1rem;
+                outline: none;
+                transition: border-color 0.3s ease;
+
+                &:focus {
+                    border-color: #3182ce;
+                    box-shadow: 0 0 0 1px #3182ce;
+                }
+            }
+
+            .parasha-input-file {
+                padding: 0.4rem;
+                cursor: pointer;
+            }
+
+
+            .parasha-file-name {
+                font-size: 0.9rem;
+                color: #2d3748;
+            }
+
+            .parasha-section-title {
+                font-size: 1.1rem;
+                font-weight: bold;
+                color: #2d3748;
+                margin-bottom: 0.5rem;
+            }
+
+            .variant {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 1rem;
+                background-color: #edf2f7;
+                border-radius: 6px;
+                position: relative;
+
+                .remove-parasha-button {
+                    align-self: flex-end;
+                    background-color: #e53e3e;
+                    color: #fff;
+                    padding: 0.5rem 1rem;
+                    border: none;
+                    border-radius: 6px;
+                    font-size: 0.9rem;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease;
+
+                    &:hover {
+                        background-color: #c53030;
+                    }
+                }
+            }
+        }
+
+        .errorMessage {
+            color: #e53e3e;
+            font-size: 0.85rem;
+            margin-top: -0.5rem;
+        }
+
+        .add-parasha-button,
+        .create-parasha-button {
+            background-color: #c37d69;
+            color: #fff;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+                background-color: #a06456; // גוון כהה יותר של c37d69
+            }
+        }
+
+        .add-parasha-button {
+            align-self: flex-start;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .create-parasha-button {
+            align-self: center;
+            width: 100%;
+            max-width: 200px;
+        }
+
+    }
+}

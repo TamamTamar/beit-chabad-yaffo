@@ -1,0 +1,82 @@
+.admin-parashot-container {
+    direction: rtl;
+    margin-top: 2rem;
+ margin-right: 10px;
+    padding: 2rem;
+  
+    .admin-parashot-header {
+      font-size: 2rem;
+      color: #2d3748;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+  
+    .admin-parashot-add-button {
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: flex-end;
+    }
+  
+    .button-add-parasha {
+      background-color: #c37d69;
+      color: white;
+      padding: 15px;
+      border-radius: 50%;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      
+  
+      &:hover {
+        background-color: #d79785;
+      }
+    }
+  
+    .admin-parashot-table {
+      margin-top: 2rem;
+      overflow-x: auto;
+      text-align: centerb;
+    }
+  
+    .parasha-image {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+  
+    .parasha-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-direction: column;
+  
+      .parasha-actions-link {
+        font-size: 1rem;
+        color: #3182ce;
+        text-decoration: none;
+  
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+  
+      .parasha-actions-button {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        color: #e53e3e;
+  
+        &:hover {
+          color: #c53030;
+        }
+      }
+    }
+  
+    .error-message {
+      color: red;
+      text-align: center;
+      margin-top: 2rem;
+    }
+  }
+  

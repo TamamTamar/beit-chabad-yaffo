@@ -1,0 +1,78 @@
+.parasha-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 2rem;
+
+    h1 {
+        grid-column: span 3;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: #333;
+        text-align: center;
+    }
+
+    .parasha-item {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        border: 1px solid #ddd;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease-in-out;
+        background-color: #fff;
+        text-align: center;
+
+        &:hover {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        p {
+            font-size: 1rem;
+            color: #7f8c8d;
+            line-height: 1.6;
+            margin: 0;
+            height: 60px; /* להגביל את גובה הטקסט */
+            overflow: hidden;
+        }
+
+        .parasha-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        a {
+            align-self: center;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #3498db;
+            text-decoration: none;
+            margin-top: 1rem;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    /* עבור מסכים קטנים יותר */
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* עבור מסכים קטנים מאוד (כגון מכשירים ניידים) */
+    @media (max-width: 480px) {
+        grid-template-columns: 1fr;
+    }
+}

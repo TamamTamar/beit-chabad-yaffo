@@ -1,0 +1,60 @@
+.latest-video-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: #f9f9f9; // רקע עדין
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+  
+    iframe {
+      width: 100%;
+      max-width: 560px;
+      height: 315px;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1rem;
+  
+      @media (max-width: 768px) {
+        height: 200px;
+      }
+  
+      @media (max-width: 480px) {
+        height: 180px;
+      }
+    }
+  
+    p {
+      font-size: 1.25rem;
+      color: #555;
+      text-align: center;
+      margin-top: 1rem;
+      font-style: italic;
+    }
+  
+    /* אנימציה לטעינה */
+    .loading {
+      font-size: 1.5rem;
+      color: #888;
+      text-align: center;
+      padding: 2rem;
+      animation: pulse 1.5s infinite;
+  
+      @keyframes pulse {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+    }
+  }
+  

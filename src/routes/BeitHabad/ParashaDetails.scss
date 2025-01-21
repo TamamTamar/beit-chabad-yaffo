@@ -1,0 +1,121 @@
+.parasha-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    direction: rtl; /* להגדיר כיווניות לעברית */
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .parasha-image {
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+    }
+
+    .parasha-pages {
+        width: 100%;
+        max-width: 800px;
+        margin-top: 2rem;
+
+        .parasha-page {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            text-align: right; /* יישור לימין */
+
+            h2 {
+                font-size: 1.75rem;
+                font-weight: 600;
+                color: #34495e;
+                margin-bottom: 1rem;
+            }
+
+            p {
+                font-size: 1rem;
+                color: #7f8c8d;
+                line-height: 1.6;
+                margin-bottom: 1rem;
+            }
+        }
+    }
+
+    /* עיצוב למקרה של טעינה */
+    .loading {
+        font-size: 1.5rem;
+        color: #2c3e50;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    /* התאמה למובייל */
+    @media (max-width: 768px) {
+        padding: 1rem;
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .parasha-image {
+            max-width: 100%; /* מתאים לתצוגה קטנה יותר */
+        }
+
+        .parasha-pages {
+            max-width: 100%;
+
+            .parasha-page {
+                padding: 0.75rem;
+
+                h2 {
+                    font-size: 1.5rem;
+                }
+
+                p {
+                    font-size: 0.9rem;
+                    line-height: 1.4;
+                }
+            }
+        }
+
+        .loading {
+            font-size: 1.25rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        h1 {
+            font-size: 1.8rem;
+        }
+
+        .parasha-image {
+            margin-bottom: 1.5rem;
+        }
+
+        .parasha-pages {
+            .parasha-page {
+                padding: 0.5rem;
+
+                h2 {
+                    font-size: 1.25rem;
+                }
+
+                p {
+                    font-size: 0.85rem;
+                }
+            }
+        }
+    }
+}

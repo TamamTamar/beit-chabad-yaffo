@@ -1,0 +1,22 @@
+.tabs {
+    display: flex;
+    flex-direction: row-reverse;  // מציב את ה-tabs בצד ימין
+    justify-content: flex-start;
+    align-items: center;
+  
+    .tabs-nav {
+      display: flex;
+      flex-direction: row-reverse;  // מוודא שהכותרות גם מופיעות בצד ימין
+      margin-bottom: 0;  // לוודא שאין רווח בתחתית ה-tabs
+    }
+  
+    .tabs-item {
+      padding: 1rem;
+      text-align: right;  // למקם את הטקסט בצד ימין
+    }
+  
+    .tabs-item.active {
+      background-color: #e2e8f0;  // צבע רקע כשיש פעילות
+    }
+  }
+  

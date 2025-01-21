@@ -1,0 +1,54 @@
+.cl-table {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  padding: 0;
+  direction: rtl;
+  width: 95%;
+  max-width: 1800px;
+  margin: 16px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.cl-content-wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+
+.cl-image {
+  flex: 1;
+}
+
+.cl-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cl-details {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center; // מיישר את כל התוכן לימין
+}
+
+.cl-heading-bold {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16px;
+  text-align: center; // עדכון ליישור הכותרת לימין
+}
+
+.cl-error {
+  color: red;
+  text-align: center;
+}

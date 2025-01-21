@@ -1,0 +1,110 @@
+.chabad-about-section {
+  background-color: #fcfcfc;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  padding: 0;
+  direction: rtl;
+  width: 95%;
+  max-width: 1800px;
+  margin: 16px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chabad-about-content-wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+  flex-direction: row; /* Default for desktop */
+}
+
+.chabad-about-image {
+  flex: 1;
+}
+
+.chabad-about-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px 0 0 16px;
+}
+
+.chabad-about-details {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.chabad-about-heading {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.chabad-about-description {
+  font-size: 18px;
+  margin-bottom: 24px;
+}
+
+.chabad-about-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.chabad-about-button {
+  background-color: #6e4a9e;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #5e407d;
+  }
+}
+
+@media (max-width: 768px) {
+  .chabad-about-content-wrapper {
+    flex-direction: column; /* Stack the content vertically on mobile */
+    align-items: center;
+  }
+
+  .chabad-about-image {
+    width: 100%;
+    height: auto; /* Allow image height to scale naturally */
+  }
+
+  .chabad-about-details {
+    padding: 16px;
+  }
+
+  .chabad-about-heading {
+    font-size: 24px; /* Slightly smaller heading for mobile */
+    margin-bottom: 12px;
+  }
+
+  .chabad-about-description {
+    font-size: 16px; /* Smaller font for mobile */
+    margin-bottom: 20px;
+  }
+
+  .chabad-about-buttons {
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 8px; /* Adjust gap between buttons */
+  }
+
+  .chabad-about-button {
+    padding: 10px 20px;
+    font-size: 14px; /* Slightly smaller font on mobile */
+  }
+}
