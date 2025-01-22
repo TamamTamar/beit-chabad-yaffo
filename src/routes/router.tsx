@@ -10,6 +10,7 @@ import Error from "./Error";
 import Root from "../layout/BeitChabadLayout";
 import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
 import KampeinPage from "./kampein/KampeinPage";
+import PaymentForm from "./kampein/PaymentForm";
 
 
 
@@ -24,6 +25,7 @@ export const router = createBrowserRouter([
                 path: "kampein",
                 element: <KampeinPage />,
             },
+       
             {
                 path: "admin/parasha/create",
                 element: (

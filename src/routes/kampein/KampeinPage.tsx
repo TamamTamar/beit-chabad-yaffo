@@ -1,5 +1,7 @@
+import DonationIframe from "./DonationIframe"
 import KampeinBanner from "./KampeinBanner"
 import MoneyCircles from "./MoneyCircles"
+import PaymentIframe from "./PaymentIframe"
 
 const KampeinPage = () => {
   return (
@@ -7,6 +9,7 @@ const KampeinPage = () => {
 
         <KampeinBanner />
         <MoneyCircles />
+
     </div>
   )
 }
