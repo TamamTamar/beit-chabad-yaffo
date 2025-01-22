@@ -1,0 +1,34 @@
+.money-circles {
+    width: 100%;
+    height: 343px;
+    flex-shrink: 0;
+    background: #F9F8FA;
+    display: flex;
+    gap: 60px;
+    justify-content: center;
+    align-items: center;
+
+    @media (max-width: 1400px){
+        width: 100vw;
+        
+    }
+
+    .circle {
+        display: flex;
+        width: 156px;
+        height: 156px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 100px;
+        background: #D7CBEA;
+    }
+}
+
+@media (max-width: 768px){
+    .money-circles {
+        width: 100vw;
+        
+        flex-direction: column;
+        gap: 20px;
+    }
+}

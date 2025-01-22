@@ -6,8 +6,7 @@ import NavChabad from "../routes/BeitHabad/NavBarChabad";
 const Root = () => {
     return (
         <div className="flex flex-col min-h-screen">
-{/*         <ChabadHeader/>
- */}      \
+
             <main className="flex-1">
                 <Outlet />
             </main>

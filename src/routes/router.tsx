@@ -9,6 +9,7 @@ import ParashaList from "./BeitHabad/ParashaList";
 import Error from "./Error";
 import Root from "../layout/BeitChabadLayout";
 import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
+import KampeinPage from "./kampein/KampeinPage";
 
 
 
@@ -19,6 +20,10 @@ export const router = createBrowserRouter([
         errorElement: <Error />,
         children: [
             { index: true, element: <HomePage /> },
+            {
+                path: "kampein",
+                element: <KampeinPage />,
+            },
             {
                 path: "admin/parasha/create",
                 element: (
