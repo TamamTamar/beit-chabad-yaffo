@@ -1,3 +1,4 @@
+import Carousel from "./Carousel"
 import DonationIframe from "./DonationIframe"
 import KampeinBanner from "./KampeinBanner"
 import MoneyCircles from "./MoneyCircles"
@@ -9,6 +10,7 @@ const KampeinPage = () => {
 
         <KampeinBanner />
         <MoneyCircles />
+        <Carousel />
 
     </div>
   )

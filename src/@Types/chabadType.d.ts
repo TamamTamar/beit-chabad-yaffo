@@ -40,3 +40,24 @@ export type Parasha = ParashaInput & {
     updatedAt: string;
     __v: number;
 };
+interface PaymentFormProps {
+    institutionId: string;
+    apiValid: string;
+    zeout: string;
+    firstName: string;
+    lastName: string;
+    street: string;
+    city: string;
+    phone: string;
+    email: string;
+    paymentType: string;
+    amount: number;  // הוספת סכום כאן
+    tashlumim: number;
+    currency: number;
+    groupe: string;
+    comment: string;
+    param1: string;
+    param2: string;
+    callBack: string;
+    callBackMailError: string;
+}

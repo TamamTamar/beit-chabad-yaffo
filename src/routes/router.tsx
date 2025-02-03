@@ -11,6 +11,9 @@ import Root from "../layout/BeitChabadLayout";
 import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
 import KampeinPage from "./kampein/KampeinPage";
 import PaymentForm from "./kampein/PaymentForm";
+import PaymentIframe from "./kampein/PaymentIframe";
+import IframePayment from "./kampein/IframePayment";
+import DonationComponent from "./kampein/DonationComponent";
 
 
 
@@ -24,6 +27,10 @@ export const router = createBrowserRouter([
             {
                 path: "kampein",
                 element: <KampeinPage />,
+            },
+            {
+                path: "paymentform",
+                element: <DonationComponent />,
             },
        
             {
