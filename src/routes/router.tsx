@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "paymentform",
-                element: <DonationComponent />,
+                element: <PaymentForm />,
             },
        
             {
