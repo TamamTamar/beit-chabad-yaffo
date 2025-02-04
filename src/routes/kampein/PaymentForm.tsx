@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import './PaymentForm.scss';
+import React, { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
+import "./PaymentForm.scss";
 
-const PaymentForm = ({ }) => {
+const PaymentForm = () => {
     const location = useLocation();
+    const iframeRef = useRef(null);
+    const monthlyAmountRef = useRef(null);
     const initialAmount = location.state?.amount || 0;
 
     const [formData, setFormData] = useState({
@@ -13,11 +15,13 @@ const PaymentForm = ({ }) => {
         Phone: "",
         Mail: "",
         Dedication: "",
-        PaymentType: "credit",
+        PaymentType: "Ragil", // סוג תשלום ברירת מחדל - רגיל
         MonthlyAmount: initialAmount,
         AnnualAmount: initialAmount * 12,
         Is12Months: initialAmount !== 0,
     });
+
+    const [step, setStep] = useState(1);
 
     useEffect(() => {
         if (formData.Is12Months) {
@@ -33,94 +37,103 @@ const PaymentForm = ({ }) => {
         }
     }, [formData.Is12Months, formData.MonthlyAmount]);
 
+    useEffect(() => {
+        if (monthlyAmountRef.current) {
+            monthlyAmountRef.current.focus();
+        }
+    }, []);
+
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData((prevState) => ({
             ...prevState,
-            [name]: type === 'checkbox' ? checked : value,
+            [name]: type === "checkbox" ? checked : value,
         }));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle form submission
+        setStep(2);
     };
 
-    return (
+      return (
         <div className="payment-form-container">
-            <div className="amount-info">
-                <p>סכום חודשי: 
-                    <input
-                        type="number"
-                        name="MonthlyAmount"
-                        value={formData.MonthlyAmount}
-                        onChange={handleChange}
-                        placeholder="סכום חודשי"
-                    /> ₪
-                </p>
-                <p>סכום שנתי: {formData.AnnualAmount} ₪</p>
-                <label>
-                    <input
-                        type="checkbox"
-                        name="Is12Months"
-                        checked={formData.Is12Months}
-                        onChange={handleChange}
-                    />
-                    12 חודשים
-                </label>
-            </div>
-            <form className="payment-form" onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    name="FirstName"
-                    value={formData.FirstName}
-                    onChange={handleChange}
-                    placeholder="שם פרטי"
-                    maxLength={50}
-                    required
-                />
-                <input
-                    type="text"
-                    name="LastName"
-                    value={formData.LastName}
-                    onChange={handleChange}
-                    placeholder="שם משפחה"
-                    maxLength={50}
-                    required
-                />
-                <input
-                    type="email"
-                    name="Mail"
-                    value={formData.Mail}
-                    onChange={handleChange}
-                    placeholder="אימייל"
-                    maxLength={50}
-                    required
-                />
-                <input
-                    type="text"
-                    name="Phone"
-                    value={formData.Phone}
-                    onChange={handleChange}
-                    placeholder="טלפון"
-                    maxLength={10}
-                    pattern="[0-9]*"
-                    required
-                />
-                <input
-                    type="text"
-                    name="Dedication"
-                    value={formData.Dedication}
-                    onChange={handleChange}
-                    placeholder="הקדשה (לא חובה)"
-                    maxLength={100}
-                />
-                <select name="PaymentType" value={formData.PaymentType} onChange={handleChange}>
-                    <option value="credit">אשראי</option>
-                    <option value="bit">ביט</option>
-                </select>
-                <button type="submit">בצע תשלום</button>
-            </form>
+            {step === 1 && (
+                <div className="amount-info">
+                    <p>
+                        סכום חודשי:
+                        <input
+                            type="number"
+                            name="MonthlyAmount"
+                            value={formData.MonthlyAmount}
+                            onChange={handleChange}
+                            placeholder="סכום חודשי"
+                            ref={monthlyAmountRef}
+                        />{" "}
+                        ₪
+                    </p>
+                    <p>בית חב״ד יפו מקבל: {formData.AnnualAmount} ₪</p>
+                    <label>
+                        <input
+                            type="checkbox"
+                            name="Is12Months"
+                            checked={formData.Is12Months}
+                            onChange={handleChange}
+                        />
+                        12 חודשים
+                    </label>
+                    <form className="payment-form" onSubmit={handleSubmit}>
+                        <input
+                            type="text"
+                            name="FirstName"
+                            value={formData.FirstName}
+                            onChange={handleChange}
+                            placeholder="שם פרטי"
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="LastName"
+                            value={formData.LastName}
+                            onChange={handleChange}
+                            placeholder="שם משפחה"
+                            required
+                        />
+                        <input
+                            type="email"
+                            name="Mail"
+                            value={formData.Mail}
+                            onChange={handleChange}
+                            placeholder="אימייל"
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="Phone"
+                            value={formData.Phone}
+                            onChange={handleChange}
+                            placeholder="טלפון"
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="Dedication"
+                            value={formData.Dedication}
+                            onChange={handleChange}
+                            placeholder="הקדשה (לא חובה)"
+                        />
+                        <button type="submit">המשך</button>
+                    </form>
+                </div>
+            )}
+            {step === 2 && (
+                <iframe
+                    ref={iframeRef}
+                    title="NedarimPlus Payment"
+                    src="https://www.matara.pro/nedarimplus/iframe/"
+                    style={{ width: "100%", height: "600px", border: "none", marginTop: "20px" }}
+                ></iframe>
+            )}
         </div>
     );
 };

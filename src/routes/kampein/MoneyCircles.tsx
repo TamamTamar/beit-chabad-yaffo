@@ -18,12 +18,12 @@ const MoneyCircles = () => {
 
     return (
         <div className="money-circles">
+            <button className="circle" onClick={() => handleButtonClick(0)}><strong>סכום אחר</strong></button>
             {renderButton(5000)}
             {renderButton(2000)}
             {renderButton(1000)}
             {renderButton(500)}
             {renderButton(300)}
-            <button className="circle" onClick={() => handleButtonClick(0)}>סכום אחר</button>
         </div>
     );
 };
