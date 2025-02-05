@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const DonationProgressMinimal: React.FC = () => {
-  const raised = 0;
+  const raised = 17733;
   const goal = 100088;
-  const percentage: number = Math.min(Math.floor((raised / goal) * 100), 100);
+  const [percentage, setPercentage] = useState(0);
+
+  useEffect(() => {
+    const calculatedPercentage = Math.min(Math.floor((raised / goal) * 100), 100);
+    setPercentage(calculatedPercentage);
+  }, [raised, goal]);
+
   const pathD = "M 90,80 L 60,50 L 30,50 L 10,30"; // נתיב מימין לשמאל
 
   return (
@@ -24,8 +30,8 @@ const DonationProgressMinimal: React.FC = () => {
               strokeWidth="4"
               strokeLinecap="round"
               strokeDasharray="100"
-              strokeDashoffset={100 - percentage} // הגבלת ערכים
-              style={{ transition: 'stroke-dashoffset 0.8s ease-in-out' }}
+              strokeDashoffset={100 - percentage}
+              style={{ transition: 'stroke-dashoffset 1s ease-in-out' }}
             />
           )}
         </svg>
