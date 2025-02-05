@@ -1,0 +1,48 @@
+.donation-progress-container {
+  width: 100%;
+  max-width: 32rem;
+  margin: 0 auto;
+  text-align: center;
+  padding: 1.5rem;
+  direction: rtl; /* התאמה לעברית */
+}
+
+.donation-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: #4a5568; /* text-gray-800 */
+}
+
+.graph-container {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.graph-svg {
+  width: 100%;
+  max-width: 20rem;
+}
+
+.progress-path {
+  transition: stroke-dashoffset 1s ease-in-out;
+}
+
+.amount-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.amount-text {
+  font-size: 2.25rem;
+  font-weight: bold;
+  color: #1e3a8a; /* text-blue-900 */
+}
+
+.percentage-text {
+  color: #718096; /* text-gray-600 */
+}

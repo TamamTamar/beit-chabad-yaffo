@@ -69,14 +69,13 @@ const PaymentForm = ({ amount }) => {
                 <div className="amount-info">
                     <div className="amount-section">
                         <div className="right-side-amount">
-                            <p>
-                                סכום חודשי:
+                            <p className="monthly-amount"> תרומתך:
                                 <input
                                     type="number"
                                     name="MonthlyAmount"
                                     value={formData.MonthlyAmount}
                                     onChange={handleChange}
-                                    placeholder="סכום חודשי"
+                                  
                                     ref={monthlyAmountRef}
                                     className="monthly-amount-input"
                                 />{" "}
