@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './MoneyCircles.scss';
+import PaymentForm from './PaymentForm';
 
 const MoneyCircles = () => {
-    const navigate = useNavigate();
+    const [showPaymentForm, setShowPaymentForm] = useState(false);
+    const [amount, setAmount] = useState(0);
 
     const handleButtonClick = (amount: number) => {
-        navigate('/paymentform', { state: { amount } });
+        setAmount(amount);
+        setShowPaymentForm(true);
+    };
+
+    const closePaymentForm = () => {
+        setShowPaymentForm(false);
     };
 
     const renderButton = (amount: number) => (
@@ -17,13 +24,23 @@ const MoneyCircles = () => {
     );
 
     return (
-        <div className="money-circles">
-            <button className="circle" onClick={() => handleButtonClick(0)}><strong>סכום אחר</strong></button>
-            {renderButton(5000)}
-            {renderButton(2000)}
-            {renderButton(1000)}
-            {renderButton(500)}
-            {renderButton(300)}
+        <div className="money-circles-container">
+            <div className="money-circles">
+                <button className="circle" onClick={() => handleButtonClick(0)}><strong>סכום אחר</strong></button>
+                {renderButton(5000)}
+                {renderButton(2000)}
+                {renderButton(1000)}
+                {renderButton(500)}
+                {renderButton(300)}
+            </div>
+            {showPaymentForm && (
+                <div className="overlay">
+                    <div className="payment-form-wrapper">
+                        <button className="close-button" onClick={closePaymentForm}><img src="/img/kampein/x.svg" alt="" /></button>
+                        <PaymentForm amount={amount} />
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

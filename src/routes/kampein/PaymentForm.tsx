@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
 import "./PaymentForm.scss";
 
-const PaymentForm = () => {
-    const location = useLocation();
+const PaymentForm = ({ amount }) => {
     const iframeRef = useRef(null);
     const monthlyAmountRef = useRef(null);
-    const initialAmount = location.state?.amount || 0;
+    const initialAmount = amount || 0;
 
     const [formData, setFormData] = useState({
         Zeout: "",
@@ -56,32 +54,49 @@ const PaymentForm = () => {
         setStep(2);
     };
 
-      return (
+    const handleBack = () => {
+        setStep(1);
+    };
+
+    return (
         <div className="payment-form-container">
+            <div className="step-indicator">
+                <span className={step === 1 ? "active-step" : "inactive-step"}>1</span>
+                <span> - </span>
+                <span className={step === 2 ? "active-step" : "inactive-step"}>2</span>
+            </div>
             {step === 1 && (
                 <div className="amount-info">
-                    <p>
-                        סכום חודשי:
-                        <input
-                            type="number"
-                            name="MonthlyAmount"
-                            value={formData.MonthlyAmount}
-                            onChange={handleChange}
-                            placeholder="סכום חודשי"
-                            ref={monthlyAmountRef}
-                        />{" "}
-                        ₪
-                    </p>
-                    <p>בית חב״ד יפו מקבל: {formData.AnnualAmount} ₪</p>
-                    <label>
-                        <input
-                            type="checkbox"
-                            name="Is12Months"
-                            checked={formData.Is12Months}
-                            onChange={handleChange}
-                        />
-                        12 חודשים
-                    </label>
+                    <div className="amount-section">
+                        <div className="right-side-amount">
+                            <p>
+                                סכום חודשי:
+                                <input
+                                    type="number"
+                                    name="MonthlyAmount"
+                                    value={formData.MonthlyAmount}
+                                    onChange={handleChange}
+                                    placeholder="סכום חודשי"
+                                    ref={monthlyAmountRef}
+                                    className="monthly-amount-input"
+                                />{" "}
+                                ₪
+                            </p>
+                            <label className="checkbox-label">
+                                <input
+                                    type="checkbox"
+                                    name="Is12Months"
+                                    checked={formData.Is12Months}
+                                    onChange={handleChange}
+                                    className="checkbox-input"
+                                />
+                                12 חודשים
+                            </label>
+                        </div>
+                        <div className="left-side-amount">
+                            <p>בית חב״ד יפו מקבל: {formData.AnnualAmount} ₪</p>
+                        </div>
+                    </div>
                     <form className="payment-form" onSubmit={handleSubmit}>
                         <input
                             type="text"
@@ -90,6 +105,7 @@ const PaymentForm = () => {
                             onChange={handleChange}
                             placeholder="שם פרטי"
                             required
+                            className="form-input"
                         />
                         <input
                             type="text"
@@ -98,6 +114,7 @@ const PaymentForm = () => {
                             onChange={handleChange}
                             placeholder="שם משפחה"
                             required
+                            className="form-input"
                         />
                         <input
                             type="email"
@@ -106,6 +123,7 @@ const PaymentForm = () => {
                             onChange={handleChange}
                             placeholder="אימייל"
                             required
+                            className="form-input"
                         />
                         <input
                             type="text"
@@ -114,6 +132,7 @@ const PaymentForm = () => {
                             onChange={handleChange}
                             placeholder="טלפון"
                             required
+                            className="form-input"
                         />
                         <input
                             type="text"
@@ -121,18 +140,23 @@ const PaymentForm = () => {
                             value={formData.Dedication}
                             onChange={handleChange}
                             placeholder="הקדשה (לא חובה)"
+                            className="form-input"
                         />
-                        <button type="submit">המשך</button>
+                        <button type="submit" className="submit-button">המשך</button>
                     </form>
                 </div>
             )}
             {step === 2 && (
-                <iframe
-                    ref={iframeRef}
-                    title="NedarimPlus Payment"
-                    src="https://www.matara.pro/nedarimplus/iframe/"
-                    style={{ width: "100%", height: "600px", border: "none", marginTop: "20px" }}
-                ></iframe>
+                <div className="iframe-container">
+                    <h2 className="payment-title">תשלום</h2>
+                    <iframe
+                        ref={iframeRef}
+                        title="NedarimPlus Payment"
+                        src="https://www.matara.pro/nedarimplus/iframe/"
+                        className="payment-iframe"
+                    ></iframe>
+                    <button className="back-button" onClick={handleBack}>הקודם</button>
+                </div>
             )}
         </div>
     );
