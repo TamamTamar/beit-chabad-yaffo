@@ -19,6 +19,8 @@ const PaymentForm = ({ amount }) => {
         Is12Months: initialAmount !== 0,
     });
 
+    const computedAmount = formData.PaymentType === "HK" ? formData.MonthlyAmount : formData.AnnualAmount;
+
     const [step, setStep] = useState(1);
 
     useEffect(() => {
@@ -40,19 +42,33 @@ const PaymentForm = ({ amount }) => {
             monthlyAmountRef.current.focus();
         }
     }, []);
-
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: type === "checkbox" ? checked : value,
-        }));
+        
+        setFormData((prevState) => {
+            const newState = {
+                ...prevState,
+                [name]: type === "checkbox" ? checked : value,
+            };
+    
+            // אם מסומן, שנה את PaymentType ל-HK, אחרת השאר אותו רגיל
+            if (name === "Is12Months") {
+                newState.PaymentType = checked ? "HK" : "Ragil";
+            }
+    
+            return newState;
+        });
     };
-
     const handleSubmit = (e) => {
         e.preventDefault();
+        const paymentData = {
+            ...formData,
+            Amount: computedAmount, // נשלח את הסכום הנכון בהתאם לסוג התשלום
+        };
+        console.log("נתונים שנשלחים ל-API:", paymentData);
         setStep(2);
     };
+    
 
     const handleBack = () => {
         setStep(1);
