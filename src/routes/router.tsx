@@ -29,11 +29,6 @@ export const router = createBrowserRouter([
                 element: <KampeinPage />,
             },
             {
-                path: "paymentform",
-                element: <PaymentForm />,
-            },
-       
-            {
                 path: "admin/parasha/create",
                 element: (
                     <ProtectedRouteAdmin>
