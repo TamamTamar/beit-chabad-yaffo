@@ -6,8 +6,7 @@
     width: 600px;
     margin: 0 auto;
     direction: rtl; /* התאמה לעברית */
-    max-height: 80vh; /* גובה מקסימלי */
-    overflow-y: auto; /* גלילה פנימית */
+    
 
     .step-indicator {
         margin-bottom: 20px;
@@ -35,29 +34,30 @@
             background: #D7CBEA;
             padding: 10px;
             border-radius: 5px;
+
+            .right-side-amount{
+                font-size: 20px;
+                font-weight: bold;
+                color: #6B4B9A;
+                
+                .monthly-amount{
+                 
+                    padding: 20px 15px 10px;
+                   border-radius: 8px;
+                    background-color: #ffffff;
+                }
+
+                .monthly-amount-input{
+                    background: none; /* הסרת הרקע */
+                    border: none;
+                }
+            }
         }
 
         p {
             margin: 10px 0;
             font-size: 18px;
             color: #333;
-        }
-
-        .input-container {
-            display: flex;
-            align-items: center;
-
-            .monthly-amount-input {
-                background: none; /* הסרת הרקע */
-                border: none;
-                text-align: right;
-            }
-
-            .currency {
-                margin-right: 5px;
-                font-size: 18px;
-                color: #333;
-            }
         }
 
         label {
@@ -77,8 +77,6 @@
         flex-direction: column;
         width: 100%;
         text-align: right; /* התאמה לעברית */
-        max-height: 60vh; /* גובה מקסימלי לטופס */
-        overflow-y: auto; /* גלילה פנימית */
 
         input,
         select,
@@ -88,6 +86,10 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 16px;
+        }
+
+        .no-background {
+            background: none; /* הסרת הרקע */
         }
 
         button {
@@ -132,10 +134,5 @@
         &:hover {
             background-color: #5a3f82;
         }
-    }
-
-    .error {
-        color: red;
-        font-size: 14px;
     }
 }

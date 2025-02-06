@@ -1,5 +1,4 @@
-import React, { useEffect, useRef } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState, useEffect, useRef } from "react";
 import "./PaymentForm.scss";
 
 const PaymentForm = ({ amount }) => {
@@ -7,31 +6,34 @@ const PaymentForm = ({ amount }) => {
     const monthlyAmountRef = useRef(null);
     const initialAmount = amount || 0;
 
-    const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
-        defaultValues: {
-            Zeout: "",
-            FirstName: "",
-            LastName: "",
-            Phone: "",
-            Mail: "",
-            Dedication: "",
-            PaymentType: "Ragil",
-            MonthlyAmount: initialAmount,
-            AnnualAmount: initialAmount * 12,
-            Is12Months: initialAmount !== 0,
-        }
+    const [formData, setFormData] = useState({
+        Zeout: "",
+        FirstName: "",
+        LastName: "",
+        Phone: "",
+        Mail: "",
+        Dedication: "",
+        PaymentType: "Ragil", // סוג תשלום ברירת מחדל - רגיל
+        MonthlyAmount: initialAmount,
+        AnnualAmount: initialAmount * 12,
+        Is12Months: initialAmount !== 0,
     });
 
-    const watchIs12Months = watch("Is12Months");
-    const watchMonthlyAmount = watch("MonthlyAmount");
+    const [step, setStep] = useState(1);
 
     useEffect(() => {
-        if (watchIs12Months) {
-            setValue("AnnualAmount", watchMonthlyAmount * 12);
+        if (formData.Is12Months) {
+            setFormData((prevState) => ({
+                ...prevState,
+                AnnualAmount: prevState.MonthlyAmount * 12,
+            }));
         } else {
-            setValue("AnnualAmount", watchMonthlyAmount);
+            setFormData((prevState) => ({
+                ...prevState,
+                AnnualAmount: prevState.MonthlyAmount,
+            }));
         }
-    }, [watchIs12Months, watchMonthlyAmount, setValue]);
+    }, [formData.Is12Months, formData.MonthlyAmount]);
 
     useEffect(() => {
         if (monthlyAmountRef.current) {
@@ -39,85 +41,122 @@ const PaymentForm = ({ amount }) => {
         }
     }, []);
 
-    const onSubmit = (data) => {
-        console.log(data);
-        // Handle form submission
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setFormData((prevState) => ({
+            ...prevState,
+            [name]: type === "checkbox" ? checked : value,
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setStep(2);
+    };
+
+    const handleBack = () => {
+        setStep(1);
     };
 
     return (
         <div className="payment-form-container">
             <div className="step-indicator">
-                <span className="active-step">1</span>
+                <span className={step === 1 ? "active-step" : "inactive-step"}>1</span>
                 <span> - </span>
-                <span>2</span>
+                <span className={step === 2 ? "active-step" : "inactive-step"}>2</span>
             </div>
-            <div className="amount-info">
-                <div className="amount-section">
-                    <div className="right-side-amount">
-                        <p>
-                            סכום חודשי:
-                            <div className="input-container">
+            {step === 1 && (
+                <div className="amount-info">
+                    <div className="amount-section">
+                        <div className="right-side-amount">
+                            <p className="monthly-amount"> תרומתך:
                                 <input
-                                    type="text"
-                                    {...register("MonthlyAmount", { required: true, pattern: /^\d*$/ })}
+                                    type="number"
+                                    name="MonthlyAmount"
+                                    value={formData.MonthlyAmount}
+                                    onChange={handleChange}
+                                    placeholder="סכום"
                                     ref={monthlyAmountRef}
                                     className="monthly-amount-input"
-                                    placeholder="סכום חודשי"
+                                />{" "}
+                                ₪
+                            </p>
+                            <label className="checkbox-label">
+                                <input
+                                    type="checkbox"
+                                    name="Is12Months"
+                                    checked={formData.Is12Months}
+                                    onChange={handleChange}
+                                    className="checkbox-input"
                                 />
-                                <span className="currency">₪</span>
-                            </div>
-                            {errors.MonthlyAmount && <span className="error">נא להזין סכום חוקי</span>}
-                        </p>
-                        <label>
-                            <input
-                                type="checkbox"
-                                {...register("Is12Months")}
-                            />
-                            12 חודשים
-                        </label>
+                                12 חודשים
+                            </label>
+                        </div>
+                        <div className="left-side-amount">
+                            <p>בית חב״ד יפו מקבל: {formData.AnnualAmount} ₪</p>
+                        </div>
                     </div>
-                    <div className="left-side-amount">
-                        <p>בית חב״ד יפו מקבל: {watch("AnnualAmount")} ₪</p>
-                    </div>
+                    <form className="payment-form" onSubmit={handleSubmit}>
+                        <input
+                            type="text"
+                            name="FirstName"
+                            value={formData.FirstName}
+                            onChange={handleChange}
+                            placeholder="שם פרטי"
+                            required
+                            className="form-input"
+                        />
+                        <input
+                            type="text"
+                            name="LastName"
+                            value={formData.LastName}
+                            onChange={handleChange}
+                            placeholder="שם משפחה"
+                            required
+                            className="form-input"
+                        />
+                        <input
+                            type="email"
+                            name="Mail"
+                            value={formData.Mail}
+                            onChange={handleChange}
+                            placeholder="אימייל"
+                            required
+                            className="form-input"
+                        />
+                        <input
+                            type="text"
+                            name="Phone"
+                            value={formData.Phone}
+                            onChange={handleChange}
+                            placeholder="טלפון"
+                            required
+                            className="form-input"
+                        />
+                        <input
+                            type="text"
+                            name="Dedication"
+                            value={formData.Dedication}
+                            onChange={handleChange}
+                            placeholder="הקדשה (לא חובה)"
+                            className="form-input"
+                        />
+                        <button type="submit" className="submit-button">המשך</button>
+                    </form>
                 </div>
-                <form className="payment-form" onSubmit={handleSubmit(onSubmit)}>
-                    <input
-                        type="text"
-                        {...register("FirstName", { required: true })}
-                        placeholder="שם פרטי"
-                        className="form-input"
-                    />
-                    {errors.FirstName && <span className="error">נא להזין שם פרטי</span>}
-                    <input
-                        type="text"
-                        {...register("LastName", { required: true })}
-                        placeholder="שם משפחה"
-                        className="form-input"
-                    />
-                    {errors.LastName && <span className="error">נא להזין שם משפחה</span>}
-                    <input
-                        type="email"
-                        {...register("Mail", { required: true })}
-                        placeholder="אימייל"
-                        className="form-input"
-                    />
-                    {errors.Mail && <span className="error">נא להזין אימייל</span>}
-                    <input
-                        type="text"
-                        {...register("Phone", { required: true })}
-                        placeholder="טלפון"
-                        className="form-input"
-                    />
-                    {errors.Phone && <span className="error">נא להזין טלפון</span>}
-                    <input
-                        type="text"
-                        {...register("Dedication")}
-                        placeholder="הקדשה (לא חובה)"
-                        className="form-input"
-                    />
-                    <button type="submit">המשך</button>
-                </form>
-            </div>
+            )}
+            {step === 2 && (
+                <div className="iframe-container">
+                    <h2 className="payment-title">תשלום</h2>
+                    <iframe
+                        ref={iframeRef}
+                        title="NedarimPlus Payment"
+                        src="https://www.matara.pro/nedarimplus/iframe/"
+                        className="payment-iframe"
+                    ></iframe>
+                    <button className="back-button" onClick={handleBack}>הקודם</button>
+                </div>
+            )}
         </div>
     );
 };
