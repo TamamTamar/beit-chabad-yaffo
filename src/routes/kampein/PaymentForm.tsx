@@ -1,17 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import "./PaymentForm.scss";
+import axios from "axios";
 
 const PaymentForm = ({ monthlyAmount }) => {
     const [step, setStep] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
     const iframeRef = useRef(null);
     const monthlyAmountRef = useRef(null);
     const initialAmount = monthlyAmount || 0;
 
     const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
         defaultValues: {
-            Mosad: "7013920",
-            ApiValid: "zidFYCLaNi",
             Zeout: "",
             FirstName: "",
             LastName: "",
@@ -50,16 +51,58 @@ const PaymentForm = ({ monthlyAmount }) => {
             monthlyAmountRef.current.focus();
         }
     }, []);
-
-    const onSubmit = (data) => {
-        const annualAmount = data.Is12Months ? data.MonthlyAmount * 12 : data.MonthlyAmount; // חישוב הסכום השנתי לפי הצ'קבוקס
+    const onSubmit = async (data) => {
+        const annualAmount = data.Is12Months ? data.MonthlyAmount * 12 : data.MonthlyAmount;
+    
+        // יצירת אובייקט חדש עם רק השדות הנדרשים
         const paymentData = {
-            ...data,
-            Amount: annualAmount, // נשלח את הסכום הנכון (חודשי או שנתי)
+            Mosad: "7013920",  // מזהה מוסד בנדרים פלוס
+            ApiValid: "zidFYCLaNi",  // טקסט אימות
+            Zeout: data.Zeout || "",  // תעודת זהות
+            FirstName: data.FirstName,
+            LastName: data.LastName,
+            Street: data.Street || "",
+            City: data.City || "",
+            Phone: data.Phone,
+            Mail: data.Mail,
+            PaymentType: data.Is12Months ? "HK" : "Ragil",  // סוג תשלום
+            Amount: annualAmount,
+            Tashlumim: data.Is12Months ? 12 : 1,  // מספר חודשים לתשלום
+            Currency: 1,  // מטבע
+            Groupe: data.Groupe || "",
+            Comment: data.Comment || "",
+            CallBack: "https://yourdomain.com/api/nedarim-callback",
+            CallBackMailError: "lchabadyaffo@gmail.com",
         };
-        console.log("נתונים שנשלחים ל-API:", paymentData);
-        setStep(2);
+    
+        console.log("Submitting to API:", paymentData);
+    
+        setLoading(true);
+        setErrorMessage(""); // Clear previous errors
+    
+        try {
+            // Send data to your API endpoint
+            const response = await axios.post("https://www.matara.pro/nedarimplus/iframe/", paymentData);
+    
+            if (response.status === 200) {
+                console.log("API Response:", response.data);
+                setStep(2); // Go to the payment iframe
+    
+                // Once the API response is successful, send data to iframe
+                const iframe = iframeRef.current;
+                iframe.contentWindow.postMessage(paymentData, "*");
+    
+            } else {
+                setErrorMessage("Something went wrong. Please try again later.");
+            }
+        } catch (error) {
+            console.error("Error during API request:", error);
+            setErrorMessage("There was an error processing your payment. Please try again later.");
+        } finally {
+            setLoading(false); // Reset loading state
+        }
     };
+        
 
     const handleBack = () => {
         setStep(1);
