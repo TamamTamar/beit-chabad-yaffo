@@ -1,77 +1,76 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import "./PaymentForm.scss";
 
-const PaymentForm = ({ amount }) => {
+const PaymentForm = ({ monthlyAmount }) => {
+    const [step, setStep] = useState(1);
     const iframeRef = useRef(null);
     const monthlyAmountRef = useRef(null);
-    const initialAmount = amount || 0;
+    const initialAmount = monthlyAmount || 0;
 
-    const [formData, setFormData] = useState({
-        Zeout: "",
-        FirstName: "",
-        LastName: "",
-        Phone: "",
-        Mail: "",
-        Dedication: "",
-        PaymentType: "Ragil", // סוג תשלום ברירת מחדל - רגיל
-        MonthlyAmount: initialAmount,
-        AnnualAmount: initialAmount * 12,
-        Is12Months: initialAmount !== 0,
+    const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
+        defaultValues: {
+            Mosad: "7013920",
+            ApiValid: "zidFYCLaNi",
+            Zeout: "",
+            FirstName: "",
+            LastName: "",
+            Street: "",
+            City: "",
+            Phone: "",
+            Mail: "",
+            Amount: initialAmount,
+            Tashlumim: 1,
+            Currency: 1,
+            Groupe: "",
+            Comment: "",
+            Dedication: "",
+            PaymentType: "Ragil",
+            MonthlyAmount: initialAmount, // Set it as a number, not formatted string
+            Is12Months: initialAmount !== 0,
+        }
     });
 
-    const computedAmount = formData.PaymentType === "HK" ? formData.MonthlyAmount : formData.AnnualAmount;
+    const watchIs12Months = watch("Is12Months");
+    const watchMonthlyAmount = watch("MonthlyAmount");
 
-    const [step, setStep] = useState(1);
-
+    // עדכון הערכים ב-useEffect
     useEffect(() => {
-        if (formData.Is12Months) {
-            setFormData((prevState) => ({
-                ...prevState,
-                AnnualAmount: prevState.MonthlyAmount * 12,
-            }));
-        } else {
-            setFormData((prevState) => ({
-                ...prevState,
-                AnnualAmount: prevState.MonthlyAmount,
-            }));
-        }
-    }, [formData.Is12Months, formData.MonthlyAmount]);
+        const monthlyAmountValue = parseFloat(watchMonthlyAmount) || 0;
+        setValue("MonthlyAmount", monthlyAmountValue); // להבטיח שהערך בפורמט נכון
+        setValue("PaymentType", watchIs12Months ? "HK" : "Ragil");
+
+        console.log("MonthlyAmount:", watchMonthlyAmount);
+    
+
+    }, [watchIs12Months, watchMonthlyAmount, setValue, initialAmount]);
 
     useEffect(() => {
         if (monthlyAmountRef.current) {
             monthlyAmountRef.current.focus();
         }
     }, []);
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        
-        setFormData((prevState) => {
-            const newState = {
-                ...prevState,
-                [name]: type === "checkbox" ? checked : value,
-            };
-    
-            // אם מסומן, שנה את PaymentType ל-HK, אחרת השאר אותו רגיל
-            if (name === "Is12Months") {
-                newState.PaymentType = checked ? "HK" : "Ragil";
-            }
-    
-            return newState;
-        });
-    };
-    const handleSubmit = (e) => {
-        e.preventDefault();
+
+    const onSubmit = (data) => {
+        const annualAmount = data.Is12Months ? data.MonthlyAmount * 12 : data.MonthlyAmount; // חישוב הסכום השנתי לפי הצ'קבוקס
         const paymentData = {
-            ...formData,
-            Amount: computedAmount, // נשלח את הסכום הנכון בהתאם לסוג התשלום
+            ...data,
+            Amount: annualAmount, // נשלח את הסכום הנכון (חודשי או שנתי)
         };
         console.log("נתונים שנשלחים ל-API:", paymentData);
         setStep(2);
     };
-    
 
     const handleBack = () => {
         setStep(1);
+    };
+
+    const handleMonthlyAmountChange = (e) => {
+        const value = e.target.value;
+        if (/^\d*\.?\d*$/.test(value)) {
+            // מעדכנים את הערך ב-form בצורה נכונה
+            setValue("MonthlyAmount", parseFloat(parseFloat(value).toFixed(2)));
+        }
     };
 
     return (
@@ -88,72 +87,74 @@ const PaymentForm = ({ amount }) => {
                             <p className="monthly-amount"> תרומתך:
                                 <input
                                     type="number"
-                                    name="MonthlyAmount"
-                                    value={formData.MonthlyAmount}
-                                    onChange={handleChange}
+                                    step="0.01"
+                                    {...register("MonthlyAmount", { required: true })}
                                     placeholder="סכום"
                                     ref={monthlyAmountRef}
                                     className="monthly-amount-input"
+                                    onChange={handleMonthlyAmountChange}
+                                    value={watchMonthlyAmount || ""} // Use watch for value
                                 />{" "}
                                 ₪
                             </p>
+                            {errors.MonthlyAmount && <span className="error">נא להזין סכום חוקי</span>}
                             <label className="checkbox-label">
                                 <input
                                     type="checkbox"
-                                    name="Is12Months"
-                                    checked={formData.Is12Months}
-                                    onChange={handleChange}
+                                    {...register("Is12Months")}
                                     className="checkbox-input"
                                 />
                                 12 חודשים
                             </label>
                         </div>
                         <div className="left-side-amount">
-                            <p>בית חב״ד יפו מקבל: {formData.AnnualAmount} ₪</p>
+                            <p>בית חב״ד יפו מקבל: {isNaN(parseFloat((watchMonthlyAmount * (watchIs12Months ? 12 : 1)).toString())) ? 0 : (watchMonthlyAmount * (watchIs12Months ? 12 : 1))} ₪</p>
                         </div>
                     </div>
-                    <form className="payment-form" onSubmit={handleSubmit}>
+                    <form className="payment-form" onSubmit={handleSubmit(onSubmit)}>
                         <input
                             type="text"
-                            name="FirstName"
-                            value={formData.FirstName}
-                            onChange={handleChange}
+                            {...register("FirstName", { required: true, maxLength: 50 })}
                             placeholder="שם פרטי"
-                            required
+                            className="form-input"
+                        />
+                        {errors.FirstName && <span className="error">נא להזין שם פרטי</span>}
+                        <input
+                            type="text"
+                            {...register("LastName", { required: true, maxLength: 50 })}
+                            placeholder="שם משפחה"
+                            className="form-input"
+                        />
+                        {errors.LastName && <span className="error">נא להזין שם משפחה</span>}
+                        <input
+                            type="text"
+                            {...register("Street", { maxLength: 100 })}
+                            placeholder="רחוב"
                             className="form-input"
                         />
                         <input
                             type="text"
-                            name="LastName"
-                            value={formData.LastName}
-                            onChange={handleChange}
-                            placeholder="שם משפחה"
-                            required
+                            {...register("City", { maxLength: 100 })}
+                            placeholder="עיר"
                             className="form-input"
                         />
                         <input
                             type="email"
-                            name="Mail"
-                            value={formData.Mail}
-                            onChange={handleChange}
+                            {...register("Mail", { required: true, maxLength: 50 })}
                             placeholder="אימייל"
-                            required
                             className="form-input"
                         />
+                        {errors.Mail && <span className="error">נא להזין אימייל</span>}
                         <input
                             type="text"
-                            name="Phone"
-                            value={formData.Phone}
-                            onChange={handleChange}
+                            {...register("Phone", { required: true, maxLength: 20, pattern: /^\d+$/ })}
                             placeholder="טלפון"
-                            required
                             className="form-input"
                         />
+                        {errors.Phone && <span className="error">נא להזין טלפון</span>}
                         <input
                             type="text"
-                            name="Dedication"
-                            value={formData.Dedication}
-                            onChange={handleChange}
+                            {...register("Dedication", { maxLength: 300 })}
                             placeholder="הקדשה (לא חובה)"
                             className="form-input"
                         />

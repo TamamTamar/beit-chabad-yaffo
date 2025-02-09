@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import './MoneyCircles.scss';
 import PaymentForm from './PaymentForm';
 
@@ -37,7 +36,7 @@ const MoneyCircles = () => {
                 <div className="overlay">
                     <div className="payment-form-wrapper">
                         <button className="close-button" onClick={closePaymentForm}><img src="/img/kampein/x.svg" alt="" /></button>
-                        <PaymentForm amount={amount} />
+                        <PaymentForm monthlyAmount={amount} />
                     </div>
                 </div>
             )}
