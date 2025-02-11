@@ -1,0 +1,47 @@
+.about-kampain {
+    padding: 48px;
+    text-align: center;
+    max-height: 60vh; /* גובה מקסימלי */
+    overflow-y: auto; /* גלילה פנימית אם צריך */
+    font-size: 14px;
+
+    .about-kampain-title {
+        color: #6B4B9A;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 800;
+        line-height: 20px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+    }
+
+    .about-kampain-description {
+        margin-bottom: 24px;
+    }
+    
+    .about-kampain-subtitle {
+        font-weight: 900;
+    }
+
+    .about-kampain-list {
+        text-align: right;
+        margin: 0 auto;
+        max-width: 600px;
+        padding: 0 20px;
+        list-style: disc; // מסירים את הנקודות הרגילות
+        padding-right: 0;
+
+        .list-item {
+            position: relative;
+            padding-right: 20px; 
+            margin-bottom: 10px;
+
+           
+        }
+
+            
+            // מרחיק את הטקסט מהנקודה
+        }
+    }
+
+

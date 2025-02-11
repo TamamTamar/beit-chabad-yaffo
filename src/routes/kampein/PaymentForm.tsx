@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import "./PaymentForm.scss";
-import axios from "axios";
+import patterns from "../../validations/patterns";
 
 const PaymentForm = ({ monthlyAmount }) => {
     const [step, setStep] = useState(1);
@@ -34,16 +35,14 @@ const PaymentForm = ({ monthlyAmount }) => {
 
     const watchIs12Months = watch("Is12Months");
     const watchMonthlyAmount = watch("MonthlyAmount");
+    const watchTashlumim = watch("Tashlumim");
 
-    // עדכון הערכים ב-useEffect
     useEffect(() => {
         const monthlyAmountValue = parseFloat(watchMonthlyAmount) || 0;
         setValue("MonthlyAmount", monthlyAmountValue); // להבטיח שהערך בפורמט נכון
         setValue("PaymentType", watchIs12Months ? "HK" : "Ragil");
 
         console.log("MonthlyAmount:", watchMonthlyAmount);
-    
-
     }, [watchIs12Months, watchMonthlyAmount, setValue, initialAmount]);
 
     useEffect(() => {
@@ -51,9 +50,10 @@ const PaymentForm = ({ monthlyAmount }) => {
             monthlyAmountRef.current.focus();
         }
     }, []);
+
     const onSubmit = async (data) => {
         const annualAmount = data.Is12Months ? data.MonthlyAmount * 12 : data.MonthlyAmount;
-    
+
         // יצירת אובייקט חדש עם רק השדות הנדרשים
         const paymentData = {
             Mosad: "7013920",  // מזהה מוסד בנדרים פלוס
@@ -67,31 +67,32 @@ const PaymentForm = ({ monthlyAmount }) => {
             Mail: data.Mail,
             PaymentType: data.Is12Months ? "HK" : "Ragil",  // סוג תשלום
             Amount: annualAmount,
-            Tashlumim: data.Is12Months ? 12 : 1,  // מספר חודשים לתשלום
+            Tashlumim: data.Is12Months ? 12 : data.Tashlumim,  // מספר חודשים לתשלום
             Currency: 1,  // מטבע
             Groupe: data.Groupe || "",
             Comment: data.Comment || "",
             CallBack: "https://yourdomain.com/api/nedarim-callback",
             CallBackMailError: "lchabadyaffo@gmail.com",
         };
-    
+
         console.log("Submitting to API:", paymentData);
-    
+
         setLoading(true);
+        setStep(2); // Go to the payment iframe
         setErrorMessage(""); // Clear previous errors
-    
-        try {
+
+/*         try {
             // Send data to your API endpoint
             const response = await axios.post("https://www.matara.pro/nedarimplus/iframe/", paymentData);
-    
+
             if (response.status === 200) {
                 console.log("API Response:", response.data);
                 setStep(2); // Go to the payment iframe
-    
+
                 // Once the API response is successful, send data to iframe
                 const iframe = iframeRef.current;
                 iframe.contentWindow.postMessage(paymentData, "*");
-    
+
             } else {
                 setErrorMessage("Something went wrong. Please try again later.");
             }
@@ -100,9 +101,8 @@ const PaymentForm = ({ monthlyAmount }) => {
             setErrorMessage("There was an error processing your payment. Please try again later.");
         } finally {
             setLoading(false); // Reset loading state
-        }
+        } */
     };
-        
 
     const handleBack = () => {
         setStep(1);
@@ -112,7 +112,7 @@ const PaymentForm = ({ monthlyAmount }) => {
         const value = e.target.value;
         if (/^\d*\.?\d*$/.test(value)) {
             // מעדכנים את הערך ב-form בצורה נכונה
-            setValue("MonthlyAmount", parseFloat(parseFloat(value).toFixed(2)));
+            setValue("MonthlyAmount", parseFloat(value));
         }
     };
 
@@ -129,15 +129,18 @@ const PaymentForm = ({ monthlyAmount }) => {
                         <div className="right-side-amount">
                             <p className="monthly-amount"> תרומתך:
                                 <input
-                                    type="number"
-                                    step="0.01"
-                                    {...register("MonthlyAmount", { required: true })}
+                                    type="text" // נשנה ל-type="text" על מנת להציג את הערך כ-string
+                                    {...register("MonthlyAmount", {
+                                        required: true,
+                                        setValueAs: (value) => parseFloat(value) || 0, // המרה בעת שליחת הערך
+                                    })}
                                     placeholder="סכום"
                                     ref={monthlyAmountRef}
                                     className="monthly-amount-input"
                                     onChange={handleMonthlyAmountChange}
-                                    value={watchMonthlyAmount || ""} // Use watch for value
-                                />{" "}
+                                    value={watchMonthlyAmount || ""} // נשתמש ב-watch כדי לשמור את הערך כ-string
+                                />
+                                {" "}
                                 ₪
                             </p>
                             {errors.MonthlyAmount && <span className="error">נא להזין סכום חוקי</span>}
@@ -147,11 +150,27 @@ const PaymentForm = ({ monthlyAmount }) => {
                                     {...register("Is12Months")}
                                     className="checkbox-input"
                                 />
-                                12 חודשים
+                               מאשר לחייב את כרטיס האשראי שלי כל חודש ₪{watchMonthlyAmount} כפול 12 חודשים, (סה"כ ₪{watchMonthlyAmount * 12})
                             </label>
+                            {!watchIs12Months && (
+                                <div>
+                                    <label htmlFor="Tashlumim">מספר תשלומים:</label>
+                                    <select
+                                        id="Tashlumim"
+                                        {...register("Tashlumim", { required: true })}
+                                        defaultValue={1}
+                                    >
+                                        {[...Array(11).keys()].map(i => (
+                                            <option key={i + 2} value={i + 2}>
+                                                {i + 2} תשלומים - {(watchMonthlyAmount / (i + 2)).toFixed(2)} ₪ לחודש
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )}
                         </div>
                         <div className="left-side-amount">
-                            <p>בית חב״ד יפו מקבל: {isNaN(parseFloat((watchMonthlyAmount * (watchIs12Months ? 12 : 1)).toString())) ? 0 : (watchMonthlyAmount * (watchIs12Months ? 12 : 1))} ₪</p>
+                            <p>בית חב״ד יפו מקבל: {isNaN(parseFloat(watchMonthlyAmount)) ? 0 : (watchIs12Months ? parseFloat(watchMonthlyAmount) * 12 : parseFloat(watchMonthlyAmount))} ₪</p>
                         </div>
                     </div>
                     <form className="payment-form" onSubmit={handleSubmit(onSubmit)}>
@@ -169,28 +188,25 @@ const PaymentForm = ({ monthlyAmount }) => {
                             className="form-input"
                         />
                         {errors.LastName && <span className="error">נא להזין שם משפחה</span>}
-                        <input
-                            type="text"
-                            {...register("Street", { maxLength: 100 })}
-                            placeholder="רחוב"
-                            className="form-input"
-                        />
-                        <input
-                            type="text"
-                            {...register("City", { maxLength: 100 })}
-                            placeholder="עיר"
-                            className="form-input"
-                        />
+
                         <input
                             type="email"
-                            {...register("Mail", { required: true, maxLength: 50 })}
+                            {...register("Mail", {
+                                required: true,
+                                maxLength: 50,
+                                pattern: patterns.email
+                            })}
                             placeholder="אימייל"
                             className="form-input"
                         />
                         {errors.Mail && <span className="error">נא להזין אימייל</span>}
                         <input
                             type="text"
-                            {...register("Phone", { required: true, maxLength: 20, pattern: /^\d+$/ })}
+                            {...register("Phone", {
+                                required: true,
+                                maxLength: 20,
+                                pattern: patterns.phone
+                            })}
                             placeholder="טלפון"
                             className="form-input"
                         />

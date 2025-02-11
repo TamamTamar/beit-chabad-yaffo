@@ -1,12 +1,11 @@
 .money-circles-container {
     position: relative;
 }
-
 .money-circles {
     width: 100%;
     height: auto;
     flex-shrink: 0;
-    background: #F9F8FA;
+    background: #38155DE5;
     display: flex;
     gap: 60px;
     justify-content: center;
@@ -26,33 +25,53 @@
 
     .circle {
         display: flex;
-        flex-direction: column;
         justify-content: center;
         align-items: center;
-        width: 156px;
-        height: 156px;
+        width: 120px; /* הקטנת הרוחב */
+        height: 120px; /* הקטנת הגובה */
         border-radius: 50%;
-        background: #D7CBEA;
+        background: #FFEB0A;
         color: #000;
         text-align: center;
         padding: 10px;
-        box-sizing: border-box;
-        direction: rtl;
         gap: 10px;
+        font-size: 28px; /* הקטנת גודל הגופן */
 
-        .amount {
-            font-size: 20px;
-            font-weight: 700;
+        &:hover {
+            background: #D7CBEA;
             color: #000;
         }
 
-        .yearly {
-            font-size: 16px;
+        .amount-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0; /* הסרת הרווח בין השורות */
+            height: 100%; /* לוודא שהקונטיינר תופס את כל הגובה */
         }
 
-        strong {
-            font-size: 20px;
+        .amount {
             font-weight: 700;
+            color: #000;
+            line-height: 1; /* גובה שורה קטן יותר כדי לקרב את השורות */
+        }
+
+        .to-month {
+            font-size: 16px; /* הקטנת גודל הגופן */
+            font-weight: 700;
+            color: #000;
+            line-height: 1; /* גובה שורה קטן יותר כדי לקרב את השורות */
+            letter-spacing: 0.1em;
+             /* הוספת ריווח בין האותיות */
+            
+        }
+
+        .another-amount {
+          
+            font-weight: 700;
+            line-height: 1; /* גובה שורה קטן יותר כדי לקרב את השורות */
+            color: #38155DE5;
         }
     }
 }
@@ -75,7 +94,7 @@
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     position: relative;
-  
+    padding: 20px;
 }
 
 .close-button {

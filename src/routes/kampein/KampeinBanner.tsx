@@ -1,11 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react';
+import './KampeinBanner.scss';
+import AboutKampain from './AboutKampain';
 
 const KampeinBanner = () => {
-  return (
-    <div>
-        <img src="/img/kampein/banner.png" alt="banner" />
-    </div>
-  )
-}
+  const [showInfo, setShowInfo] = useState(false);
 
-export default KampeinBanner
+  const handleButtonClick = () => {
+    setShowInfo(true);
+  };
+
+  const closeInfo = () => {
+    setShowInfo(false);
+  };
+
+  return (
+    <div className="kampein-banner">
+      <button className='kampein-banner-button' onClick={handleButtonClick}>אודות הקמפיין</button>
+      {showInfo && (
+        <div className="overlay">
+          <div className="info-wrapper">
+            <button className="close-button" onClick={closeInfo}><img src="/img/kampein/x.svg" alt="Close" /></button>
+            <div className="info-content">
+              <AboutKampain />
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default KampeinBanner;

@@ -17,25 +17,28 @@ const MoneyCircles = () => {
 
     const renderButton = (amount: number) => (
         <button className="circle" onClick={() => handleButtonClick(amount)}>
-            <p className="amount">{amount}₪ לחודש</p>
-            <p className="yearly">{amount * 12}₪ לשנה</p>
+            <div className="amount-wrapper">
+                <p className="amount">₪{amount}</p>
+                <div className="to-month">לחודש</div>
+            </div>
+
         </button>
     );
 
     return (
         <div className="money-circles-container">
             <div className="money-circles">
-                <button className="circle" onClick={() => handleButtonClick(0)}><strong>סכום אחר</strong></button>
-                {renderButton(5000)}
-                {renderButton(2000)}
-                {renderButton(1000)}
-                {renderButton(500)}
+                <button className="circle" onClick={() => handleButtonClick(0)}><span className='another-amount'>סכום  <br /> חופשי</span></button>
                 {renderButton(300)}
+                {renderButton(500)}
+                {renderButton(1000)}
+                {renderButton(2000)}
+                {renderButton(3000)}
             </div>
             {showPaymentForm && (
                 <div className="overlay">
                     <div className="payment-form-wrapper">
-                        <button className="close-button" onClick={closePaymentForm}><img src="/img/kampein/x.svg" alt="" /></button>
+                        <button className="close-button" onClick={closePaymentForm}><img src="/img/kampein/x.svg" alt="Close" /></button>
                         <PaymentForm monthlyAmount={amount} />
                     </div>
                 </div>
