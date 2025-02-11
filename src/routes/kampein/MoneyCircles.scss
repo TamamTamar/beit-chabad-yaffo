@@ -1,6 +1,7 @@
 .money-circles-container {
     position: relative;
 }
+
 .money-circles {
     width: 100%;
     height: auto;
@@ -27,15 +28,15 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 120px; /* הקטנת הרוחב */
-        height: 120px; /* הקטנת הגובה */
+        width: 120px;
+        height: 120px;
         border-radius: 50%;
         background: #FFEB0A;
         color: #000;
         text-align: center;
         padding: 10px;
         gap: 10px;
-        font-size: 28px; /* הקטנת גודל הגופן */
+        font-size: 28px;
 
         &:hover {
             background: #D7CBEA;
@@ -47,30 +48,27 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 0; /* הסרת הרווח בין השורות */
-            height: 100%; /* לוודא שהקונטיינר תופס את כל הגובה */
+            gap: 0;
+            height: 100%;
         }
 
         .amount {
             font-weight: 700;
             color: #000;
-            line-height: 1; /* גובה שורה קטן יותר כדי לקרב את השורות */
+            line-height: 1;
         }
 
         .to-month {
-            font-size: 16px; /* הקטנת גודל הגופן */
+            font-size: 16px;
             font-weight: 700;
             color: #000;
-            line-height: 1; /* גובה שורה קטן יותר כדי לקרב את השורות */
+            line-height: 1;
             letter-spacing: 0.1em;
-             /* הוספת ריווח בין האותיות */
-            
         }
 
         .another-amount {
-          
             font-weight: 700;
-            line-height: 1; /* גובה שורה קטן יותר כדי לקרב את השורות */
+            line-height: 1;
             color: #38155DE5;
         }
     }
