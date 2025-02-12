@@ -82,7 +82,7 @@ const PaymentForm = ({ monthlyAmount }) => {
 
        try {
             // Send data to your API endpoint
-            const response = await axios.post("https://www.matara.pro/nedarimplus/iframe/", paymentData);
+            const response = await axios.post("https://node-beit-chabad-yaffo.onrender.com.api/payment/nedarim", paymentData);
 
             if (response.status === 200) {
                 console.log("API Response:", response.data);
