@@ -1,14 +1,13 @@
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { submitPaymentData } from "../../services/payment-service";
-import "./PaymentForm.scss";
 import patterns from "../../validations/patterns";
+import "./PaymentForm.scss";
 
 const PaymentForm = ({ monthlyAmount }) => {
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [paymentData, setPaymentData] = useState(null); // מצב לשמירת הנתונים
     const iframeRef = useRef(null);
     const monthlyAmountRef = useRef(null);
     const initialAmount = monthlyAmount || 0;
@@ -50,7 +49,7 @@ const PaymentForm = ({ monthlyAmount }) => {
         }
     }, []);
 
-    const onSubmit = async (data) => {
+    const onSubmit = (data) => {
         const annualAmount = data.Is12Months ? data.MonthlyAmount * 12 : data.MonthlyAmount;
 
         const paymentData = {
@@ -73,27 +72,18 @@ const PaymentForm = ({ monthlyAmount }) => {
             CallBackMailError: "lchabadyaffo@gmail.com",
         };
 
-        setLoading(true);
-        setErrorMessage("");
-
-        try {
-            const response = await submitPaymentData(paymentData);
-
-            if (response.status === 200) {
-                setStep(2);
-                const iframe = iframeRef.current;
-                if (iframe && iframe.contentWindow) {
-                    iframe.contentWindow.postMessage(paymentData, "*");
-                }
-            } else {
-                setErrorMessage("Something went wrong. Please try again later.");
-            }
-        } catch (error) {
-            setErrorMessage("There was an error processing your payment. Please try again later.");
-        } finally {
-            setLoading(false);
-        }
+        setPaymentData(paymentData); // שמירת הנתונים במצב
+        setStep(2); // מעבר לשלב הבא
     };
+
+    useEffect(() => {
+        if (step === 2 && paymentData) {
+            const iframe = iframeRef.current;
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage(paymentData, "*");
+            }
+        }
+    }, [step, paymentData]);
 
     const handleBack = () => {
         setStep(1);
