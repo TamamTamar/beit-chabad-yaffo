@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import "./PaymentForm.scss";
 import patterns from "../../validations/patterns";
+import { submitPaymentData } from "../../services/payment-service";
 
 const PaymentForm = ({ monthlyAmount }) => {
     const [step, setStep] = useState(1);
@@ -80,9 +81,9 @@ const PaymentForm = ({ monthlyAmount }) => {
         setLoading(true);
         setErrorMessage(""); // Clear previous errors
 
-       try {
+        try {
             // Send data to your API endpoint
-            const response = await axios.post("https://node-beit-chabad-yaffo.onrender.com.api/payment/nedarim", paymentData);
+            const response = await submitPaymentData(paymentData);
 
             if (response.status === 200) {
                 console.log("API Response:", response.data);
@@ -100,7 +101,7 @@ const PaymentForm = ({ monthlyAmount }) => {
             setErrorMessage("There was an error processing your payment. Please try again later.");
         } finally {
             setLoading(false); // Reset loading state
-        } 
+        }
     };
 
     const handleBack = () => {
