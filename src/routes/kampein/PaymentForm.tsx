@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { submitPaymentData } from "../../services/payment-service";
 import "./PaymentForm.scss";
 import patterns from "../../validations/patterns";
-import { submitPaymentData } from "../../services/payment-service";
 
 const PaymentForm = ({ monthlyAmount }) => {
     const [step, setStep] = useState(1);
@@ -29,7 +29,7 @@ const PaymentForm = ({ monthlyAmount }) => {
             Comment: "",
             Dedication: "",
             PaymentType: "Ragil",
-            MonthlyAmount: initialAmount, // Set it as a number, not formatted string
+            MonthlyAmount: initialAmount,
             Is12Months: initialAmount !== 0,
         }
     });
@@ -40,11 +40,9 @@ const PaymentForm = ({ monthlyAmount }) => {
 
     useEffect(() => {
         const monthlyAmountValue = parseFloat(watchMonthlyAmount) || 0;
-        setValue("MonthlyAmount", monthlyAmountValue); // להבטיח שהערך בפורמט נכון
+        setValue("MonthlyAmount", monthlyAmountValue);
         setValue("PaymentType", watchIs12Months ? "HK" : "Ragil");
-
-        console.log("MonthlyAmount:", watchMonthlyAmount);
-    }, [watchIs12Months, watchMonthlyAmount, setValue, initialAmount]);
+    }, [watchIs12Months, watchMonthlyAmount, setValue]);
 
     useEffect(() => {
         if (monthlyAmountRef.current) {
@@ -55,54 +53,45 @@ const PaymentForm = ({ monthlyAmount }) => {
     const onSubmit = async (data) => {
         const annualAmount = data.Is12Months ? data.MonthlyAmount * 12 : data.MonthlyAmount;
 
-        // יצירת אובייקט חדש עם רק השדות הנדרשים
         const paymentData = {
-            Mosad: "7013920",  // מזהה מוסד בנדרים פלוס
-            ApiValid: "zidFYCLaNi",  // טקסט אימות
-            Zeout: data.Zeout || "",  // תעודת זהות
+            Mosad: "7013920",
+            ApiValid: "zidFYCLaNi",
+            Zeout: data.Zeout || "",
             FirstName: data.FirstName,
             LastName: data.LastName,
             Street: data.Street || "",
             City: data.City || "",
             Phone: data.Phone,
             Mail: data.Mail,
-            PaymentType: data.Is12Months ? "HK" : "Ragil",  // סוג תשלום
+            PaymentType: data.Is12Months ? "HK" : "Ragil",
             Amount: annualAmount,
-            Tashlumim: data.Is12Months ? 12 : data.Tashlumim,  // מספר חודשים לתשלום
-            Currency: 1,  // מטבע
+            Tashlumim: data.Is12Months ? 12 : data.Tashlumim,
+            Currency: 1,
             Groupe: data.Groupe || "",
             Comment: data.Comment || "",
-            CallBack: "https://yourdomain.com/api/nedarim-callback",
+            CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/nedarim-callback",
             CallBackMailError: "lchabadyaffo@gmail.com",
         };
 
-        console.log("Submitting to API:", paymentData);
-
         setLoading(true);
-        setErrorMessage(""); // Clear previous errors
+        setErrorMessage("");
 
         try {
-            // Send data to your API endpoint
             const response = await submitPaymentData(paymentData);
 
             if (response.status === 200) {
-                console.log("API Response:", response.data);
-                setStep(2); // Go to the payment iframe
-
-                // Once the API response is successful, send data to iframe
+                setStep(2);
                 const iframe = iframeRef.current;
                 if (iframe && iframe.contentWindow) {
                     iframe.contentWindow.postMessage(paymentData, "*");
                 }
-
             } else {
                 setErrorMessage("Something went wrong. Please try again later.");
             }
         } catch (error) {
-            console.error("Error during API request:", error);
             setErrorMessage("There was an error processing your payment. Please try again later.");
         } finally {
-            setLoading(false); // Reset loading state
+            setLoading(false);
         }
     };
 
@@ -113,7 +102,6 @@ const PaymentForm = ({ monthlyAmount }) => {
     const handleMonthlyAmountChange = (e) => {
         const value = e.target.value;
         if (/^\d*\.?\d*$/.test(value)) {
-            // מעדכנים את הערך ב-form בצורה נכונה
             setValue("MonthlyAmount", parseFloat(value));
         }
     };
@@ -131,16 +119,16 @@ const PaymentForm = ({ monthlyAmount }) => {
                         <div className="right-side-amount">
                             <p className="monthly-amount"> תרומתך:
                                 <input
-                                    type="text" // נשנה ל-type="text" על מנת להציג את הערך כ-string
+                                    type="text"
                                     {...register("MonthlyAmount", {
                                         required: true,
-                                        setValueAs: (value) => parseFloat(value) || 0, // המרה בעת שליחת הערך
+                                        setValueAs: (value) => parseFloat(value) || 0,
                                     })}
                                     placeholder="סכום"
                                     ref={monthlyAmountRef}
                                     className="monthly-amount-input"
                                     onChange={handleMonthlyAmountChange}
-                                    value={watchMonthlyAmount || ""} // נשתמש ב-watch כדי לשמור את הערך כ-string
+                                    value={watchMonthlyAmount || ""}
                                 />
                                 {" "}
                                 ₪
