@@ -62,6 +62,7 @@ const PaymentFormStep1 = ({
                                 {...register("Tashlumim", { required: true })}
                                 defaultValue={1}
                             >
+                                <option value={1}>תשלום אחד - {watchMonthlyAmount} ₪</option>
                                 {[...Array(11).keys()].map(i => (
                                     <option key={i + 2} value={i + 2}>
                                         {i + 2} תשלומים - {(watchMonthlyAmount / (i + 2)).toFixed(2)} ₪ לחודש

@@ -5,10 +5,10 @@ import "./PaymentForm.scss";
 import PaymentFormStep1 from "./PaymentFormStep1";
 import PaymentFormStep2 from "./PaymentFormStep2";
 
-
 const PaymentForm = ({ monthlyAmount }) => {
     const [step, setStep] = useState(1);
     const [paymentData, setPaymentData] = useState(null); // מצב לשמירת הנתונים
+    const [status, setStatus] = useState("idle"); // מצב לתיאור המצב הנוכחי
     const iframeRef = useRef(null);
     const initialAmount = monthlyAmount || 0;
 
@@ -67,6 +67,7 @@ const PaymentForm = ({ monthlyAmount }) => {
 
         setPaymentData(paymentData); // שמירת הנתונים במצב
         setStep(2); // מעבר לשלב הבא
+        setStatus("loading"); // עדכון המצב לטעינה
     };
 
     useEffect(() => {
@@ -74,12 +75,16 @@ const PaymentForm = ({ monthlyAmount }) => {
             const iframe = iframeRef.current;
             if (iframe && iframe.contentWindow) {
                 iframe.contentWindow.postMessage(paymentData, "*");
+                setStatus("success"); // עדכון המצב להצלחה
+            } else {
+                setStatus("error"); // עדכון המצב לשגיאה
             }
         }
     }, [step, paymentData]);
 
     const handleBack = () => {
         setStep(1);
+        setStatus("idle"); // איפוס המצב
     };
 
     return (
@@ -89,6 +94,8 @@ const PaymentForm = ({ monthlyAmount }) => {
                 <span> - </span>
                 <span className={step === 2 ? "active-step" : "inactive-step"}>2</span>
             </div>
+            {status === "loading" && <p>טוען...</p>}
+            {status === "error" && <p>שגיאה בשליחת הנתונים. נסה שוב.</p>}
             {step === 1 && (
                 <PaymentFormStep1
                     register={register}
