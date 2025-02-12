@@ -78,10 +78,9 @@ const PaymentForm = ({ monthlyAmount }) => {
         console.log("Submitting to API:", paymentData);
 
         setLoading(true);
-        setStep(2); // Go to the payment iframe
         setErrorMessage(""); // Clear previous errors
 
-/*         try {
+       try {
             // Send data to your API endpoint
             const response = await axios.post("https://www.matara.pro/nedarimplus/iframe/", paymentData);
 
@@ -101,7 +100,7 @@ const PaymentForm = ({ monthlyAmount }) => {
             setErrorMessage("There was an error processing your payment. Please try again later.");
         } finally {
             setLoading(false); // Reset loading state
-        } */
+        } 
     };
 
     const handleBack = () => {
