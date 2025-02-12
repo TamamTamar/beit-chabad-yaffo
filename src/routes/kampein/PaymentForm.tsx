@@ -91,7 +91,9 @@ const PaymentForm = ({ monthlyAmount }) => {
 
                 // Once the API response is successful, send data to iframe
                 const iframe = iframeRef.current;
-                iframe.contentWindow.postMessage(paymentData, "*");
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage(paymentData, "*");
+                }
 
             } else {
                 setErrorMessage("Something went wrong. Please try again later.");
