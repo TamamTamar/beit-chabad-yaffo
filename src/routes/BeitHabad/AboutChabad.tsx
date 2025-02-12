@@ -17,7 +17,7 @@ const ChabadAboutSection: FC = () => {
             בית חב"ד מודרני ונחמד ביפו, מציע מגוון שירותים לקהילה המקומית ולמבקרים. אנו מספקים אווירה חמה ומקבלת, ומזמינים את כולם להשתתף בארוחות שבת, מקווה נשים, שירותי בית הכנסת, ועוד.
           </p>
           <div className="chabad-about-buttons">
-            <button className="chabad-about-button">תרומה</button>
+            <a href="/kampain"  className="chabad-about-button">תרומה</a>
             <button className="chabad-about-button">הרשמה לשבת</button>
           </div>
         </div>
