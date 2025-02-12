@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './KampeinBanner.scss';
-import AboutKampain from './AboutKampain';
+import Aboutkampein from './Aboutkampein';
 
 const KampeinBanner = () => {
   const [showInfo, setShowInfo] = useState(false);
@@ -21,7 +21,7 @@ const KampeinBanner = () => {
           <div className="info-wrapper">
             <button className="close-button" onClick={closeInfo}><img src="/img/kampein/x.svg" alt="Close" /></button>
             <div className="info-content">
-              <AboutKampain />
+              <Aboutkampein />
             </div>
           </div>
         </div>
