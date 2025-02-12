@@ -1,12 +1,13 @@
 import axios from "axios";
 
-const paymentBaseUrl = "https://node-beit-chabad-yaffo.onrender.com/api/payment/nedarim";
+const paymentBaseUrl = "https://www.matara.pro/nedarimplus/iframe/";
 
 export const submitPaymentData = async (paymentData) => {
     try {
         const response = await axios.post(paymentBaseUrl, paymentData);
-        return response.data;
+        return response;
     } catch (error) {
-        throw new Error('Payment submission failed: ' + error.message);
+        console.error("Payment submission error:", error);
+        throw error; // throwing the error so it can be caught in the form's onSubmit
     }
 };
