@@ -45,26 +45,70 @@
                 align-items: center;
             }
 
+            .right-side-amount,
+            .left-side-amount {
+                flex: 1;
+                padding: 10px;
+                box-sizing: border-box;
+            }
+
             .right-side-amount {
                 font-size: 20px;
-                font-weight: bold;
-                color: #6B4B9A;
+                font-weight: bold; 
+                border-radius: 8px;
+                margin-right: 10px; /* רווח בין הצדדים */
+
+                @media (max-width: 768px) {
+                    margin-right: 0;
+                    margin-bottom: 10px;
+                }
 
                 .monthly-amount {
                     padding: 20px 15px 10px;
                     border-radius: 8px;
                     background-color: #ffffff;
+                    margin-bottom: 10px;
                 }
 
                 .monthly-amount-input {
                     background: none; /* הסרת הרקע */
                     border: none;
-                    outline: none; /* הסרת המסגרת גם במצב focus */
+                    outline: none;
+                    
+
+                    
+                  
+
+                    &:focus {
+                      box-shadow: none;/* צבע סגול במצב focus */
+                    }
+                }
+
+                .tashlumim-section{
+                    .tashlumim-select{
+                        font-size: 12px;
+                    }
+                }
+            }
+
+            .left-side-amount {
+                font-size: 20px;
+                font-weight: bold;
+           
+                border-radius: 8px;
+                margin-left: 10px;
+                
+               .for-year{
+                   font-size: 40px;
+                }
+
+                @media (max-width: 768px) {
+                    margin-left: 0;
                 }
             }
         }
 
-        p {
+        .amount-text {
             margin: 10px 0;
             font-size: 18px;
             color: #333;
@@ -74,18 +118,30 @@
             }
         }
 
-        label {
+        .checkbox-label {
             display: flex;
             align-items: center;
-            font-size: 16px;
+            font-size: 12px;
             color: #555;
+            margin-bottom: 10px;
 
             @media (max-width: 768px) {
-                font-size: 14px;
+                font-size: 10px;
             }
 
-            input[type="checkbox"] {
+          .checkbox-input{    
                 margin-left: 10px;
+
+                &:focus {
+                    box-shadow: none;
+                }
+                &:checked {
+                    background-color: #6B4B9A;
+                }
+
+                @media (max-width: 768px) {
+                    margin-left: 5px;
+                }
             }
         }
     }
@@ -94,16 +150,15 @@
         display: flex;
         flex-direction: column;
         width: 100%;
-        text-align: right; /* התאמה לעברית */
-
-        input,
-        select,
-        button {
+        text-align: right;
+        
+        .form-input{
             margin-bottom: 15px;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            font-size: 16px;
+            font-size: 14px;
+           
 
             @media (max-width: 768px) {
                 font-size: 14px;
@@ -111,11 +166,8 @@
             }
         }
 
-        .no-background {
-            background: none; /* הסרת הרקע */
-        }
 
-        button {
+        .payment-button {
             background: #6B4B9A;
             color: #fff;
             cursor: pointer;

@@ -29,7 +29,8 @@ const PaymentFormStep1 = ({
         <div className="amount-info">
             <div className="amount-section">
                 <div className="right-side-amount">
-                    <p className="monthly-amount"> תרומתך:
+                    <div className="monthly-amount">
+                        <p className="amount-text">תרומתך:</p>
                         <input
                             type="text"
                             {...register("MonthlyAmount", {
@@ -42,22 +43,21 @@ const PaymentFormStep1 = ({
                             onChange={handleMonthlyAmountChange}
                             value={watchMonthlyAmount || ""}
                         />
-                        {" "}
-                        ₪
-                    </p>
-                    {errors.MonthlyAmount && <span className="error">נא להזין סכום חוקי</span>}
+                        <span>₪</span>
+                    </div>
                     <label className="checkbox-label">
                         <input
                             type="checkbox"
                             {...register("Is12Months")}
                             className="checkbox-input"
                         />
-                       מאשר לחייב את כרטיס האשראי שלי כל חודש ₪{watchMonthlyAmount} כפול 12 חודשים, (סה"כ ₪{watchMonthlyAmount * 12})
+                        מאשר לחייב את כרטיס האשראי שלי כל חודש ₪{watchMonthlyAmount} כפול 12 חודשים, (סה"כ ₪{watchMonthlyAmount * 12})
                     </label>
                     {!watchIs12Months && (
-                        <div>
-                            <label htmlFor="Tashlumim">מספר תשלומים:</label>
+                        <div className="tashlumim-section">
+                            <label className="checkbox-label" htmlFor="Tashlumim">מספר תשלומים:</label>
                             <select
+                                className="tashlumim-select"
                                 id="Tashlumim"
                                 {...register("Tashlumim", { required: true })}
                                 defaultValue={1}
@@ -73,7 +73,11 @@ const PaymentFormStep1 = ({
                     )}
                 </div>
                 <div className="left-side-amount">
-                    <p>בית חב״ד יפו מקבל: {isNaN(parseFloat(watchMonthlyAmount)) ? 0 : (watchIs12Months ? parseFloat(watchMonthlyAmount) * 12 : parseFloat(watchMonthlyAmount))} ₪</p>
+                    <p className="amount-text">בית חב״ד יפו מקבל:</p>
+                    <div className="for-year">₪
+                        {isNaN(parseFloat(watchMonthlyAmount)) ? 0 : (watchIs12Months ? parseFloat(watchMonthlyAmount) * 12 : parseFloat(watchMonthlyAmount))}
+                        
+                    </div>
                 </div>
             </div>
             <form className="payment-form" onSubmit={handleSubmit(onSubmit)}>
@@ -120,7 +124,7 @@ const PaymentFormStep1 = ({
                     placeholder="הקדשה (לא חובה)"
                     className="form-input"
                 />
-                <button type="submit" className="submit-button">המשך</button>
+                <button type="submit" className="payment-button">המשך</button>
             </form>
         </div>
     );
