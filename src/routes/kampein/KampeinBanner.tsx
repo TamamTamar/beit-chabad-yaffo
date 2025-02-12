@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './KampeinBanner.scss';
-import Aboutkampein from './Aboutkampein';
+import Aboutkampein from './AboutKampein';
+
 
 const KampeinBanner = () => {
   const [showInfo, setShowInfo] = useState(false);
