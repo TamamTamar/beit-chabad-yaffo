@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 60px 48px 48px 48px; 
+   padding: 60px 48px 48px 48px;
     width: 600px;
     margin: 0 auto;
     max-height: 80vh; /* גובה מקסימלי */
@@ -10,7 +10,7 @@
 
     @media (max-width: 768px) {
         padding: 30px 20px 20px 20px;
-        width: 90%;
+        width: 100%;
     }
 
     .step-indicator {
