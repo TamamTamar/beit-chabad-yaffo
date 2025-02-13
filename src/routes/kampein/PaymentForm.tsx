@@ -36,15 +36,7 @@ const PaymentForm = ({ monthlyAmount }) => {
     const watchIs12Months = watch("Is12Months");
     const watchMonthlyAmount = watch("MonthlyAmount");
 
-    useEffect(() => {
-        if (status === "success") {
-            setTimeout(() => {
-                console.log('status:', status); // הוספנו את הודעת ה-Console כאן כדי לעקוב אחרי המצב
-                setStep(1);
-                setStatus("idle");
-            }, 5000);
-        }
-    }, [status]);
+
 
     useEffect(() => {
         const monthlyAmountValue = parseFloat(watchMonthlyAmount) || 0;

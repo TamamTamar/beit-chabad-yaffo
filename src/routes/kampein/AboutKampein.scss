@@ -7,7 +7,12 @@
     /* גלילה פנימית אם צריך */
     font-size: 14px;
 
+    @media (max-width: 768px) {
+        padding: 20px;
+    }
+
     .about-kampein-title {
+        width: 100%;
         color: #38155DE5;
         font-size: 20px;
         font-style: normal;
@@ -18,11 +23,12 @@
     }
 
     .about-kampein-description {
-        margin-bottom: 24px;
+        margin-bottom: 20px;
     }
 
     .about-kampein-subtitle {
         font-weight: 900;
+        margin-bottom: 10px;
     }
 
     .about-kampein-list {
