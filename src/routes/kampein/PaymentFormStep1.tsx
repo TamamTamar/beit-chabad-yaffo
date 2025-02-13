@@ -31,6 +31,7 @@ const PaymentFormStep1 = ({
                 <div className="right-side-amount">
                     <div className="monthly-amount">
                         <p className="amount-text">תרומתך:</p>
+                        <div className="monthly-amount-wrapper">
                         <input
                             type="text"
                             {...register("MonthlyAmount", {
@@ -43,7 +44,8 @@ const PaymentFormStep1 = ({
                             onChange={handleMonthlyAmountChange}
                             value={watchMonthlyAmount || ""}
                         />
-                        <span>₪</span>
+                        <div className="currency">₪</div>
+                    </div>
                     </div>
                     <label className="checkbox-label">
                         <input

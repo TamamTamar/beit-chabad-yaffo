@@ -37,6 +37,16 @@ const PaymentForm = ({ monthlyAmount }) => {
     const watchMonthlyAmount = watch("MonthlyAmount");
 
     useEffect(() => {
+        if (status === "success") {
+            setTimeout(() => {
+                console.log('status:', status); // הוספנו את הודעת ה-Console כאן כדי לעקוב אחרי המצב
+                setStep(1);
+                setStatus("idle");
+            }, 5000);
+        }
+    }, [status]);
+
+    useEffect(() => {
         const monthlyAmountValue = parseFloat(watchMonthlyAmount) || 0;
         setValue("MonthlyAmount", monthlyAmountValue);
         setValue("PaymentType", watchIs12Months ? "HK" : "Ragil");
@@ -87,6 +97,17 @@ const PaymentForm = ({ monthlyAmount }) => {
         setStatus("idle"); // איפוס המצב
     };
 
+    const handlePayment = () => {
+        const iframe = iframeRef.current;
+        console.log('paymentData:', paymentData); // הוספנו את הודעת ה-Console כאן כדי לעקוב אחרי הנתונים
+        if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.postMessage(paymentData, "*");
+            setStatus("success"); // עדכון המצב להצלחה
+        } else {
+            setStatus("error"); // עדכון המצב לשגיאה
+        }
+    };
+
     return (
         <div className="payment-form-container">
             <div className="step-indicator">
@@ -111,6 +132,7 @@ const PaymentForm = ({ monthlyAmount }) => {
                 <PaymentFormStep2
                     iframeRef={iframeRef}
                     handleBack={handleBack}
+                    handlePayment={handlePayment}
                 />
             )}
         </div>
