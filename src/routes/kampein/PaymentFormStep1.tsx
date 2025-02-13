@@ -25,6 +25,10 @@ const PaymentFormStep1 = ({
         }
     };
 
+    const formatAmount = (amount) => {
+        return amount.toLocaleString('en-US');
+    };
+
     return (
         <div className="amount-info">
             <div className="amount-section">
@@ -32,20 +36,21 @@ const PaymentFormStep1 = ({
                     <div className="monthly-amount">
                         <p className="amount-text">תרומתך:</p>
                         <div className="monthly-amount-wrapper">
-                        <input
-                            type="text"
-                            {...register("MonthlyAmount", {
-                                required: true,
-                                setValueAs: (value) => parseFloat(value) || 0,
-                            })}
-                            placeholder="סכום"
-                            ref={monthlyAmountRef}
-                            className="monthly-amount-input"
-                            onChange={handleMonthlyAmountChange}
-                            value={watchMonthlyAmount || ""}
-                        />
-                        <div className="currency">₪</div>
-                    </div>
+                            <input
+                                type="text"
+                                {...register("MonthlyAmount", {
+                                    required: true,
+                                    setValueAs: (value) => parseFloat(value) || 0,
+                                })}
+                                placeholder="סכום"
+                                ref={monthlyAmountRef}
+                                className="monthly-amount-input"
+                                onChange={handleMonthlyAmountChange}
+                                value={watchMonthlyAmount || ""}
+                                maxLength={10} // הגבלת מספר הספרות ל-7
+                            />
+                            <div className="currency">₪</div>
+                        </div>
                     </div>
                     <label className="checkbox-label">
                         <input
@@ -77,8 +82,7 @@ const PaymentFormStep1 = ({
                 <div className="left-side-amount">
                     <p className="amount-text">בית חב״ד יפו מקבל:</p>
                     <div className="for-year">₪
-                        {isNaN(parseFloat(watchMonthlyAmount)) ? 0 : (watchIs12Months ? parseFloat(watchMonthlyAmount) * 12 : parseFloat(watchMonthlyAmount))}
-                        
+                        {isNaN(parseFloat(watchMonthlyAmount)) ? 0 : formatAmount(watchIs12Months ? parseFloat(watchMonthlyAmount) * 12 : parseFloat(watchMonthlyAmount))}
                     </div>
                 </div>
             </div>

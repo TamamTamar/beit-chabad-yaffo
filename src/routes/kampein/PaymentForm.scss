@@ -2,11 +2,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-   padding: 60px 48px 48px 48px;
-    width: 600px;
+    padding: 30px;
+    width: 800px;
+
     margin: 0 auto;
-    max-height: 80vh; /* גובה מקסימלי */
-    overflow-y: auto; /* גלילה פנימית אם צריך */
+    max-height: 80vh;
+    /* גובה מקסימלי */
+    overflow-y: auto;
+    /* גלילה פנימית אם צריך */
 
     @media (max-width: 768px) {
         padding: 30px 20px 20px 20px;
@@ -24,13 +27,16 @@
         }
 
         .active-step {
-            color: #6B4B9A; /* צבע שונה לשלב הנוכחי */
+            color: #6B4B9A;
+            /* צבע שונה לשלב הנוכחי */
         }
     }
 
     .amount-info {
         margin-bottom: 20px;
         text-align: center;
+        width: 100%;
+
 
         .amount-section {
             margin-bottom: 10px;
@@ -40,6 +46,7 @@
             background: #D7CBEA;
             padding: 10px;
             border-radius: 5px;
+            max-width: 100%;
 
             @media (max-width: 768px) {
                 flex-direction: column;
@@ -50,14 +57,20 @@
             .left-side-amount {
                 flex: 1;
                 padding: 10px;
-                max-width:50%;
+                gap: 20px;
+                max-width: 50%;
+
+                @media (max-width: 768px) {
+                    max-width: 100%;
+                }
             }
 
             .right-side-amount {
                 font-size: 20px;
-                font-weight: bold; 
+                font-weight: bold;
                 border-radius: 8px;
-                margin-right: 10px; /* רווח בין הצדדים */
+                margin-right: 10px;
+                /* רווח בין הצדדים */
 
                 @media (max-width: 768px) {
                     margin-right: 0;
@@ -70,26 +83,35 @@
                     background-color: #ffffff;
                     margin-bottom: 10px;
 
-                   .monthly-amount-wrapper{
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-evenly;
-                   }
-                }
-
-                .monthly-amount-input {
-                    background: none; /* הסרת הרקע */
-                    border: none;
-                    outline: none;
-                    
-                    &:focus {
-                      box-shadow: none;/* צבע סגול במצב focus */
+                    .monthly-amount-wrapper {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-evenly;
                     }
                 }
 
-                .tashlumim-section{
-                    .tashlumim-select{
-                        font-size: 12px;
+                .monthly-amount-input {
+                    background: none;
+                    /* הסרת הרקע */
+                    border: none;
+                    outline: none;
+                    font-size: 24px;
+                    width: 100%;
+
+
+                    &:focus {
+                        box-shadow: none;
+                        /* צבע סגול במצב focus */
+                    }
+                }
+
+                .tashlumim-section {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+
+                    .tashlumim-select {
+                        width: 100%;
                     }
                 }
             }
@@ -97,12 +119,12 @@
             .left-side-amount {
                 font-size: 20px;
                 font-weight: bold;
-           
+
                 border-radius: 8px;
                 margin-left: 10px;
-                
-               .for-year{
-                   font-size: 40px;
+
+                .for-year {
+                    font-size: 40px;
                 }
 
                 @media (max-width: 768px) {
@@ -123,21 +145,23 @@
 
         .checkbox-label {
             display: flex;
-            align-items: center;
+            // align-items: center;
             font-size: 12px;
             color: #555;
             margin-bottom: 10px;
+            text-align: right;
 
             @media (max-width: 768px) {
                 font-size: 10px;
             }
 
-          .checkbox-input{    
+            .checkbox-input {
                 margin-left: 10px;
 
                 &:focus {
                     box-shadow: none;
                 }
+
                 &:checked {
                     background-color: #6B4B9A;
                 }
@@ -154,14 +178,14 @@
         flex-direction: column;
         width: 100%;
         text-align: right;
-        
-        .form-input{
+
+        .form-input {
             margin-bottom: 15px;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 14px;
-           
+
 
             @media (max-width: 768px) {
                 font-size: 14px;
@@ -185,7 +209,8 @@
         }
 
         .error {
-            color: #ff0000; /* צבע אדום לשגיאות */
+            color: #ff0000;
+            /* צבע אדום לשגיאות */
             font-size: 14px;
             margin-top: -10px;
             margin-bottom: 10px;
@@ -204,7 +229,7 @@
         width: 100%;
         height: 100%;
 
-        
+
     }
 
     .payment-iframe {
@@ -218,29 +243,30 @@
             max-height: 300px;
         }
     }
-    .button-container{
+
+    .button-container {
         display: flex;
         justify-content: space-between;
         width: 100%;
         margin-top: 20px;
 
-        .back-button{
+        .back-button {
             padding: 10px 20px;
-        background: #6B4B9A;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        align-self: flex-start;
+            background: #6B4B9A;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            align-self: flex-start;
 
-        @media (max-width: 768px) {
-            padding: 8px 16px;
-        }
+            @media (max-width: 768px) {
+                padding: 8px 16px;
+            }
 
-        &:hover {
-            background-color: #5a3f82;
+            &:hover {
+                background-color: #5a3f82;
+            }
         }
-    }
 
         .next-button {
             padding: 10px 20px;
