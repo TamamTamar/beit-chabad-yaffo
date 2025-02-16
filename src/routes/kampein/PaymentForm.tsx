@@ -1,4 +1,3 @@
-// PaymentForm.tsx
 import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import PaymentFormStep1 from "./PaymentFormStep1";
@@ -87,15 +86,13 @@ const PaymentForm = ({ monthlyAmount }) => {
         setStatus("idle");
     };
 
-    const handlePayment = () => {
-        const iframe = iframeRef.current;
-        if (iframe && iframe.contentWindow) {
-            iframe.contentWindow.postMessage(paymentData, "*");
+    const handlePayment = (response) => {
+        if (response.status === "success") {
             setStatus("success");
-            console.log("success paymentData", paymentData);
+            console.log("success paymentData", response);
         } else {
             setStatus("error");
-            console.log("error paymentData", paymentData);
+            console.log("error paymentData", response);
         }
     };
 
@@ -108,6 +105,7 @@ const PaymentForm = ({ monthlyAmount }) => {
             </div>
             {status === "loading" && <p>טוען...</p>}
             {status === "error" && <p>שגיאה בשליחת הנתונים. נסה שוב.</p>}
+            {status === "success" && <p>העסקה הושלמה בהצלחה!</p>}
             {step === 1 && (
                 <PaymentFormStep1
                     register={register}
@@ -125,7 +123,6 @@ const PaymentForm = ({ monthlyAmount }) => {
                     onPaymentResponse={handlePayment}
                 />
             )}
-
         </div>
     );
 };
