@@ -121,11 +121,11 @@ const PaymentForm = ({ monthlyAmount }) => {
             )}
             {step === 2 && (
                 <PaymentFormStep2
-                    iframeRef={iframeRef}
-                    handleBack={handleBack}
-                    handlePayment={handlePayment}
+                    paymentData={paymentData}
+                    onPaymentResponse={handlePayment}
                 />
             )}
+
         </div>
     );
 };
