@@ -9,13 +9,14 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
             console.log("התקבלה הודעה מהאייפרם:", event.data);
 
             // בדוק שההודעה מגיעה מהדומיין הנכון
-            if (event.origin !== "https://www.matara.pro") {
+            if (event.origin !== "https://www.matara.pro" && event.origin !== "https://beit-chabad-yaffo.onrender.com") {
                 console.warn("הודעה נדחתה - מקור לא מאושר:", event.origin);
                 return;
             }
-
+            
             // אם האייפרם שלח תשובה רלוונטית לתשלום, טפל בה
             if (event.data && event.data.status) {
+                console.log("תוצאת העסקה:", event.data);
                 onPaymentResponse(event.data);
             }
         };
