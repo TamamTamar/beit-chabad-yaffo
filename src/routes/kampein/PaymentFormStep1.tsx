@@ -47,7 +47,7 @@ const PaymentFormStep1 = ({
                                 className="monthly-amount-input"
                                 onChange={handleMonthlyAmountChange}
                                 value={watchMonthlyAmount || ""}
-                                maxLength={10} // הגבלת מספר הספרות ל-7
+                                maxLength={10} 
                             />
                             <div className="currency">₪</div>
                         </div>
@@ -60,24 +60,6 @@ const PaymentFormStep1 = ({
                         />
                         מאשר לחייב את כרטיס האשראי שלי כל חודש ₪{watchMonthlyAmount} כפול 12 חודשים, (סה"כ ₪{watchMonthlyAmount * 12})
                     </label>
-                    {!watchIs12Months && (
-                        <div className="tashlumim-section">
-                            <label className="checkbox-label" htmlFor="Tashlumim">מספר תשלומים:</label>
-                            <select
-                                className="tashlumim-select"
-                                id="Tashlumim"
-                                {...register("Tashlumim", { required: true })}
-                                defaultValue={1}
-                            >
-                                <option value={1}>תשלום אחד - {watchMonthlyAmount} ₪</option>
-                                {[...Array(11).keys()].map(i => (
-                                    <option key={i + 2} value={i + 2}>
-                                        {i + 2} תשלומים - {(watchMonthlyAmount / (i + 2)).toFixed(2)} ₪ לחודש
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    )}
                 </div>
                 <div className="left-side-amount">
                     <p className="amount-text">בית חב״ד יפו מקבל:</p>
@@ -101,7 +83,6 @@ const PaymentFormStep1 = ({
                     className="form-input"
                 />
                 {errors.LastName && <span className="error">נא להזין שם משפחה</span>}
-
                 <input
                     type="email"
                     {...register("Mail", {

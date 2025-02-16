@@ -1,14 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+// PaymentForm.tsx
+import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import patterns from "../../validations/patterns";
-import "./PaymentForm.scss";
 import PaymentFormStep1 from "./PaymentFormStep1";
 import PaymentFormStep2 from "./PaymentFormStep2";
+import "./PaymentForm.scss";
 
 const PaymentForm = ({ monthlyAmount }) => {
     const [step, setStep] = useState(1);
-    const [paymentData, setPaymentData] = useState(null); // מצב לשמירת הנתונים
-    const [status, setStatus] = useState("idle"); // מצב לתיאור המצב הנוכחי
+    const [paymentData, setPaymentData] = useState(null);
+    const [status, setStatus] = useState("idle");
     const iframeRef = useRef(null);
     const initialAmount = monthlyAmount || 0;
 
@@ -35,8 +35,6 @@ const PaymentForm = ({ monthlyAmount }) => {
 
     const watchIs12Months = watch("Is12Months");
     const watchMonthlyAmount = watch("MonthlyAmount");
-
-
 
     useEffect(() => {
         const monthlyAmountValue = parseFloat(watchMonthlyAmount) || 0;
@@ -67,9 +65,9 @@ const PaymentForm = ({ monthlyAmount }) => {
             CallBackMailError: "lchabadyaffo@gmail.com",
         };
 
-        setPaymentData(paymentData); // שמירת הנתונים במצב
-        setStep(2); // מעבר לשלב הבא
-        setStatus("loading"); // עדכון המצב לטעינה
+        setPaymentData(paymentData);
+        setStep(2);
+        setStatus("loading");
     };
 
     useEffect(() => {
@@ -77,26 +75,25 @@ const PaymentForm = ({ monthlyAmount }) => {
             const iframe = iframeRef.current;
             if (iframe && iframe.contentWindow) {
                 iframe.contentWindow.postMessage(paymentData, "*");
-                setStatus("success"); // עדכון המצב להצלחה
+                setStatus("success");
             } else {
-                setStatus("error"); // עדכון המצב לשגיאה
+                setStatus("error");
             }
         }
     }, [step, paymentData]);
 
     const handleBack = () => {
         setStep(1);
-        setStatus("idle"); // איפוס המצב
+        setStatus("idle");
     };
 
     const handlePayment = () => {
         const iframe = iframeRef.current;
-        console.log('paymentData:', paymentData); // הוספנו את הודעת ה-Console כאן כדי לעקוב אחרי הנתונים
         if (iframe && iframe.contentWindow) {
             iframe.contentWindow.postMessage(paymentData, "*");
-            setStatus("success"); // עדכון המצב להצלחה
+            setStatus("success");
         } else {
-            setStatus("error"); // עדכון המצב לשגיאה
+            setStatus("error");
         }
     };
 
