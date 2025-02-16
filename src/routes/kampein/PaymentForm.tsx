@@ -92,8 +92,10 @@ const PaymentForm = ({ monthlyAmount }) => {
         if (iframe && iframe.contentWindow) {
             iframe.contentWindow.postMessage(paymentData, "*");
             setStatus("success");
+            console.log("success paymentData", paymentData);
         } else {
             setStatus("error");
+            console.log("error paymentData", paymentData);
         }
     };
 
