@@ -19,6 +19,10 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
                 onPaymentResponse(event.data);
                 setPaymentStatus(event.data.status === "SUCCESS" ? "תשלום בוצע בהצלחה" : "שגיאה בתשלום");
             }
+
+            if (event.data && event.data.type === "paymentDataReceived") {
+                console.log("האייפרם קיבל את נתוני התשלום בהצלחה:", event.data);
+            }
         };
 
         window.addEventListener("message", handleMessage);
