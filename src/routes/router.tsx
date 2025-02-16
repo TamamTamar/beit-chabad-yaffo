@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import BeitChabadLayout from "../layout/BeitChabadLayout";
+import Root from "../layout/BeitChabadLayout";
 import ChabadDashboard from "./BeitHabad/ChabadDashboard";
 import CreateNewParasha from "./BeitHabad/createNewParasha";
 import EditParasha from "./BeitHabad/EditParasha";
@@ -7,13 +7,9 @@ import HomePage from "./BeitHabad/HomePage";
 import ParashaDetail from "./BeitHabad/ParashaDetail";
 import ParashaList from "./BeitHabad/ParashaList";
 import Error from "./Error";
-import Root from "../layout/BeitChabadLayout";
-import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
 import KampeinPage from "./kampein/KampeinPage";
-import PaymentForm from "./kampein/PaymentForm";
-import PaymentIframe from "./kampein/PaymentIframe";
-import IframePayment from "./kampein/IframePayment";
-import DonationComponent from "./kampein/DonationComponent";
+import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
+
 
 
 
