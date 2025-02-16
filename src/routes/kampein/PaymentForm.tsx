@@ -231,7 +231,7 @@ const PaymentForm = ({ monthlyAmount }) => {
         setValue("PaymentType", watchIs12Months ? "HK" : "Ragil");
     }, [watchIs12Months, watchMonthlyAmount, setValue]);
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         const annualAmount = data.Is12Months ? data.MonthlyAmount * 12 : data.MonthlyAmount;
 
         const paymentData = {
@@ -254,9 +254,29 @@ const PaymentForm = ({ monthlyAmount }) => {
             CallBackMailError: "lchabadyaffo@gmail.com",
         };
 
-        setPaymentData(paymentData);
-        setStep(2);
-        setStatus("loading");
+        try {
+            const response = await fetch("https://node-beit-chabad-yaffo.onrender.com/api/payment/nedarim", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(paymentData),
+            });
+
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+
+            const responseData = await response.json();
+            console.log("Response from server:", responseData);
+
+            setPaymentData(paymentData);
+            setStep(2);
+            setStatus("loading");
+        } catch (error) {
+            console.error("Error sending payment data to server:", error);
+            setStatus("error");
+        }
     };
 
     useEffect(() => {
