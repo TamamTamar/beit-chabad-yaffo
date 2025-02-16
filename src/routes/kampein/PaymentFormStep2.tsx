@@ -32,6 +32,7 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
         if (iframe && iframe.contentWindow) {
             console.log("שולח נתוני תשלום לאייפרם:", paymentData);
             iframe.contentWindow.postMessage(paymentData, "https://www.matara.pro");
+            console.log("נתוני התשלום נשלחו בהצלחה");
         } else {
             console.error("האייפרם לא מוכן לקבל הודעות");
         }
