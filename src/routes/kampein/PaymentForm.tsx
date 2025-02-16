@@ -1,8 +1,198 @@
 import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import PaymentFormStep1 from "./PaymentFormStep1";
-import PaymentFormStep2 from "./PaymentFormStep2";
 import "./PaymentForm.scss";
+import patterns from "../../validations/patterns";
+
+const PaymentFormStep1 = ({
+    register,
+    handleSubmit,
+    onSubmit,
+    errors,
+    watchMonthlyAmount,
+    watchIs12Months,
+    setValue,
+}) => {
+    const monthlyAmountRef = useRef(null);
+
+    useEffect(() => {
+        if (monthlyAmountRef.current) {
+            monthlyAmountRef.current.focus();
+        }
+    }, []);
+
+    const handleMonthlyAmountChange = (e) => {
+        const value = e.target.value;
+        if (/^\d*\.?\d*$/.test(value)) {
+            setValue("MonthlyAmount", parseFloat(value));
+        }
+    };
+
+    const formatAmount = (amount) => {
+        return amount.toLocaleString('en-US');
+    };
+
+    return (
+        <div className="amount-info">
+            <div className="amount-section">
+                <div className="right-side-amount">
+                    <div className="monthly-amount">
+                        <p className="amount-text">תרומתך:</p>
+                        <div className="monthly-amount-wrapper">
+                            <input
+                                type="text"
+                                {...register("MonthlyAmount", {
+                                    required: true,
+                                    setValueAs: (value) => parseFloat(value) || 0,
+                                })}
+                                placeholder="סכום"
+                                ref={monthlyAmountRef}
+                                className="monthly-amount-input"
+                                onChange={handleMonthlyAmountChange}
+                                value={watchMonthlyAmount || ""}
+                                maxLength={10} 
+                            />
+                            <div className="currency">₪</div>
+                        </div>
+                    </div>
+                    <label className="checkbox-label">
+                        <input
+                            type="checkbox"
+                            {...register("Is12Months")}
+                            className="checkbox-input"
+                        />
+                        מאשר לחייב את כרטיס האשראי שלי כל חודש ₪{watchMonthlyAmount} כפול 12 חודשים, (סה"כ ₪{watchMonthlyAmount * 12})
+                    </label>
+                </div>
+                <div className="left-side-amount">
+                    <p className="amount-text">בית חב״ד יפו מקבל:</p>
+                    <div className="for-year">₪
+                        {isNaN(parseFloat(watchMonthlyAmount)) ? 0 : formatAmount(watchIs12Months ? parseFloat(watchMonthlyAmount) * 12 : parseFloat(watchMonthlyAmount))}
+                    </div>
+                </div>
+            </div>
+            <form className="payment-form" onSubmit={handleSubmit(onSubmit)}>
+                <input
+                    type="text"
+                    {...register("FirstName", { required: true, maxLength: 50 })}
+                    placeholder="שם פרטי"
+                    className="form-input"
+                />
+                {errors.FirstName && <span className="error">נא להזין שם פרטי</span>}
+                <input
+                    type="text"
+                    {...register("LastName", { required: true, maxLength: 50 })}
+                    placeholder="שם משפחה"
+                    className="form-input"
+                />
+                {errors.LastName && <span className="error">נא להזין שם משפחה</span>}
+                <input
+                    type="email"
+                    {...register("Mail", {
+                        required: true,
+                        maxLength: 50,
+                        pattern: patterns.email
+                    })}
+                    placeholder="אימייל"
+                    className="form-input"
+                />
+                {errors.Mail && <span className="error">נא להזין אימייל</span>}
+                <input
+                    type="text"
+                    {...register("Phone", {
+                        required: true,
+                        maxLength: 20,
+                        pattern: patterns.phone
+                    })}
+                    placeholder="טלפון"
+                    className="form-input"
+                />
+                {errors.Phone && <span className="error">נא להזין טלפון</span>}
+                <input
+                    type="text"
+                    {...register("Dedication", { maxLength: 300 })}
+                    placeholder="הקדשה (לא חובה)"
+                    className="form-input"
+                />
+                <button type="submit" className="payment-button">המשך</button>
+            </form>
+        </div>
+    );
+};
+
+const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
+    const iframeRef = useRef<HTMLIFrameElement>(null);
+    const [iframeLoaded, setIframeLoaded] = useState(false);
+    const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
+
+    useEffect(() => {
+        const handleMessage = (event: MessageEvent) => {
+            console.log("מקור ההודעה:", event.origin);  // מידע על מקור ההודעה
+            console.log("תוכן ההודעה:", event.data);  // תוכן ההודעה עצמה
+            
+            if (event.origin !== "https://www.matara.pro") {
+                console.warn("הודעה נדחתה - מקור לא מאושר:", event.origin);
+                return;
+            }
+            
+            if (event.source === iframeRef.current.contentWindow) {
+                console.log("ההודעה התקבלה מה-iframe הנכון");
+            } else {
+                console.log("ההודעה לא הגיעה מה-iframe המצופה");
+            }
+            
+        
+            if (event.data && event.data.status) {
+                onPaymentResponse(event.data);
+                setPaymentStatus(event.data.status === "SUCCESS" ? "תשלום בוצע בהצלחה" : "שגיאה בתשלום");
+            }
+
+            if (event.data && event.data.type === "paymentDataReceived") {
+                console.log("האייפרם קיבל את נתוני התשלום בהצלחה:", event.data);
+            }
+        };
+
+        window.addEventListener("message", handleMessage);
+        return () => {
+            window.removeEventListener("message", handleMessage);
+        };
+    }, [onPaymentResponse]);
+
+    const sendPaymentData = () => {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+            console.log("שולח נתוני תשלום לאייפרם:", paymentData);
+            iframe.contentWindow.postMessage(paymentData, "https://www.matara.pro");
+            console.log("נתוני התשלום נשלחו בהצלחה");
+        } else {
+            console.error("האייפרם לא מוכן לקבל הודעות");
+        }
+    };
+
+    return (
+        <div className="payment-container">
+            <iframe
+                ref={iframeRef}
+                title="NedarimPlus Payment"
+                src="https://www.matara.pro/nedarimplus/iframe/"
+                className="payment-iframe"
+                onLoad={() => {
+                    console.log("האייפרם נטען בהצלחה");
+                    setIframeLoaded(true);
+                }}
+            />
+            
+            <button
+                onClick={sendPaymentData}
+                disabled={!iframeLoaded}
+                className="payment-button"
+            >
+                שלח תשלום
+            </button>
+
+            {paymentStatus && <div className="payment-status">{paymentStatus}</div>}
+        </div>
+    );
+};
 
 const PaymentForm = ({ monthlyAmount }) => {
     const [step, setStep] = useState(1);
