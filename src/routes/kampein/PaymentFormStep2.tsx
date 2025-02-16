@@ -17,9 +17,9 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
         
             if (event.data && event.data.status) {
                 onPaymentResponse(event.data);
+                setPaymentStatus(event.data.status === "SUCCESS" ? "תשלום בוצע בהצלחה" : "שגיאה בתשלום");
             }
         };
-        
 
         window.addEventListener("message", handleMessage);
         return () => {
