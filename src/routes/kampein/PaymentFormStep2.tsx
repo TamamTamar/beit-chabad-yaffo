@@ -7,44 +7,49 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
 
     useEffect(() => {
         const handleMessage = (event: MessageEvent) => {
-            console.log("📩 הודעה התקבלה:", event);
-    
+            console.log("📩 התקבלה הודעה מהאייפרם:", event);
+
+            // בדיקה שההודעה מגיעה מהמקור הנכון
             if (event.origin !== "https://www.matara.pro") {
-                console.warn("⛔ מקור לא מאושר:", event.origin);
+                console.warn("🚨 הודעה נדחתה - מקור לא מאושר:", event.origin);
                 return;
             }
-    
+
             if (event.source === iframeRef.current?.contentWindow) {
-                console.log("✅ ההודעה הגיעה מה-iframe הנכון");
+                console.log("✅ ההודעה התקבלה מה-iframe הנכון");
             } else {
-                console.warn("⚠️ ההודעה לא התקבלה מה-iframe המצופה");
+                console.warn("⚠️ ההודעה לא הגיעה מה-iframe המצופה");
+                return;
             }
-    
-            if (event.data && event.data.status) {
-                console.log("✅ סטטוס התשלום:", event.data.status);
+
+            // עיבוד הנתונים שהתקבלו
+            if (event.data?.status) {
+                console.log("🎯 סטטוס תשלום שהתקבל:", event.data.status);
                 onPaymentResponse(event.data);
-                setPaymentStatus(event.data.status === "SUCCESS" ? "תשלום בוצע בהצלחה" : "שגיאה בתשלום");
-            } else {
-                console.warn("⚠️ ההודעה לא מכילה סטטוס");
+                setPaymentStatus(event.data.status === "SUCCESS" ? "✅ תשלום בוצע בהצלחה" : "❌ שגיאה בתשלום");
+            }
+
+            if (event.data?.type === "paymentDataReceived") {
+                console.log("📤 האייפרם קיבל את נתוני התשלום בהצלחה:", event.data);
             }
         };
-    
+
         window.addEventListener("message", handleMessage);
         return () => {
             window.removeEventListener("message", handleMessage);
         };
     }, [onPaymentResponse]);
-    
+
     const sendPaymentData = () => {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
             console.log("📤 שולח נתוני תשלום לאייפרם:", paymentData);
-            iframe.contentWindow.postMessage(paymentData, "https://www.matara.pro"); 
+            iframe.contentWindow.postMessage(paymentData, "https://www.matara.pro"); // שינוי מ-* למקור מוגדר
         } else {
-            console.error("❌ האייפרם לא מוכן לקבל הודעות");
+            console.error("🚨 האייפרם לא מוכן לקבל הודעות!");
+            setPaymentStatus("❌ שגיאה בשליחת נתונים לאייפרם");
         }
     };
-    
 
     return (
         <div className="payment-container">
@@ -54,11 +59,11 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
                 src="https://www.matara.pro/nedarimplus/iframe/"
                 className="payment-iframe"
                 onLoad={() => {
-                    console.log("האייפרם נטען בהצלחה");
+                    console.log("✅ האייפרם נטען בהצלחה");
                     setIframeLoaded(true);
                 }}
             />
-
+            
             <button
                 onClick={sendPaymentData}
                 disabled={!iframeLoaded}
