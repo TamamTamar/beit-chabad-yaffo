@@ -9,11 +9,11 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
         const handleMessage = (event: MessageEvent) => {
             console.log("מקור ההודעה:", event.origin);  // מידע על מקור ההודעה
             console.log("תוכן ההודעה:", event.data);  // תוכן ההודעה עצמה
-        
-            if (event.origin !== "https://www.matara.pro") {
+       /*  
+            if (event.origin !== "https://www.matara.pro/nedarimplus/iframe/") {
                 console.warn("הודעה נדחתה - מקור לא מאושר:", event.origin);
                 return;
-            }
+            } */
         
             if (event.data && event.data.status) {
                 onPaymentResponse(event.data);
