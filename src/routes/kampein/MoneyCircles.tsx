@@ -30,11 +30,11 @@ const MoneyCircles = () => {
                 <button className="circle" onClick={() => handleButtonClick(0)}>
                     <span className='another-amount'>סכום  <br /> חופשי</span>
                 </button>
-                {renderButton(300)}
+                {renderButton(150)}
+                {renderButton(250)}
+                {renderButton(360)}
                 {renderButton(500)}
-                {renderButton(1000)}
-                {renderButton(2000)}
-                {renderButton(3000)}
+                {renderButton(770)}
             </div>
             {showPaymentForm && (
                 <div className="overlay">
