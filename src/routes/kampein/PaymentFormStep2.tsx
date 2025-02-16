@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
     const iframeRef = useRef<HTMLIFrameElement>(null);
     const [iframeLoaded, setIframeLoaded] = useState(false);
+    const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
 
     useEffect(() => {
         const handleMessage = (event: MessageEvent) => {
@@ -18,6 +19,13 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
             if (event.data && event.data.status) {
                 console.log("תוצאת העסקה:", event.data);
                 onPaymentResponse(event.data);
+
+                // אם הסטטוס הוא "success", עדכן את הסטטוס
+                if (event.data.status === "success") {
+                    setPaymentStatus("העסקה הושלמה בהצלחה");
+                } else {
+                    setPaymentStatus("העסקה נכשלה");
+                }
             }
         };
 
@@ -47,7 +55,6 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
                 onLoad={() => {
                     console.log("האייפרם נטען בהצלחה");
                     setIframeLoaded(true);
-                    sendPaymentData(); // שליחה של הנתונים מיד לאחר טעינת האייפרם
                 }}
             />
             
@@ -58,6 +65,8 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
             >
                 שלח תשלום
             </button>
+
+            {paymentStatus && <div className="payment-status">{paymentStatus}</div>}
         </div>
     );
 };
