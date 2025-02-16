@@ -9,7 +9,7 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
             console.log("התקבלה הודעה מהאייפרם:", event.data);
 
             // בדוק שההודעה מגיעה מהדומיין הנכון
-            if (event.origin !== "https://www.matara.pro" ) {
+            if (event.origin !== "https://www.matara.pro") {
                 console.warn("הודעה נדחתה - מקור לא מאושר:", event.origin);
                 return;
             }
@@ -47,10 +47,12 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
                 onLoad={() => {
                     console.log("האייפרם נטען בהצלחה");
                     setIframeLoaded(true);
+                    sendPaymentData(); // שליחה של הנתונים מיד לאחר טעינת האייפרם
                 }}
             />
-            <button 
-                onClick={sendPaymentData} 
+            
+            <button
+                onClick={sendPaymentData}
                 disabled={!iframeLoaded}
                 className="payment-button"
             >
