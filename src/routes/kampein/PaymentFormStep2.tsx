@@ -7,27 +7,19 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
 
     useEffect(() => {
         const handleMessage = (event: MessageEvent) => {
-            console.log("התקבלה הודעה מהאייפרם:", event.data);
-
-            // בדוק שההודעה מגיעה מהדומיין הנכון
+            console.log("מקור ההודעה:", event.origin);  // מידע על מקור ההודעה
+            console.log("תוכן ההודעה:", event.data);  // תוכן ההודעה עצמה
+        
             if (event.origin !== "https://www.matara.pro") {
                 console.warn("הודעה נדחתה - מקור לא מאושר:", event.origin);
                 return;
             }
-
-            // אם האייפרם שלח תשובה רלוונטית לתשלום, טפל בה
+        
             if (event.data && event.data.status) {
-                console.log("תוצאת העסקה:", event.data);
                 onPaymentResponse(event.data);
-
-                // אם הסטטוס הוא "success", עדכן את הסטטוס
-                if (event.data.status === "success") {
-                    setPaymentStatus("העסקה הושלמה בהצלחה");
-                } else {
-                    setPaymentStatus("העסקה נכשלה");
-                }
             }
         };
+        
 
         window.addEventListener("message", handleMessage);
         return () => {
