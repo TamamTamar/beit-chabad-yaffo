@@ -1,3 +1,4 @@
+// PaymentForm.tsx
 import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import PaymentFormStep1 from "./PaymentFormStep1";
@@ -60,7 +61,7 @@ const PaymentForm = ({ monthlyAmount }) => {
             Currency: 1,
             Groupe: data.Groupe || "",
             Comment: data.Comment || "",
-            CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/payment/nedarim",
+            CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/nedarim-callback",
             CallBackMailError: "lchabadyaffo@gmail.com",
         };
 
@@ -74,6 +75,7 @@ const PaymentForm = ({ monthlyAmount }) => {
             const iframe = iframeRef.current;
             if (iframe && iframe.contentWindow) {
                 iframe.contentWindow.postMessage(paymentData, "*");
+                setStatus("success");
             } else {
                 setStatus("error");
             }
@@ -85,33 +87,13 @@ const PaymentForm = ({ monthlyAmount }) => {
         setStatus("idle");
     };
 
-    const handlePayment = async (response) => {
-        if (response.status === "success") {
+    const handlePayment = () => {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.postMessage(paymentData, "*");
             setStatus("success");
-            console.log("success paymentData", response);
-
-            try {
-                const serverResponse = await fetch("https://node-beit-chabad-yaffo.onrender.com/api/payment/nedarim", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(paymentData),
-                });
-
-                if (!serverResponse.ok) {
-                    throw new Error("Network response was not ok");
-                }
-
-                const responseData = await serverResponse.json();
-                console.log("Response from server:", responseData);
-            } catch (error) {
-                console.error("Error sending payment data to server:", error);
-                setStatus("error");
-            }
         } else {
             setStatus("error");
-            console.log("error paymentData", response);
         }
     };
 
@@ -124,7 +106,6 @@ const PaymentForm = ({ monthlyAmount }) => {
             </div>
             {status === "loading" && <p>טוען...</p>}
             {status === "error" && <p>שגיאה בשליחת הנתונים. נסה שוב.</p>}
-            {status === "success" && <p>העסקה הושלמה בהצלחה!</p>}
             {step === 1 && (
                 <PaymentFormStep1
                     register={register}
@@ -138,8 +119,9 @@ const PaymentForm = ({ monthlyAmount }) => {
             )}
             {step === 2 && (
                 <PaymentFormStep2
-                    paymentData={paymentData}
-                    onPaymentResponse={handlePayment}
+                    iframeRef={iframeRef}
+                    handleBack={handleBack}
+                    handlePayment={handlePayment}
                 />
             )}
         </div>
