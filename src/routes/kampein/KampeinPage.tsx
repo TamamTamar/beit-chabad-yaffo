@@ -1,4 +1,5 @@
-import ApexTrendLine from "./DonationProgressMinimal"
+import CountdownTimer from "./CountdownTimer"
+import DonationProgressMinimal from "./DonationProgressMinimal"
 import KampeinBanner from "./KampeinBanner"
 import MoneyCircles from "./MoneyCircles"
 
@@ -6,12 +7,14 @@ const KampeinPage = () => {
   return (
     <div>
 
-        <KampeinBanner />
-        <MoneyCircles />
-        <ApexTrendLine />
-      
-
+      <KampeinBanner />
+      <MoneyCircles />
+      <DonationProgressMinimal />
     </div>
+
+
+
+
   )
 }
 

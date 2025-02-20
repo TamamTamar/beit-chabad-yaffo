@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
+const PaymentFormStep2 = ({ paymentData, onPaymentResponse,handleBack, handlePayment }) => {
     const iframeRef = useRef<HTMLIFrameElement>(null);
     const [iframeLoaded, setIframeLoaded] = useState(false);
     const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
@@ -15,21 +15,13 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
                 return;
             }
 
-            // בדיקה שההודעה באמת מכילה נתוני תשלום
+            // בדיקה שההודעה מכילה נתוני תשלום תקינים
             if (!event.data || typeof event.data !== "object") {
                 console.warn("⚠️ התקבלה הודעה לא תקינה:", event.data);
                 return;
             }
 
-            // וידוא שההודעה קשורה לתשלום
-            if (!event.data.status && !event.data.type) {
-                console.warn("⚠️ הודעה לא קשורה לתשלום - מתעלם");
-                return;
-            }
-
-            console.log("✅ ההודעה התקבלה מה-iframe:", event.data);
-
-            // עיבוד תוצאה
+            // אם ההודעה קשורה לתשלום, נעדכן את הסטטוס
             if (event.data.status) {
                 setPaymentStatus(event.data.status === "SUCCESS" ? "✅ תשלום בוצע בהצלחה" : "❌ שגיאה בתשלום");
                 onPaymentResponse(event.data);
@@ -46,18 +38,30 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
         };
     }, [onPaymentResponse]);
 
+    // בדיקה אם ה-iframe מוכן לתקשורת
+    useEffect(() => {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+            console.log("📤 בודק תקשורת עם האייפרם...");
+            iframe.contentWindow.postMessage({ type: "ping" }, "https://www.matara.pro");
+        }
+    }, [iframeLoaded]);
 
+    // שליחת נתוני התשלום ל-iframe
     const sendPaymentData = () => {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
-            console.log("📤 שולח נתוני תשלום לאייפרם:", paymentData);
-            iframe.contentWindow.postMessage(paymentData, "https://www.matara.pro");
+            const message = {
+                type: "paymentRequest",
+                payload: paymentData
+            };
+            console.log("📤 שולח נתוני תשלום לאייפרם:", message);
+            iframe.contentWindow.postMessage(message, "https://www.matara.pro");
         } else {
             console.error("🚨 האייפרם לא מוכן לקבל הודעות!");
             setPaymentStatus("❌ שגיאה בשליחת נתונים לאייפרם");
         }
     };
-
 
     return (
         <div className="payment-container">
@@ -67,19 +71,18 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
                 width="100%"
                 height="600px"
                 style={{ border: "none" }}
+                onLoad={() => setIframeLoaded(true)}
             />
 
+            <div className="button-container">
+                <button className="back-button" onClick={handleBack}>הקודם</button>
+                <button className="next-button" onClick={handlePayment}>בצע תשלום</button>
+            </div>
+            שלח תשלום
+        
 
-            <button
-                onClick={sendPaymentData}
-                disabled={!iframeLoaded}
-                className="payment-button"
-            >
-                שלח תשלום
-            </button>
-
-            {paymentStatus && <div className="payment-status">{paymentStatus}</div>}
-        </div>
+    { paymentStatus && <div className="payment-status">{paymentStatus}</div>}
+        </div >
     );
 };
 

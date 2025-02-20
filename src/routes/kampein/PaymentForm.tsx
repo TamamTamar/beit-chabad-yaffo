@@ -138,6 +138,8 @@ const PaymentForm = ({ monthlyAmount }) => {
             )}
             {step === 2 && (
                 <PaymentFormStep2
+                    handleBack={handleBack}
+                    handlePayment={handlePayment}
                     paymentData={paymentData}
                     onPaymentResponse={handlePayment}
                 />
