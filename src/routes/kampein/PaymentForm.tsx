@@ -148,7 +148,7 @@ const PaymentForm = ({ monthlyAmount }) => {
                 <PaymentFormStep2
                     iframeRef={iframeRef}
                     handleBack={handleBack}
-                    handlePayment={handlePayment}
+                    paymentData={paymentData}
                 />
             )}
         </div>
