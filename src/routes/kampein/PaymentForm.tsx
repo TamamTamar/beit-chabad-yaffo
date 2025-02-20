@@ -35,18 +35,16 @@ const PaymentForm = ({ monthlyAmount }) => {
     const watchIs12Months = watch("Is12Months");
     const watchMonthlyAmount = watch("MonthlyAmount");
 
-    // עדכון שדות בעת שינוי חודשי או אפשרות 12 חודשים
     useEffect(() => {
         const monthlyAmountValue = parseFloat(watchMonthlyAmount) || 0;
         setValue("MonthlyAmount", monthlyAmountValue);
         setValue("PaymentType", watchIs12Months ? "HK" : "Ragil");
     }, [watchIs12Months, watchMonthlyAmount, setValue]);
 
-    // שליחת הנתונים והמעבר לשלב הבא
     const onSubmit = (data) => {
         const annualAmount = data.Is12Months ? data.MonthlyAmount * 12 : data.MonthlyAmount;
 
-        const paymentPayload = {
+        const paymentData = {
             Mosad: "7013920",
             ApiValid: "zidFYCLaNi",
             Zeout: data.Zeout || "",
@@ -62,52 +60,59 @@ const PaymentForm = ({ monthlyAmount }) => {
             Currency: 1,
             Groupe: data.Groupe || "",
             Comment: data.Comment || "",
-            CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/nedarim-callback",
+            CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/payment/nedarim",
             CallBackMailError: "lchabadyaffo@gmail.com",
         };
 
-        setPaymentData(paymentPayload);
+        setPaymentData(paymentData);
         setStep(2);
         setStatus("loading");
     };
 
-    // מאזין לטעינת ה-iframe – שולח את הנתונים כשהוא מוכן
     useEffect(() => {
-        const iframe = iframeRef.current;
-
-        const handleIframeLoad = () => {
-            if (iframe && iframe.contentWindow && paymentData) {
-                iframe.contentWindow.postMessage(paymentData, "https://www.matara.pro");
-                setStatus("success");
+        if (step === 2 && paymentData) {
+            const iframe = iframeRef.current;
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage(paymentData, "*");
             } else {
                 setStatus("error");
             }
-        };
-
-        if (iframe) {
-            iframe.addEventListener("load", handleIframeLoad);
         }
-
-        return () => {
-            if (iframe) {
-                iframe.removeEventListener("load", handleIframeLoad);
-            }
-        };
-    }, [paymentData]);
-
-    // טיפול בלחיצה על "בצע תשלום" – שולח את הנתונים ל-iframe
-    const handlePayment = () => {
-        const iframe = iframeRef.current;
-        if (iframe && iframe.contentWindow && paymentData) {
-            iframe.contentWindow.postMessage(paymentData, "https://www.matara.pro");
-        } else {
-            setStatus("error");
-        }
-    };
+    }, [step, paymentData]);
 
     const handleBack = () => {
         setStep(1);
         setStatus("idle");
+    };
+
+    const handlePayment = async (response) => {
+        if (response.status === "success") {
+            setStatus("success");
+            console.log("success paymentData", response);
+
+            try {
+                const serverResponse = await fetch("https://node-beit-chabad-yaffo.onrender.com/api/payment/nedarim", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(paymentData),
+                });
+
+                if (!serverResponse.ok) {
+                    throw new Error("Network response was not ok");
+                }
+
+                const responseData = await serverResponse.json();
+                console.log("Response from server:", responseData);
+            } catch (error) {
+                console.error("Error sending payment data to server:", error);
+                setStatus("error");
+            }
+        } else {
+            setStatus("error");
+            console.log("error paymentData", response);
+        }
     };
 
     return (
@@ -117,10 +122,9 @@ const PaymentForm = ({ monthlyAmount }) => {
                 <span> - </span>
                 <span className={step === 2 ? "active-step" : "inactive-step"}>2</span>
             </div>
-
             {status === "loading" && <p>טוען...</p>}
             {status === "error" && <p>שגיאה בשליחת הנתונים. נסה שוב.</p>}
-
+            {status === "success" && <p>העסקה הושלמה בהצלחה!</p>}
             {step === 1 && (
                 <PaymentFormStep1
                     register={register}
@@ -132,12 +136,12 @@ const PaymentForm = ({ monthlyAmount }) => {
                     setValue={setValue}
                 />
             )}
-
             {step === 2 && (
                 <PaymentFormStep2
-                    iframeRef={iframeRef}
+                    paymentData={paymentData}
+                    onPaymentResponse={handlePayment}
                     handleBack={handleBack}
-                    handlePayment={handlePayment}
+                    iframeRef={iframeRef}
                 />
             )}
         </div>
