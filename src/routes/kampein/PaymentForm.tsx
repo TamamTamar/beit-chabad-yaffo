@@ -7,7 +7,6 @@ import "./PaymentForm.scss";
 const PaymentForm = ({ monthlyAmount }) => {
     const [step, setStep] = useState(1);
     const [paymentData, setPaymentData] = useState(null);
-    const [status, setStatus] = useState("idle");
     const iframeRef = useRef(null);
     const initialAmount = monthlyAmount || 0;
 
@@ -66,30 +65,16 @@ const PaymentForm = ({ monthlyAmount }) => {
 
         setPaymentData(paymentData);
         setStep(2);
-        setStatus("loading");
     };
-
-    useEffect(() => {
-        if (step === 2 && paymentData) {
-            const iframe = iframeRef.current;
-            if (iframe && iframe.contentWindow) {
-                iframe.contentWindow.postMessage(paymentData, "*");
-            } else {
-                setStatus("error");
-            }
-        }
-    }, [step, paymentData]);
 
     const handleBack = () => {
         setStep(1);
-        setStatus("idle");
     };
 
     const handlePayment = async (response) => {
-        if (response.status === "success") {
-            setStatus("success");
-            console.log("success paymentData", response);
+        console.log("Response from iframe:", response);
 
+        if (response.status === "success") {
             try {
                 const serverResponse = await fetch("https://node-beit-chabad-yaffo.onrender.com/api/payment/nedarim", {
                     method: "POST",
@@ -107,10 +92,8 @@ const PaymentForm = ({ monthlyAmount }) => {
                 console.log("Response from server:", responseData);
             } catch (error) {
                 console.error("Error sending payment data to server:", error);
-                setStatus("error");
             }
         } else {
-            setStatus("error");
             console.log("error paymentData", response);
         }
     };
@@ -122,9 +105,6 @@ const PaymentForm = ({ monthlyAmount }) => {
                 <span> - </span>
                 <span className={step === 2 ? "active-step" : "inactive-step"}>2</span>
             </div>
-            {status === "loading" && <p>טוען...</p>}
-            {status === "error" && <p>שגיאה בשליחת הנתונים. נסה שוב.</p>}
-            {status === "success" && <p>העסקה הושלמה בהצלחה!</p>}
             {step === 1 && (
                 <PaymentFormStep1
                     register={register}

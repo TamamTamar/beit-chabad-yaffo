@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const PaymentFormStep2 = ({ paymentData, onPaymentResponse, handleBack, iframeRef }) => {
-    const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -22,7 +21,6 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse, handleBack, iframeRe
 
             // אם ההודעה קשורה לתשלום, נעדכן את הסטטוס
             if (event.data.status) {
-                setPaymentStatus(event.data.status === "SUCCESS" ? "✅ תשלום בוצע בהצלחה" : "❌ שגיאה בתשלום");
                 setLoading(false);
                 onPaymentResponse(event.data);
             }
@@ -51,7 +49,6 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse, handleBack, iframeRe
             iframe.contentWindow.postMessage(message, "https://www.matara.pro");
         } else {
             console.error("🚨 האייפרם לא מוכן לקבל הודעות!");
-            setPaymentStatus("❌ שגיאה בשליחת נתונים לאייפרם");
         }
     };
 
@@ -70,13 +67,6 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse, handleBack, iframeRe
                     {loading ? "שולח..." : "בצע תשלום"}
                 </button>
             </div>
-            {paymentStatus && <div className="payment-status">{paymentStatus}</div>}
-            {paymentStatus === "✅ תשלום בוצע בהצלחה" && (
-                <div className="success-message">
-                    <h3>תודה רבה!</h3>
-                    <p>התשלום בוצע בהצלחה. אישור התשלום נשלח לכתובת האימייל שלך.</p>
-                </div>
-            )}
         </div>
     );
 };
