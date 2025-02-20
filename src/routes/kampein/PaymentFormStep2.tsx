@@ -1,57 +1,84 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-const PaymentFormStep2 = ({ iframeRef, handleBack, paymentData }) => {
-    useEffect(() => {
-        // מאזין לקבלת תגובה מה-iframe
-        const handleMessage = (event) => {
-            if (event.origin !== "https://www.matara.pro") return;
+const PaymentFormStep2 = ({ handleBack, handlePayment, iframeRef, paymentData }) => {
+  const [status, setStatus] = useState(null);
+  const [transactionResponse, setTransactionResponse] = useState(null);
 
-            const { data } = event;
-            if (data && data.TransactionResponse) {
-                console.log("✅ תוצאת העסקה:", data.TransactionResponse);
+  useEffect(() => {
+    const handleMessage = (event) => {
+      // אימות מקור ההודעה לביטחון
+      if (event.origin !== "https://www.matara.pro") return;
 
-                if (data.TransactionResponse.Status === "success") {
-                    alert("🎉 התשלום בוצע בהצלחה!");
-                } else {
-                    alert("❌ התשלום נכשל. נסה שוב.");
-                }
-            }
-        };
+      console.log("📩 הודעה התקבלה מה-iframe:", event.data);
+      const { Name, Value } = event.data;
 
-        window.addEventListener("message", handleMessage);
+      switch (Name) {
+        case "Height":
+          if (iframeRef.current) {
+            iframeRef.current.style.height = `${parseInt(Value) + 15}px`;
+          }
+          break;
 
-        return () => {
-            window.removeEventListener("message", handleMessage);
-        };
-    }, []);
+        case "TransactionResponse":
+          setTransactionResponse(Value);
+          setStatus(Value.Status === "Error" ? "error" : "success");
+          break;
 
-    const handlePayment = () => {
-        const iframe = iframeRef.current;
-
-        if (iframe && iframe.contentWindow) {
-            iframe.contentWindow.postMessage({ TransactionId: paymentData.transactionId }, "https://www.matara.pro");
-            console.log("🚀 מזהה העסקה נשלח ל-iframe:", paymentData.transactionId);
-        } else {
-            console.error("⚠️ לא ניתן לשלוח הודעה ל-iframe.");
-        }
+        default:
+          console.warn("⚠️ הודעה לא מזוהה:", Name);
+      }
     };
 
-    return (
-        <div className="iframe-container">
-            <h2 className="payment-title">💳 תשלום</h2>
-            <iframe
-                ref={iframeRef}
-                title="NedarimPlus Payment"
-                src="https://www.matara.pro/nedarimplus/iframe/"
-                className="payment-iframe"
-            ></iframe>
+    window.addEventListener("message", handleMessage);
 
-            <div className="button-container">
-                <button className="back-button" onClick={handleBack}>⬅️ הקודם</button>
-                <button className="next-button" onClick={handlePayment}>💵 בצע תשלום</button>
-            </div>
+    // שליחת בקשת גובה בעת טעינת ה-iframe
+    const iframe = iframeRef.current;
+    const requestHeight = () => {
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage({ Name: "GetHeight" }, "https://www.matara.pro");
+      }
+    };
+
+    iframe?.addEventListener("load", requestHeight);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+      iframe?.removeEventListener("load", requestHeight);
+    };
+  }, []);
+
+
+
+  return (
+    <div className="iframe-container">
+      <h2 className="payment-title">💳 תשלום</h2>
+
+      <iframe
+        ref={iframeRef}
+        title="NedarimPlus Payment"
+        src="https://www.matara.pro/nedarimplus/iframe/"
+        className="payment-iframe"
+        style={{ width: "100%", border: "none" }}
+      ></iframe>
+
+      <div className="button-container">
+        <button className="back-button" onClick={handleBack}>⬅️ הקודם</button>
+        <button className="next-button" onClick={handlePayment}>💵 בצע תשלום</button>
+      </div>
+
+      {status === "success" && (
+        <div className="success-message">
+          ✅ התשלום עבר בהצלחה! פרטי עסקה: {JSON.stringify(transactionResponse)}
         </div>
-    );
+      )}
+
+      {status === "error" && (
+        <div className="error-message">
+          ❌ אירעה שגיאה בביצוע התשלום. אנא נסה שנית.
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default PaymentFormStep2;

@@ -67,7 +67,6 @@ const PaymentForm = ({ monthlyAmount }) => {
         setStep(2);
         setStatus("loading");
     };
-
     const handleIframeMessage = useCallback(async (event: MessageEvent) => {
         // אבטחה: בדיקה שההודעה מגיעה מהכתובת הנכונה
         if (event.origin !== "https://www.matara.pro") return;
@@ -149,6 +148,7 @@ const PaymentForm = ({ monthlyAmount }) => {
                     iframeRef={iframeRef}
                     handleBack={handleBack}
                     paymentData={paymentData}
+                    handlePayment={handlePayment}
                 />
             )}
         </div>
