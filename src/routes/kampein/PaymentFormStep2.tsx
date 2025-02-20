@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const PaymentFormStep2 = ({ paymentData, onPaymentResponse,handleBack, handlePayment }) => {
+const PaymentFormStep2 = ({ paymentData, onPaymentResponse }) => {
     const iframeRef = useRef<HTMLIFrameElement>(null);
     const [iframeLoaded, setIframeLoaded] = useState(false);
     const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
@@ -74,15 +74,15 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse,handleBack, handlePay
                 onLoad={() => setIframeLoaded(true)}
             />
 
-            <div className="button-container">
-                <button className="back-button" onClick={handleBack}>הקודם</button>
-                <button className="next-button" onClick={handlePayment}>בצע תשלום</button>
-            </div>
-            שלח תשלום
-        
+            <button
+                onClick={sendPaymentData}
+                className="next-button"
+            >
+                שלח תשלום
+            </button>
 
-    { paymentStatus && <div className="payment-status">{paymentStatus}</div>}
-        </div >
+            {paymentStatus && <div className="payment-status">{paymentStatus}</div>}
+        </div>
     );
 };
 
