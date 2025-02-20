@@ -71,6 +71,12 @@ const PaymentFormStep2 = ({ paymentData, onPaymentResponse, handleBack, iframeRe
                 </button>
             </div>
             {paymentStatus && <div className="payment-status">{paymentStatus}</div>}
+            {paymentStatus === "✅ תשלום בוצע בהצלחה" && (
+                <div className="success-message">
+                    <h3>תודה רבה!</h3>
+                    <p>התשלום בוצע בהצלחה. אישור התשלום נשלח לכתובת האימייל שלך.</p>
+                </div>
+            )}
         </div>
     );
 };
