@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import PaymentFormStep1 from "./PaymentFormStep1";
 import PaymentFormStep2 from "./PaymentFormStep2";
@@ -7,8 +7,8 @@ import "./PaymentForm.scss";
 const PaymentForm = ({ monthlyAmount }) => {
     const [step, setStep] = useState(1);
     const [paymentData, setPaymentData] = useState(null);
-    const iframeRef = useRef(null);
-    const initialAmount = monthlyAmount || 0;
+    const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+    const iframeRef = useRef<HTMLIFrameElement>(null);
 
     const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
         defaultValues: {
@@ -19,15 +19,15 @@ const PaymentForm = ({ monthlyAmount }) => {
             City: "",
             Phone: "",
             Mail: "",
-            Amount: initialAmount,
+            Amount: monthlyAmount || 0,
             Tashlumim: 1,
             Currency: 1,
             Groupe: "",
             Comment: "",
             Dedication: "",
             PaymentType: "Ragil",
-            MonthlyAmount: initialAmount,
-            Is12Months: initialAmount !== 0,
+            MonthlyAmount: monthlyAmount || 0,
+            Is12Months: (monthlyAmount || 0) !== 0,
         }
     });
 
@@ -43,58 +43,80 @@ const PaymentForm = ({ monthlyAmount }) => {
     const onSubmit = (data) => {
         const annualAmount = data.Is12Months ? data.MonthlyAmount * 12 : data.MonthlyAmount;
 
-        const paymentData = {
+        const newPaymentData = {
             Mosad: "7013920",
             ApiValid: "zidFYCLaNi",
-            Zeout: data.Zeout || "",
+            Zeout: data.Zeout,
             FirstName: data.FirstName,
             LastName: data.LastName,
-            Street: data.Street || "",
-            City: data.City || "",
+            Street: data.Street,
+            City: data.City,
             Phone: data.Phone,
             Mail: data.Mail,
             PaymentType: data.Is12Months ? "HK" : "Ragil",
             Amount: annualAmount,
             Tashlumim: data.Is12Months ? 12 : data.Tashlumim,
             Currency: 1,
-            Groupe: data.Groupe || "",
-            Comment: data.Comment || "",
-            CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/payment/nedarim",
+            Groupe: data.Groupe,
+            Comment: data.Comment,
+            CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/nedarim-callback",
             CallBackMailError: "lchabadyaffo@gmail.com",
         };
 
-        setPaymentData(paymentData);
+        setPaymentData(newPaymentData);
         setStep(2);
+        setStatus("loading");
     };
 
-    const handleBack = () => {
-        setStep(1);
-    };
+    const handleIframeMessage = useCallback(async (event: MessageEvent) => {
+        // אבטחה: בדיקה שההודעה מגיעה מהכתובת הנכונה
+        if (event.origin !== "https://www.matara.pro") return;
 
-    const handlePayment = async (response) => {
-        console.log("Response from iframe:", response);
+        const { data } = event;
 
-        if (response.status === "success") {
+        console.log("📥 הודעה מה-iframe:", data);
+
+        if (data.status === "success") {
             try {
                 const serverResponse = await fetch("https://node-beit-chabad-yaffo.onrender.com/api/payment/nedarim", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(paymentData),
                 });
 
-                if (!serverResponse.ok) {
-                    throw new Error("Network response was not ok");
-                }
+                if (!serverResponse.ok) throw new Error("Network response was not ok");
 
                 const responseData = await serverResponse.json();
-                console.log("Response from server:", responseData);
+                console.log("✅ תגובה מהשרת:", responseData);
+                setStatus("success");
             } catch (error) {
-                console.error("Error sending payment data to server:", error);
+                console.error("❌ שגיאה בשליחת נתוני תשלום לשרת:", error);
+                setStatus("error");
             }
         } else {
-            console.log("error paymentData", response);
+            console.warn("⚠️ עסקה נכשלה או בוטלה:", data);
+            setStatus("error");
+        }
+    }, [paymentData]);
+
+    useEffect(() => {
+        window.addEventListener("message", handleIframeMessage);
+        return () => window.removeEventListener("message", handleIframeMessage);
+    }, [handleIframeMessage]);
+
+    const handleBack = () => {
+        setStep(1);
+        setStatus("idle");
+    };
+
+    const handlePayment = () => {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.postMessage(paymentData, "https://www.matara.pro");
+            console.log("🚀 נתוני תשלום נשלחו ל-iframe:", paymentData);
+        } else {
+            console.error("⚠️ לא ניתן לשלוח הודעה ל-iframe.");
+            setStatus("error");
         }
     };
 
@@ -105,6 +127,11 @@ const PaymentForm = ({ monthlyAmount }) => {
                 <span> - </span>
                 <span className={step === 2 ? "active-step" : "inactive-step"}>2</span>
             </div>
+
+            {status === "loading" && <p>🔄 טוען...</p>}
+            {status === "error" && <p>❌ שגיאה בשליחת הנתונים. נסה שוב.</p>}
+            {status === "success" && <p>✅ התשלום בוצע בהצלחה!</p>}
+
             {step === 1 && (
                 <PaymentFormStep1
                     register={register}
@@ -116,12 +143,12 @@ const PaymentForm = ({ monthlyAmount }) => {
                     setValue={setValue}
                 />
             )}
+
             {step === 2 && (
                 <PaymentFormStep2
-                    paymentData={paymentData}
-                    onPaymentResponse={handlePayment}
-                    handleBack={handleBack}
                     iframeRef={iframeRef}
+                    handleBack={handleBack}
+                    handlePayment={handlePayment}
                 />
             )}
         </div>
