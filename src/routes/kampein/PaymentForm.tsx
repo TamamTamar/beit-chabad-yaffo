@@ -1,4 +1,3 @@
-// PaymentForm.tsx
 import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import PaymentFormStep1 from "./PaymentFormStep1";
@@ -36,16 +35,18 @@ const PaymentForm = ({ monthlyAmount }) => {
     const watchIs12Months = watch("Is12Months");
     const watchMonthlyAmount = watch("MonthlyAmount");
 
+    // עדכון שדות בעת שינוי חודשי או אפשרות 12 חודשים
     useEffect(() => {
         const monthlyAmountValue = parseFloat(watchMonthlyAmount) || 0;
         setValue("MonthlyAmount", monthlyAmountValue);
         setValue("PaymentType", watchIs12Months ? "HK" : "Ragil");
     }, [watchIs12Months, watchMonthlyAmount, setValue]);
 
+    // שליחת הנתונים והמעבר לשלב הבא
     const onSubmit = (data) => {
         const annualAmount = data.Is12Months ? data.MonthlyAmount * 12 : data.MonthlyAmount;
 
-        const paymentData = {
+        const paymentPayload = {
             Mosad: "7013920",
             ApiValid: "zidFYCLaNi",
             Zeout: data.Zeout || "",
@@ -65,36 +66,48 @@ const PaymentForm = ({ monthlyAmount }) => {
             CallBackMailError: "lchabadyaffo@gmail.com",
         };
 
-        setPaymentData(paymentData);
+        setPaymentData(paymentPayload);
         setStep(2);
         setStatus("loading");
     };
 
+    // מאזין לטעינת ה-iframe – שולח את הנתונים כשהוא מוכן
     useEffect(() => {
-        if (step === 2 && paymentData) {
-            const iframe = iframeRef.current;
-            if (iframe && iframe.contentWindow) {
-                iframe.contentWindow.postMessage(paymentData, "*");
+        const iframe = iframeRef.current;
+
+        const handleIframeLoad = () => {
+            if (iframe && iframe.contentWindow && paymentData) {
+                iframe.contentWindow.postMessage(paymentData, "https://www.matara.pro");
                 setStatus("success");
             } else {
                 setStatus("error");
             }
+        };
+
+        if (iframe) {
+            iframe.addEventListener("load", handleIframeLoad);
         }
-    }, [step, paymentData]);
+
+        return () => {
+            if (iframe) {
+                iframe.removeEventListener("load", handleIframeLoad);
+            }
+        };
+    }, [paymentData]);
+
+    // טיפול בלחיצה על "בצע תשלום" – שולח את הנתונים ל-iframe
+    const handlePayment = () => {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow && paymentData) {
+            iframe.contentWindow.postMessage(paymentData, "https://www.matara.pro");
+        } else {
+            setStatus("error");
+        }
+    };
 
     const handleBack = () => {
         setStep(1);
         setStatus("idle");
-    };
-
-    const handlePayment = () => {
-        const iframe = iframeRef.current;
-        if (iframe && iframe.contentWindow) {
-            iframe.contentWindow.postMessage(paymentData, "*");
-            setStatus("success");
-        } else {
-            setStatus("error");
-        }
     };
 
     return (
@@ -104,8 +117,10 @@ const PaymentForm = ({ monthlyAmount }) => {
                 <span> - </span>
                 <span className={step === 2 ? "active-step" : "inactive-step"}>2</span>
             </div>
+
             {status === "loading" && <p>טוען...</p>}
             {status === "error" && <p>שגיאה בשליחת הנתונים. נסה שוב.</p>}
+
             {step === 1 && (
                 <PaymentFormStep1
                     register={register}
@@ -117,6 +132,7 @@ const PaymentForm = ({ monthlyAmount }) => {
                     setValue={setValue}
                 />
             )}
+
             {step === 2 && (
                 <PaymentFormStep2
                     iframeRef={iframeRef}

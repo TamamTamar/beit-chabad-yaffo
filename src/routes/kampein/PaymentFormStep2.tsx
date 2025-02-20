@@ -9,8 +9,7 @@ const PaymentFormStep2 = ({ iframeRef, handleBack, handlePayment }) => {
                 title="NedarimPlus Payment"
                 src="https://www.matara.pro/nedarimplus/iframe/"
                 className="payment-iframe"
-            >
-            </iframe>
+            ></iframe>
             <div className="button-container">
                 <button className="back-button" onClick={handleBack}>הקודם</button>
                 <button className="next-button" onClick={handlePayment}>בצע תשלום</button>
