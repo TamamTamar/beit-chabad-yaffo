@@ -59,7 +59,7 @@ const PaymentForm = ({ monthlyAmount }) => {
             Currency: 1,
             Groupe: data.Groupe,
             Comment: data.Comment,
-            CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/nedarim-callback",
+            CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/payment/nedarim",
             CallBackMailError: "lchabadyaffo@gmail.com",
         };
 
