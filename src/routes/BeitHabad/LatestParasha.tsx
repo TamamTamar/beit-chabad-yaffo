@@ -6,22 +6,28 @@ import './LatestParasha.scss';
 
 const LastParasha = () => {
   const [lastParasha, setLastParasha] = useState<Parasha | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log("Fetching last parasha...");
     getLastParasha()
       .then(res => {
-        console.log("Fetched last parasha:", res);
         setLastParasha(res);
+        setLoading(false);
       })
       .catch(err => {
-        console.error("Error fetching last parasha:", err);
+        setError("Failed to load the last Parasha. Please try again later.");
+        setLoading(false);
       });
   }, []);
 
   return (
     <div className="latest-parasha">
-      {lastParasha ? (
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : lastParasha ? (
         <Link to={`/beitChabad/parasha/${lastParasha._id}`} className="parasha-link">
           <div className="parasha-card">
             {lastParasha.image?.url && (

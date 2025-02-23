@@ -13,7 +13,6 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef }) => {
 
     // 📩 קריאת הודעות מה-iframe
     function ReadPostMessage(event: MessageEvent) {
-      console.log(event.data);
       const iframe = iframeRef.current;
       const waitFrame = document.getElementById('WaitNedarimFrame');
       const resultDiv = document.getElementById('Result');
@@ -34,7 +33,6 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef }) => {
           if (resultDiv) {
             resultDiv.innerHTML = `<b>תשובת עסקה:<br/>${JSON.stringify(event.data.Value)}</b><br/>ראה נתונים מלאים בקונסול`;
           }
-          console.log(event.data.Value);
 
           if (event.data.Value.Status === 'Error') {
             if (errorDiv) errorDiv.innerHTML = `שגיאה: ${event.data.Value.Message}`;
@@ -99,7 +97,7 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef }) => {
         title="Nedarim Plus"
         src="https://matara.pro/nedarimplus/iframe?language=he"
         className="payment-iframe"
-      
+        scrolling="no"
       />
       <div id="Result" className="result"></div>
       <div id="ErrorDiv" className="error-div"></div>

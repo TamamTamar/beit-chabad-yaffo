@@ -25,7 +25,6 @@ const EditParasha = () => {
             getParashaById(id) // Assuming this is fetching the parasha data
                 .then(res => {
                     const parasha = res.data;
-                    console.log("Parasha data:", parasha);
                     setValue('source', parasha.source);
                     setValue('title', parasha.title);
                     setValue('miniText', parasha.miniText);
@@ -73,7 +72,6 @@ const EditParasha = () => {
             }
         } catch (error: any) {
             dialogs.error("שגיאה", error.response?.data?.message || "עדכון הפרשה נכשל");
-            console.log(error);
         }
     };
 
