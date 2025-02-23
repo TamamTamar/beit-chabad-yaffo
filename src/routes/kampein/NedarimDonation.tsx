@@ -1,15 +1,19 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
+import './NedarimDonation.scss';
 
-export default function NedarimDonation({ paymentData, handleBack, iframeRef }) {
+const NedarimDonation = ({ paymentData, handleBack, iframeRef }) => {
   useEffect(() => {
     // 🛡️ טיפול בשגיאות גלובליות
     window.onerror = function (msg, _url, _line, _col, _error) {
-      alert(`שגיאת תוכנה. פנה לתמיכה טכנית. שגיאה: ${msg}`);
+      const errorDiv = document.getElementById('ErrorDiv');
+      if (errorDiv) {
+        errorDiv.innerHTML = `שגיאת תוכנה. פנה לתמיכה טכנית. שגיאה: ${msg}`;
+      }
     };
 
     // 📩 קריאת הודעות מה-iframe
     function ReadPostMessage(event: MessageEvent) {
-    
+      console.log(event.data);
       const iframe = iframeRef.current;
       const waitFrame = document.getElementById('WaitNedarimFrame');
       const resultDiv = document.getElementById('Result');
@@ -28,12 +32,12 @@ export default function NedarimDonation({ paymentData, handleBack, iframeRef }) 
 
         case 'TransactionResponse':
           if (resultDiv) {
-            resultDiv.innerHTML = `<b>TransactionResponse:<br/>${JSON.stringify(event.data.Value)}</b><br/>see full data in console`;
+            resultDiv.innerHTML = `<b>תשובת עסקה:<br/>${JSON.stringify(event.data.Value)}</b><br/>ראה נתונים מלאים בקונסול`;
           }
-         
+          console.log(event.data.Value);
 
           if (event.data.Value.Status === 'Error') {
-            if (errorDiv) errorDiv.innerHTML = event.data.Value.Message;
+            if (errorDiv) errorDiv.innerHTML = `שגיאה: ${event.data.Value.Message}`;
             if (waitPay) waitPay.style.display = 'none';
             if (payBtDiv) payBtDiv.style.display = 'block';
           } else {
@@ -51,6 +55,16 @@ export default function NedarimDonation({ paymentData, handleBack, iframeRef }) 
 
     // 🖱️ לחיצה על כפתור תשלום
     (window as any).PayBtClick = function () {
+      const waitPay = document.getElementById('WaitPay');
+      const payBtDiv = document.getElementById('PayBtDiv');
+      const okDiv = document.getElementById('OkDiv');
+      const errorDiv = document.getElementById('ErrorDiv');
+
+      if (waitPay) waitPay.style.display = 'block';
+      if (payBtDiv) payBtDiv.style.display = 'none';
+      if (okDiv) okDiv.style.display = 'none';
+      if (errorDiv) errorDiv.innerHTML = '';
+
       PostNedarim({
         Name: 'FinishTransaction2',
         Value: paymentData,
@@ -73,24 +87,26 @@ export default function NedarimDonation({ paymentData, handleBack, iframeRef }) 
   }, [paymentData, iframeRef]);
 
   return (
-    <div>
+    <div className="iframe-container">
       <div id="WaitNedarimFrame">טוען...</div>
       <iframe
         ref={iframeRef}
         id="NedarimFrame"
         title="Nedarim Plus"
         src="https://matara.pro/nedarimplus/iframe?language=he"
-        style={{ width: '100%', border: 'none', minHeight: '600px' }}
+        className="payment-iframe"
         scrolling="no"
       />
-      <div id="Result"></div>
-      <div id="ErrorDiv" style={{ color: 'red' }}></div>
-      <div id="PayBtDiv">
-        <button onClick={() => (window as any).PayBtClick()}>בצע תשלום</button>
+      <div id="Result" className="result"></div>
+      <div id="ErrorDiv" className="error-div"></div>
+      <div id="PayBtDiv" className="pay-bt-div">
+        <button className="back-button" onClick={() => (window as any).PayBtClick()}>בצע תשלום</button>
+        <button className="back-button" onClick={handleBack}>הקודם</button>
       </div>
-      <div id="OkDiv" style={{ display: 'none', color: 'green' }}>✔️ תשלום הצליח!</div>
-      <div id="WaitPay" style={{ display: 'none' }}>⏳ מעבד תשלום...</div>
-      <button className="back-button" onClick={handleBack}>הקודם</button>
+      <div id="OkDiv" className="ok-div">✔️ התשלום הצליח!</div>
+      <div id="WaitPay" className="wait-pay">⏳ מעבד תשלום...</div>
     </div>
   );
 }
+
+export default NedarimDonation;

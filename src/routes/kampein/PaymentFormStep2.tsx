@@ -55,15 +55,16 @@ const PaymentFormStep2 = ({ handleBack, handlePayment, iframeRef }) => {
 
       <iframe
         ref={iframeRef}
-        title="NedarimPlus Payment"
-        src="https://www.matara.pro/nedarimplus/iframe/"
-        className="payment-iframe"
-        style={{ width: "100%", border: "none" }}
-      ></iframe>
+        id="NedarimFrame"
+        title="Nedarim Plus"
+        src="https://matara.pro/nedarimplus/iframe?language=he"
+        style={{ width: '100%', border: 'none', minHeight: '600px' }}
+        scrolling="no"
+      />
 
       <div className="button-container">
         <button className="back-button" onClick={handleBack}>⬅️ הקודם</button>
-        <button className="next-button" onClick={handlePayment}>💵 בצע תשלום</button>
+        <button className="back-button" onClick={() => (window as any).PayBtClick()}>בצע תשלום</button>
       </div>
 
       {status === "success" && (
