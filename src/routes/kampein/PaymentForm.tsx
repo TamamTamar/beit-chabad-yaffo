@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import PaymentFormStep1 from "./PaymentFormStep1";
 import PaymentFormStep2 from "./PaymentFormStep2";
 import "./PaymentForm.scss";
-import NedarimDonation from "./NedarimDonation";
 
 const PaymentForm = ({ monthlyAmount }) => {
     const [step, setStep] = useState(1);
@@ -101,13 +100,7 @@ const PaymentForm = ({ monthlyAmount }) => {
                 />
             )}
 
-            {step === 2 && (
-                <NedarimDonation
-                    paymentData={paymentData}
-                    handleBack={handleBack}
-                    iframeRef={iframeRef}
-                />
-            )}
+    
         </div>
     );
 };

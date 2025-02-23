@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+/* import { useEffect, useRef } from 'react';
 
 export default function NedarimDonation({ paymentData, handleBack, iframeRef }) {
   useEffect(() => {
@@ -94,4 +94,4 @@ export default function NedarimDonation({ paymentData, handleBack, iframeRef }) 
       <button className="back-button" onClick={handleBack}>הקודם</button>
     </div>
   );
-}
+} */
