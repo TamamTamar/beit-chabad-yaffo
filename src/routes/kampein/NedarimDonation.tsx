@@ -1,8 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-export default function NedarimDonation() {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-
+export default function NedarimDonation({ paymentData, handleBack, iframeRef }) {
   useEffect(() => {
     // 🛡️ טיפול בשגיאות גלובליות
     window.onerror = function (msg, _url, _line, _col, _error) {
@@ -53,46 +51,9 @@ export default function NedarimDonation() {
 
     // 🖱️ לחיצה על כפתור תשלום
     (window as any).PayBtClick = function () {
-      const mosad = (document.getElementById('MosadId') as HTMLInputElement)?.value;
-      const apiValid = (document.getElementById('ApiValid') as HTMLInputElement)?.value;
-      const paymentType = (document.getElementById('PaymentType') as HTMLInputElement)?.value;
-      const amount = (document.getElementById('Amount') as HTMLInputElement)?.value;
-      const clientName = (document.getElementById('ClientName') as HTMLInputElement)?.value;
-      const street = (document.getElementById('Street') as HTMLInputElement)?.value;
-      const city = (document.getElementById('City') as HTMLInputElement)?.value;
-      const tokef = (document.getElementById('Tokef') as HTMLInputElement)?.value;
-
-      document.getElementById('Result')!.innerHTML = '';
-      document.getElementById('PayBtDiv')!.style.display = 'none';
-      document.getElementById('OkDiv')!.style.display = 'none';
-      document.getElementById('WaitPay')!.style.display = 'block';
-      document.getElementById('ErrorDiv')!.innerHTML = '';
-
       PostNedarim({
         Name: 'FinishTransaction2',
-        Value: {
-          Mosad: mosad,
-          ApiValid: apiValid,
-          PaymentType: paymentType,
-          Currency: '1',
-          Zeout: '',
-          FirstName: clientName,
-          LastName: '',
-          Street: street,
-          City: city,
-          Phone: '',
-          Mail: '',
-          Amount: amount,
-          Tashlumim: '1',
-          Groupe: '',
-          Comment: 'בדיקת אייפרם 2',
-          Param1: 'פרמטר 1',
-          Param2: '',
-          ForceUpdateMatching: '1',
-          CallBack: '',
-          CallBackMailError: '',
-          Tokef: tokef,
-        },
+        Value: paymentData,
       });
     };
 
@@ -110,7 +71,7 @@ export default function NedarimDonation() {
       window.removeEventListener('message', ReadPostMessage);
       delete (window as any).PayBtClick;
     };
-  }, []);
+  }, [paymentData, iframeRef]);
 
   return (
     <div>
@@ -130,6 +91,7 @@ export default function NedarimDonation() {
       </div>
       <div id="OkDiv" style={{ display: 'none', color: 'green' }}>✔️ תשלום הצליח!</div>
       <div id="WaitPay" style={{ display: 'none' }}>⏳ מעבד תשלום...</div>
+      <button className="back-button" onClick={handleBack}>הקודם</button>
     </div>
   );
 }

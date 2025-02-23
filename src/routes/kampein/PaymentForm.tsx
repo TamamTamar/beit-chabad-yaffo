@@ -3,13 +3,11 @@ import { useForm } from "react-hook-form";
 import PaymentFormStep1 from "./PaymentFormStep1";
 import PaymentFormStep2 from "./PaymentFormStep2";
 import "./PaymentForm.scss";
-import { sendPaymentDataToServer } from "../../services/payment-service";
 import NedarimDonation from "./NedarimDonation";
 
 const PaymentForm = ({ monthlyAmount }) => {
     const [step, setStep] = useState(1);
     const [paymentData, setPaymentData] = useState(null);
-    const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const iframeRef = useRef<HTMLIFrameElement>(null);
 
     const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
@@ -67,51 +65,19 @@ const PaymentForm = ({ monthlyAmount }) => {
 
         setPaymentData(newPaymentData);
         setStep(2);
-        setStatus("loading");
     };
-
-    
-    const handleIframeMessage = useCallback(async (event: MessageEvent) => {
-        // אבטחה: בדיקה שההודעה מגיעה מהכתובת הנכונה
-        if (event.origin !== "https://www.matara.pro") return;
-    
-        const { data } = event;
-    
-        console.log("📥 הודעה מה-iframe:", data);
-    
-        if (data.status === "success") {
-            try {
-                const responseData = await sendPaymentDataToServer(paymentData);
-                console.log("✅ תגובה מהשרת:", responseData);
-                setStatus("success");
-            } catch (error) {
-                console.error("❌ שגיאה בשליחת נתוני תשלום לשרת:", error);
-                setStatus("error");
-            }
-        } else {
-            console.warn("⚠️ עסקה נכשלה או בוטלה:", data);
-            setStatus("error");
-        }
-    }, [paymentData]);
-    
-    useEffect(() => {
-        window.addEventListener("message", handleIframeMessage);
-        return () => window.removeEventListener("message", handleIframeMessage);
-    }, [handleIframeMessage]);
 
     const handleBack = () => {
         setStep(1);
-        setStatus("idle");
     };
 
     const handlePayment = () => {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
-            iframe.contentWindow.postMessage(paymentData, "https://www.matara.pro/nedarimplus/iframe/");
+            iframe.contentWindow.postMessage(paymentData, "*");
             console.log("🚀 נתוני תשלום נשלחו ל-iframe:", paymentData);
         } else {
             console.error("⚠️ לא ניתן לשלוח הודעה ל-iframe.");
-            setStatus("error");
         }
     };
 
@@ -122,10 +88,6 @@ const PaymentForm = ({ monthlyAmount }) => {
                 <span> - </span>
                 <span className={step === 2 ? "active-step" : "inactive-step"}>2</span>
             </div>
-
-            {status === "loading" && <p>🔄 טוען...</p>}
-            {status === "error" && <p>❌ שגיאה בשליחת הנתונים. נסה שוב.</p>}
-            {status === "success" && <p>✅ התשלום בוצע בהצלחה!</p>}
 
             {step === 1 && (
                 <PaymentFormStep1
@@ -140,7 +102,11 @@ const PaymentForm = ({ monthlyAmount }) => {
             )}
 
             {step === 2 && (
-            <NedarimDonation />
+                <NedarimDonation
+                    paymentData={paymentData}
+                    handleBack={handleBack}
+                    iframeRef={iframeRef}
+                />
             )}
         </div>
     );
