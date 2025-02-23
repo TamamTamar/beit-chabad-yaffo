@@ -79,7 +79,7 @@ export default function NedarimDonation({ paymentData, handleBack, iframeRef }) 
         ref={iframeRef}
         id="NedarimFrame"
         title="Nedarim Plus"
-        src="https://matara.pro/nedarimplus/iframe?language=en"
+        src="https://matara.pro/nedarimplus/iframe?language=he"
         style={{ width: '100%', border: 'none', minHeight: '600px' }}
         scrolling="no"
       />
