@@ -9,7 +9,7 @@ const PaymentFormStep2 = ({ handleBack, handlePayment, iframeRef }) => {
       // אימות מקור ההודעה לביטחון
       if (event.origin !== "https://www.matara.pro") return;
 
-      console.log("📩 הודעה התקבלה מה-iframe:", event.data);
+    
       const { Name, Value } = event.data;
 
       switch (Name) {

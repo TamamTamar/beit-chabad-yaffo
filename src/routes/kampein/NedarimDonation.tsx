@@ -1,4 +1,4 @@
-/* import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 export default function NedarimDonation({ paymentData, handleBack, iframeRef }) {
   useEffect(() => {
@@ -9,7 +9,7 @@ export default function NedarimDonation({ paymentData, handleBack, iframeRef }) 
 
     // 📩 קריאת הודעות מה-iframe
     function ReadPostMessage(event: MessageEvent) {
-      console.log(event.data);
+    
       const iframe = iframeRef.current;
       const waitFrame = document.getElementById('WaitNedarimFrame');
       const resultDiv = document.getElementById('Result');
@@ -30,7 +30,7 @@ export default function NedarimDonation({ paymentData, handleBack, iframeRef }) 
           if (resultDiv) {
             resultDiv.innerHTML = `<b>TransactionResponse:<br/>${JSON.stringify(event.data.Value)}</b><br/>see full data in console`;
           }
-          console.log(event.data.Value);
+         
 
           if (event.data.Value.Status === 'Error') {
             if (errorDiv) errorDiv.innerHTML = event.data.Value.Message;
@@ -62,7 +62,6 @@ export default function NedarimDonation({ paymentData, handleBack, iframeRef }) 
 
     // 📥 טעינת ה-iframe ושליחת בקשת גובה
     iframeRef.current?.addEventListener('load', () => {
-      console.log('StartNedarim');
       PostNedarim({ Name: 'GetHeight' });
     });
 
@@ -94,4 +93,4 @@ export default function NedarimDonation({ paymentData, handleBack, iframeRef }) 
       <button className="back-button" onClick={handleBack}>הקודם</button>
     </div>
   );
-} */
+}

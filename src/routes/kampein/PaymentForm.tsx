@@ -70,15 +70,7 @@ const PaymentForm = ({ monthlyAmount }) => {
         setStep(1);
     };
 
-    const handlePayment = () => {
-        const iframe = iframeRef.current;
-        if (iframe && iframe.contentWindow) {
-            iframe.contentWindow.postMessage(paymentData, "*");
-            console.log("🚀 נתוני תשלום נשלחו ל-iframe:", paymentData);
-        } else {
-            console.error("⚠️ לא ניתן לשלוח הודעה ל-iframe.");
-        }
-    };
+
 
     return (
         <div className="payment-form-container">
