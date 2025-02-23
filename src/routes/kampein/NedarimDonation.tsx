@@ -50,7 +50,11 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef }) => {
 
     // 🚀 שליחת הודעות ל-iframe
     function PostNedarim(Data: object) {
-      iframeRef.current?.contentWindow?.postMessage(Data, '*');
+      if (iframeRef.current && iframeRef.current.contentWindow) {
+        iframeRef.current.contentWindow.postMessage(Data, '*');
+      } else {
+        console.error("⚠️ לא ניתן לשלוח הודעה ל-iframe.");
+      }
     }
 
     // 🖱️ לחיצה על כפתור תשלום
@@ -95,13 +99,13 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef }) => {
         title="Nedarim Plus"
         src="https://matara.pro/nedarimplus/iframe?language=he"
         className="payment-iframe"
-        scrolling="no"
+      
       />
       <div id="Result" className="result"></div>
       <div id="ErrorDiv" className="error-div"></div>
       <div id="PayBtDiv" className="pay-bt-div">
-        <button className="back-button" onClick={() => (window as any).PayBtClick()}>בצע תשלום</button>
         <button className="back-button" onClick={handleBack}>הקודם</button>
+        <button className="back-button" onClick={() => (window as any).PayBtClick()}>בצע תשלום</button>
       </div>
       <div id="OkDiv" className="ok-div">✔️ התשלום הצליח!</div>
       <div id="WaitPay" className="wait-pay">⏳ מעבד תשלום...</div>
