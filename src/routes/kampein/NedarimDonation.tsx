@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+
 // הרחבת הממשק הגלובלי כדי ש-TypeScript יכיר את PayBtClick
 declare global {
   interface Window {
