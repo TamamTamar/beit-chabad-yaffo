@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const PaymentFormStep2 = ({ handleBack, handlePayment, iframeRef, paymentData }) => {
+const PaymentFormStep2 = ({ handleBack, handlePayment, iframeRef }) => {
   const [status, setStatus] = useState(null);
   const [transactionResponse, setTransactionResponse] = useState(null);
 

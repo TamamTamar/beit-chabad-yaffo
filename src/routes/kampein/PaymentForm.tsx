@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import PaymentFormStep1 from "./PaymentFormStep1";
 import PaymentFormStep2 from "./PaymentFormStep2";
 import "./PaymentForm.scss";
+import { sendPaymentDataToServer } from "../../services/payment-service";
+import NedarimDonation from "./NedarimDonation";
 
 const PaymentForm = ({ monthlyAmount }) => {
     const [step, setStep] = useState(1);
@@ -67,25 +69,19 @@ const PaymentForm = ({ monthlyAmount }) => {
         setStep(2);
         setStatus("loading");
     };
+
+    
     const handleIframeMessage = useCallback(async (event: MessageEvent) => {
         // אבטחה: בדיקה שההודעה מגיעה מהכתובת הנכונה
         if (event.origin !== "https://www.matara.pro") return;
-
+    
         const { data } = event;
-
+    
         console.log("📥 הודעה מה-iframe:", data);
-
+    
         if (data.status === "success") {
             try {
-                const serverResponse = await fetch("https://node-beit-chabad-yaffo.onrender.com/api/payment/nedarim", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(paymentData),
-                });
-
-                if (!serverResponse.ok) throw new Error("Network response was not ok");
-
-                const responseData = await serverResponse.json();
+                const responseData = await sendPaymentDataToServer(paymentData);
                 console.log("✅ תגובה מהשרת:", responseData);
                 setStatus("success");
             } catch (error) {
@@ -97,7 +93,7 @@ const PaymentForm = ({ monthlyAmount }) => {
             setStatus("error");
         }
     }, [paymentData]);
-
+    
     useEffect(() => {
         window.addEventListener("message", handleIframeMessage);
         return () => window.removeEventListener("message", handleIframeMessage);
@@ -144,12 +140,7 @@ const PaymentForm = ({ monthlyAmount }) => {
             )}
 
             {step === 2 && (
-                <PaymentFormStep2
-                    iframeRef={iframeRef}
-                    handleBack={handleBack}
-                    paymentData={paymentData}
-                    handlePayment={handlePayment}
-                />
+            <NedarimDonation />
             )}
         </div>
     );
