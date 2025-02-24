@@ -9,6 +9,7 @@ import ParashaList from "./BeitHabad/ParashaList";
 import Error from "./Error";
 import KampeinPage from "./kampein/KampeinPage";
 import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
+import Aboutkampein from "./kampein/AboutKampein";
 
 
 
@@ -56,6 +57,10 @@ export const router = createBrowserRouter([
                     </ProtectedRouteAdmin>
                 ),
             },
+            {
+                path: "/about",
+                element: <Aboutkampein />,
+            }
            
 
         ],
