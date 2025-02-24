@@ -12,7 +12,7 @@ function Footer() {
                 <ul className="footer-icons">
                     <li className="icon-item">
                         <Tooltip content="Home" placement="top" className="tooltip">
-                            <a href="/kampein" className="icon-link">
+                            <a href="#" className="icon-link">
                                 <FiHome size={20} />
                             </a>
                         </Tooltip>
