@@ -49,7 +49,7 @@ const PaymentFormStep1 = ({
                                 value={watchMonthlyAmount || ""}
                                 maxLength={10} 
                             />
-                            <div className="currency">₪</div>
+                            
                         </div>
                     </div>
                     <label className="checkbox-label">

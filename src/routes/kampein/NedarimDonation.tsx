@@ -31,7 +31,7 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef }) => {
 
         case 'TransactionResponse':
           if (resultDiv) {
-            resultDiv.innerHTML = `<b>תשובת עסקה:<br/>${JSON.stringify(event.data.Value)}</b><br/>ראה נתונים מלאים בקונסול`;
+         
           }
 
           if (event.data.Value.Status === 'Error') {
