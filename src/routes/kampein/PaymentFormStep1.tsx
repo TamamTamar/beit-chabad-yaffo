@@ -26,9 +26,7 @@ const PaymentFormStep1 = ({
         }
     };
 
-    const formatAmount = (amount) => {
-        return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-    };
+    const formatCurrency = (amount) => amount.toLocaleString('en-US', { style: 'currency', currency: 'ILS' });
 
     return (
         <div className="amount-info">
@@ -84,7 +82,7 @@ const PaymentFormStep1 = ({
                 <div className="left-side-amount">
                     <p className="amount-text">בית חב״ד יפו מקבל:</p>
                     <div className="for-year">₪
-                        {isNaN(parseFloat(watchMonthlyAmount)) ? 0 : formatAmount(watchIs12Months ? parseFloat(watchMonthlyAmount) * 12 : parseFloat(watchMonthlyAmount))}
+                        {isNaN(parseFloat(watchMonthlyAmount)) ? 0 : formatCurrency(watchIs12Months ? parseFloat(watchMonthlyAmount) * 12 : parseFloat(watchMonthlyAmount))}
                     </div>
                 </div>
             </div>
