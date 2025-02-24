@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import patterns from "../../validations/patterns";
+import { m } from "framer-motion";
 
 const PaymentFormStep1 = ({
     register,
@@ -26,7 +27,7 @@ const PaymentFormStep1 = ({
     };
 
     const formatAmount = (amount) => {
-        return amount.toLocaleString('en-US');
+        return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
     };
 
     return (
@@ -40,6 +41,7 @@ const PaymentFormStep1 = ({
                                 type="text"
                                 {...register("MonthlyAmount", {
                                     required: true,
+                                    min: 1,
                                     setValueAs: (value) => parseFloat(value) || 0,
                                 })}
                                 placeholder="סכום"
