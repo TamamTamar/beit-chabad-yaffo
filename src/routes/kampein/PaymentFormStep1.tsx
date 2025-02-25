@@ -81,7 +81,7 @@ const PaymentFormStep1 = ({
                 </div>
                 <div className="left-side-amount">
                     <p className="amount-text">בית חב״ד יפו מקבל:</p>
-                    <div className="for-year">₪
+                    <div className="for-year">
                         {isNaN(parseFloat(watchMonthlyAmount)) ? 0 : formatCurrency(watchIs12Months ? parseFloat(watchMonthlyAmount) * 12 : parseFloat(watchMonthlyAmount))}
                     </div>
                 </div>

@@ -1,11 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 import './DonationProgressMinimal.scss';
 
 const DonationProgressMinimal: React.FC = () => {
-  const raised = 274634;
+  const [raised, setRaised] = useState<number>(0);
   const goal = 770000;
   const [percentage, setPercentage] = useState(0);
+
+  useEffect(() => {
+    const fetchRaisedAmount = async () => {
+      try {
+        const formData = new URLSearchParams();
+        formData.append('Action', 'GetHistoryJson');
+        formData.append('MosadId', '7013920'); // החלף למזהה המוסד שלך
+        formData.append('ApiPassword', 'fp203'); // החלף בסיסמת ה-API שלך
+        formData.append('MaxId', '200'); // כמות תוצאות מקסימלית להאצת הבקשה
+
+        const { data } = await axios.post(
+          'https://matara.pro/nedarimplus/Reports/Manage3.aspx',
+          formData,
+          { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+        );
+
+        if (Array.isArray(data)) {
+          const totalRaised = data.reduce((sum, transaction) => sum + Number(transaction.Amount || 0), 0);
+          setRaised(totalRaised);
+        } else {
+          console.error('Invalid data format:', data);
+        }
+      } catch (error) {
+        console.error('Error fetching raised amount:', error);
+      }
+    };
+
+    fetchRaisedAmount();
+  }, []);
 
   useEffect(() => {
     const calculatedPercentage = Math.min(Math.floor((raised / goal) * 100), 100);
@@ -31,7 +61,7 @@ const DonationProgressMinimal: React.FC = () => {
             className="arrow-stroke-default" 
             style={{ stroke: '#E5E5E5' }}
           />
-          
+
           {/* קו מתקדם עם אנימציה */}
           <motion.polyline
             fill="none"
@@ -44,7 +74,7 @@ const DonationProgressMinimal: React.FC = () => {
             strokeDashoffset={progressPathLength * (1 - percentage / 100)}
             initial={{ strokeDashoffset: progressPathLength }}
             animate={{ strokeDashoffset: progressPathLength * (1 - percentage / 100) }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
+            transition={{ duration: 1.5, ease: 'easeOut' }}
           />
         </svg>
       </div>
