@@ -19,15 +19,14 @@ const DonationProgressMinimal: React.FC = () => {
         },
       });
 
-      const { TotalYear } = response.data;
+      console.log('Response from API:', response); // הוספת console.log ל-response
 
-      if (TotalYear) {
-        const totalRaised = parseFloat(TotalYear); // המרה למספר
-        setRaised(totalRaised); // עדכון הסטייט עם הסכום מה-API
+      if (response.data && Array.isArray(response.data)) {
+        const totalRaised = response.data.reduce((acc, donation) => acc + parseFloat(donation.Amount), 0);
+        setRaised(totalRaised); // עדכון הסטייט עם הסכום המחושב
       } else {
-        console.error('TotalYear לא נמצא בתגובה');
+        console.error('לא נמצאו נתונים תקינים בתגובה');
       }
-
     } catch (error) {
       console.error('שגיאה בעת שליפת הנתונים מה-API:', error);
     }

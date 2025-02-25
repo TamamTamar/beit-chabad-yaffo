@@ -5,120 +5,89 @@
     justify-content: center;
     width: 100%;
     height: 100%;
-}
 
-.payment-iframe {
-    width: 100%;
-    max-height: 400px;
-    height: 100vh;
-    border: none;
-    margin-top: 20px;
+    .payment-iframe {
+        width: 100%;
+        max-height: 400px;
+        height: 100vh;
+        border: none;
+        margin-top: 20px;
 
-    @media (max-width: 768px) {
-        max-height: 300px;
+        @media (max-width: 768px) {
+            max-height: 300px;
+        }
     }
-}
 
-.pay-bt-div {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    gap: 300px;
-}
-
-.back-button {
-    background-color: #6B4B9A; /* צבע כפתור */
-    color: white; /* צבע טקסט לבן */
-    border: none; /* לא להציג גבול */
-    padding: 10px 20px; /* ריפוד פנימי */
-    border-radius: 5px; /* קצוות מעוגלים */
-    font-size: 16px; /* גודל גופן */
-    cursor: pointer; /* מחוון יד על כפתור */
-    transition: background-color 0.3s ease; /* שינוי צבע עם אנימציה */
-    
-    &:hover {
-      background-color: #5b3e79; /* שינוי צבע בהעברה */
+    .pay-bt-div {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
     }
-  
-    &:focus {
-      outline: none; /* ביטול קו דגש כשיש התמקדות */
+
+    .back-button {
+        background-color: #6B4B9A; /* צבע כפתור */
+        color: white; /* צבע טקסט לבן */
+        border: none; /* לא להציג גבול */
+        padding: 10px 20px; /* ריפוד פנימי */
+        border-radius: 5px; /* קצוות מעוגלים */
+        font-size: 16px; /* גודל גופן */
+        cursor: pointer; /* מחוון יד על כפתור */
+        transition: background-color 0.3s ease; /* שינוי צבע עם אנימציה */
+        
+        &:hover {
+          background-color: #5b3e79; /* שינוי צבע בהעברה */
+        }
+      
+        &:focus {
+          outline: none; /* ביטול קו דגש כשיש התמקדות */
+        }
+      
+        &:active {
+          background-color: #4a3361; /* צבע כשנלחץ על הכפתור */
+        }
     }
-  
-    &:active {
-      background-color: #4a3361; /* צבע כשנלחץ על הכפתור */
+
+    .ok-div {
+        display: none;
+        color: green;
+        font-size: 16px;
+        margin-top: 20px;
+        text-align: center;
     }
-}
 
-.ok-div {
-    display: none;
-    color: green;
-    font-size: 16px;
-    margin-top: 20px;
-    text-align: center;
-}
+    .wait-pay {
+        display: none;
+        color: #6B4B9A;
+        font-size: 16px;
+        margin-top: 20px;
+        text-align: center;
+    }
 
-.wait-pay {
-    display: none;
-    color: #6B4B9A;
-    font-size: 16px;
-    margin-top: 20px;
-    text-align: center;
-}
+    .error-div {
+        color: red;
+        font-size: 16px;
+        margin-top: 20px;
+        text-align: center;
+    }
 
-.error-div {
-    color: red;
-    font-size: 16px;
-    margin-top: 20px;
-    text-align: center;
-}
+    .wait-iframe {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        background-color: #f0f0f0;
+        color: #6B4B9A;
+        font-size: 18px;
+        text-align: center;
+        padding: 20px;
+        border-radius: 5px;
+    }
 
-#WaitNedarimFrame {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    background-color: #f0f0f0;
-    color: #6B4B9A;
-    font-size: 18px;
-    text-align: center;
-    padding: 20px;
-    border-radius: 5px;
-}
-
-#Result {
-    margin-top: 20px;
-    font-size: 16px;
-    color: #333;
-    text-align: center;
-}
-
-#ErrorDiv {
-    margin-top: 20px;
-    font-size: 16px;
-    color: red;
-    text-align: center;
-}
-
-#PayBtDiv {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-}
-
-#OkDiv {
-    display: none;
-    color: green;
-    font-size: 16px;
-    margin-top: 20px;
-    text-align: center;
-}
-
-#WaitPay {
-    display: none;
-    color: #6B4B9A;
-    font-size: 16px;
-    margin-top: 20px;
-    text-align: center;
+    .result {
+        margin-top: 20px;
+        font-size: 16px;
+        color: #333;
+        text-align: center;
+    }
 }
