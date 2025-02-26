@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { Carousel } from 'flowbite-react';
 import './carousel.scss';
 
@@ -21,11 +21,21 @@ const CarouselNew: FC = () => {
         groupedImages.push(images.slice(i, i + 3));
     }
 
+    const [currentGroupIndex, setCurrentGroupIndex] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentGroupIndex((prevIndex) => (prevIndex + 1) % groupedImages.length);
+        }, 3000); // כל 3 שניות
+
+        return () => clearInterval(interval); // לנקות את ה-interval כשמעבר לדף אחר
+    }, [groupedImages.length]);
+
     return (
         <div className="custom-carousel">
-            <Carousel pauseOnHover>
+            <Carousel>
                 {groupedImages.map((group, index) => (
-                    <div key={index} className="carousel-item">
+                    <div key={index} className={`carousel-item ${index === currentGroupIndex ? 'active' : ''}`}>
                         <div className="grid grid-cols-3 gap-4">
                             {group.map((image) => (
                                 <img
