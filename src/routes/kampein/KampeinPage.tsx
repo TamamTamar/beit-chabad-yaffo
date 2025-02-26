@@ -1,3 +1,4 @@
+import Carousel from "./Carousel"
 import CarouselNew from "./carusela"
 import CountdownTimer from "./CountdownTimer"
 import DonationProgressMinimal from "./DonationProgressMinimal"
@@ -9,7 +10,7 @@ const KampeinPage = () => {
     <div>
 
       <KampeinBanner />
-      <CarouselNew />
+      <Carousel />
       <MoneyCircles />
       <DonationProgressMinimal />
     </div>
