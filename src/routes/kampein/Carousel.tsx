@@ -8,6 +8,11 @@ const Carousel = () => {
     'img/b4.png',
     'img/b5.png',
     'img/b22.png',
+    'img/banner.jpg',
+    'img/hanuca.jpeg',
+    'img/light.png',
+    'img/carousellla.png',
+    'img/light2.png',
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -20,6 +25,7 @@ const Carousel = () => {
     return () => clearInterval(interval); // לנקות את ה-interval כשמעבר לדף אחר
   }, [images.length]);
 
+  // הצגת התמונות הנוכחיות (3 תמונות)
   const displayedImages = [
     images[(currentIndex) % images.length],
     images[(currentIndex + 1) % images.length],
@@ -29,9 +35,16 @@ const Carousel = () => {
   return (
     <div className="carousel-container">
       <div className="carousel">
-        {displayedImages.map((image, index) => (
-          <img className='carousel-img' key={index} src={image} alt={`carousel-img-${index}`} />
-        ))}
+        <div className="carousel-images">
+          {displayedImages.map((image, index) => (
+            <img
+              className="carousel-img"
+              key={index}
+              src={image}
+              alt={`carousel-img-${index}`}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
