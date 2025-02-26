@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Carousel } from 'flowbite-react';
-import './Carousel.scss';
+import './carousel.scss';
 
 const CarouselNew: FC = () => {
     const images = [
