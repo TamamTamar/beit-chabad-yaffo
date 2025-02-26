@@ -10,7 +10,6 @@ const KampeinPage = () => {
     <div>
 
       <KampeinBanner />
-      <Carousel />
       <MoneyCircles />
       <DonationProgressMinimal />
     </div>
