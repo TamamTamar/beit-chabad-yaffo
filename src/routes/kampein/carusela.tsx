@@ -26,7 +26,7 @@ const CarouselNew: FC = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentGroupIndex((prevIndex) => (prevIndex + 1) % groupedImages.length);
-        }, 3000); // כל 3 שניות
+        }, 2000); // כל 2 שניות
 
         return () => clearInterval(interval); // לנקות את ה-interval כשמעבר לדף אחר
     }, [groupedImages.length]);
@@ -34,20 +34,25 @@ const CarouselNew: FC = () => {
     return (
         <div className="custom-carousel">
             <Carousel>
-                {groupedImages.map((group, index) => (
-                    <div key={index} className={`carousel-item ${index === currentGroupIndex ? 'active' : ''}`}>
-                        <div className="grid grid-cols-3 gap-4">
-                            {group.map((image) => (
-                                <img
-                                    key={image._id}
-                                    src={image.url}
-                                    alt={image.alt}
-                                    className="carousel-image"
-                                />
-                            ))}
+                <div className="carousel-inner">
+                    {groupedImages.map((group, index) => (
+                        <div
+                            key={index}
+                            className={`carousel-item ${index === currentGroupIndex ? 'active' : ''}`}
+                        >
+                            <div className="grid grid-cols-3 gap-4">
+                                {group.map((image) => (
+                                    <img
+                                        key={image._id}
+                                        src={image.url}
+                                        alt={image.alt}
+                                        className="carousel-image"
+                                    />
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </Carousel>
         </div>
     );
