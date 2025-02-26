@@ -1,10 +1,6 @@
 .about-kampein {
     padding: 48px;
     text-align: center;
-   // max-height: 60vh;
-    /* גובה מקסימלי */
-    overflow-y: auto;
-    /* גלילה פנימית אם צריך */
     font-size: 14px;
 
     @media (max-width: 768px) {
