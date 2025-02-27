@@ -1,26 +1,24 @@
 .carousel-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    width: 80%;
-    margin: 0 auto;
-  }
-  
-  .carousel {
-    display: flex;
-    width: 100%;
-    transition: transform 1s ease-in-out; /* מעביר את התמונות בצורה חלקה */
-  }
-  
-  .carousel-images {
-    display: flex;
-    width: 300%; /* 3 תמונות יוצגו בו זמנית */
-  }
-  
-  .carousel-img {
-    max-height: 100px;
-    width: 30%;
-    object-fit: cover;
-  }
-  
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel {
+  display: flex;
+  transition: transform 1s ease-in-out;
+}
+
+.carousel-images {
+  display: flex;
+  gap: 10px; // רווח קטן בין התמונות
+}
+
+.carousel-img {
+  width: 300px; // קביעת רוחב אחיד לכל התמונות
+  height: 200px; // קביעת גובה אחיד לכל התמונות
+  object-fit: cover; // מוודא שהתמונה מתמלאת בתוך המסגרת בלי להתעוות
+  border-radius: 10px; // פינות מעוגלות
+}
