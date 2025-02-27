@@ -1,6 +1,4 @@
-import Carousel from "./Carousel"
-import CarouselNew from "./carusela"
-import CountdownTimer from "./CountdownTimer"
+import CaruselaImage from "./CaruselaImage"
 import DonationProgressMinimal from "./DonationProgressMinimal"
 import KampeinBanner from "./KampeinBanner"
 import MoneyCircles from "./MoneyCircles"
@@ -8,8 +6,8 @@ import MoneyCircles from "./MoneyCircles"
 const KampeinPage = () => {
   return (
     <div>
-
       <KampeinBanner />
+      <CaruselaImage />
       <MoneyCircles />
       <DonationProgressMinimal />
     </div>
