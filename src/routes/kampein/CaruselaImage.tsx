@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import './carousel.scss';
 
 const CaruselaImage = () => {
     const images = [
