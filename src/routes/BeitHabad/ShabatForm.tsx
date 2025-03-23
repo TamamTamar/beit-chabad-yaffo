@@ -5,7 +5,6 @@ interface Parasha {
   rawDate: string; // תאריך בפורמט ISO לצורך מיון
   parasha: string;
   category: string; // קטגוריה (פרשה/חג)
-  candleLightingTime?: string; // זמן הדלקת נרות (אופציונלי)
 }
 
 const fetchParashot = async (): Promise<Parasha[]> => {
@@ -26,39 +25,20 @@ const fetchParashot = async (): Promise<Parasha[]> => {
     console.log("Fetched parashot and holidays:", json);
 
     return json.items
-      .filter(
-        (item: any) =>
-          item.category === "parashat" || (item.category === "holiday" && item.yomtov) || item.category === "candles"
+      .filter((item: any) =>
+        (item.category === "parashat") || (item.category === "holiday" && item.yomtov) // סינון עבור ימי טוב בלבד
       )
-      .map((item: any) => {
-        let candleLightingTime = null;
-        if (item.category === "candles" && item.date) {
-          const candleLightingDate = new Date(item.date);
-
-          // הוספת שעה וחצי לזמן הדלקת נרות
-          candleLightingDate.setHours(candleLightingDate.getHours() + 1); // הוספת שעה
-          candleLightingDate.setMinutes(candleLightingDate.getMinutes() + 30); // הוספת 30 דקות
-
-          // הפיכת הזמן לפורמט "hh:mm" כדי להציג אותו
-          candleLightingTime = candleLightingDate.toLocaleTimeString("he-IL", {
-            hour: "2-digit",
-            minute: "2-digit",
-          });
-        }
-
-        return {
-          rawDate: item.date, // תאריך אמיתי למיון
-          date: new Date(item.date).toLocaleDateString("he-IL", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          }), // תאריך מעוצב להצגה
-          parasha: item.hebrew,
-          category: item.category, // קטגוריה (פרשה/חג)
-          candleLightingTime, // זמן הדלקת נרות אם קיים
-        };
-      });
+      .map((item: any) => ({
+        rawDate: item.date, // תאריך אמיתי למיון
+        date: new Date(item.date).toLocaleDateString("he-IL", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }), // תאריך מעוצב להצגה
+        parasha: item.hebrew,
+        category: item.category, // קטגוריה (פרשה/חג)
+      }));
   } catch (err) {
     console.error(err);
     return [];
@@ -104,9 +84,6 @@ const ParashaCarousel: React.FC = () => {
           <h3>{parasha.parasha}</h3>
           <p>{parasha.date}</p>
           <p>{parasha.category === "holiday" ? "Yom Tov" : "Parasha"}</p>
-          {parasha.candleLightingTime && (
-            <p>זמן הדלקת נרות: {parasha.candleLightingTime}</p>
-          )}
         </div>
       ))}
       <button onClick={next} disabled={index + 3 >= parashot.length}>
