@@ -66,7 +66,7 @@ const ParashaCarousel: React.FC = () => {
   };
 
   const getCustomParashaName = (parasha: string): string => {
-    if (parasha === "פסח א") {
+    if (parasha === "פסח א׳") {
       return "ליל הסדר";
     }
     if (parasha === "פסח ז") {
