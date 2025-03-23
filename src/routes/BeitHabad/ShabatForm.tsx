@@ -25,9 +25,8 @@ const fetchParashot = async (): Promise<Parasha[]> => {
     console.log("Fetched parashot and holidays:", json);
 
     return json.items
-      .filter((item: any) => 
-        (item.category === "parashat") || 
-        (item.category === "holiday" && item.holidayType === "yomtov") // סינון עבור חגים גדולים (ימי טוב)
+      .filter((item: any) =>
+        (item.category === "parashat") || (item.category === "holiday" && item.yomtov) // סינון עבור ימי טוב בלבד
       )
       .map((item: any) => ({
         rawDate: item.date, // תאריך אמיתי למיון
