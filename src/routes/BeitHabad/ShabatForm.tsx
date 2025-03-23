@@ -54,7 +54,7 @@ const ParashaCarousel: React.FC = () => {
   }, []);
 
   const next = () => {
-    if (index + 1 < parashot.length) {
+    if (index + 1 < parashot.length - 2) {
       setIndex(index + 1); // זז פרשה אחת קדימה
     }
   };
@@ -70,7 +70,7 @@ const ParashaCarousel: React.FC = () => {
       <button onClick={prev} disabled={index === 0}>
         ◀
       </button>
-      {parashot.slice(index, index + 1).map((parasha) => (
+      {parashot.slice(index, index + 3).map((parasha) => (
         <div
           key={parasha.rawDate}
           style={{
@@ -85,7 +85,7 @@ const ParashaCarousel: React.FC = () => {
           <p>{parasha.date}</p>
         </div>
       ))}
-      <button onClick={next} disabled={index + 1 >= parashot.length}>
+      <button onClick={next} disabled={index + 3 >= parashot.length}>
         ▶
       </button>
     </div>
