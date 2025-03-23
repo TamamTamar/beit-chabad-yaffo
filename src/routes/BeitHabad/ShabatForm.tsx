@@ -10,7 +10,7 @@ const fetchParashot = async (): Promise<Parasha[]> => {
   try {
     const startDate = new Date().toISOString().split("T")[0]; // התאריך של היום בפורמט YYYY-MM-DD
     const response = await fetch(
-      `https://www.hebcal.com/hebcal?v=1&cfg=json&maj=on&min=on&mod=on&nx=on&ss=on&s=on&year=now&month=x&geo=geoname&geonameid=293397`
+        `https://www.hebcal.com/hebcal?v=1&cfg=json&maj=on&min=on&mod=on&nx=on&ss=on&s=on&year=now&month=x&geo=geoname&geonameid=293397&start=${startDate}`
     );
     if (!response.ok) {
       throw new Error("Failed to fetch parashot");
