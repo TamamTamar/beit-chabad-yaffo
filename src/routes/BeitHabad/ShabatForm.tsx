@@ -14,7 +14,10 @@ export const fetchParashot = async (): Promise<Parasha[]> => {
         throw new Error("Failed to fetch parashot");
       }
       const json = await response.json();
-  
+
+      // הדפסת התוצאה המלאה מה-API לקונסול
+      console.log("API Response:", json);
+
       // מציאת כל הפרשות מתוך הרשימה
       return json.items
         .filter((item: any) => item.category === "parashat")
@@ -31,7 +34,7 @@ export const fetchParashot = async (): Promise<Parasha[]> => {
       console.error(err);
       return [];
     }
-  };
+};
   
 
 const ParashaCarousel: React.FC = () => {
@@ -39,7 +42,7 @@ const ParashaCarousel: React.FC = () => {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    fetchParashot().then(setParashot);
+    fetchParashot().then((parashot) => parashot.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())).then(setParashot);
   }, []);
 
   const next = () => {
