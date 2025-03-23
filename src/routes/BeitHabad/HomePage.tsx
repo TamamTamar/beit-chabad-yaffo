@@ -8,6 +8,7 @@ import OurServiceN from './ChabadServices'
 import ReservationForm from './ReservationForm'
 import ParashaCarousel from './ShabatForm'
 
+
 const HomePage = () => {
   return (
     <div>

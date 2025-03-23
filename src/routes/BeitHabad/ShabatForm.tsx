@@ -6,26 +6,33 @@ interface Parasha {
 }
 
 export const fetchParashot = async (): Promise<Parasha[]> => {
-  try {
-    const response = await fetch(
-      "https://www.hebcal.com/shabbat?cfg=json&geonameid=293397&M=on"
-    );
-    if (!response.ok) {
-      throw new Error("Failed to fetch parashot");
+    try {
+      const response = await fetch(
+        "https://www.hebcal.com/shabbat?cfg=json&geonameid=293397&M=on"
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch parashot");
+      }
+      const json = await response.json();
+  
+      // מציאת כל הפרשות מתוך הרשימה
+      return json.items
+        .filter((item: any) => item.category === "parashat")
+        .map((item: any) => ({
+          date: new Date(item.date).toLocaleDateString("he-IL", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          }),
+          parasha: item.hebrew,
+        }));
+    } catch (err) {
+      console.error(err);
+      return [];
     }
-    const json = await response.json();
-
-    return json.items
-      .filter((item: any) => item.category === "parashat")
-      .map((item: any) => ({
-        date: new Date(item.date).toLocaleDateString("he-IL"),
-        parasha: item.hebrew,
-      }));
-  } catch (err) {
-    console.error(err);
-    return [];
-  }
-};
+  };
+  
 
 const ParashaCarousel: React.FC = () => {
   const [parashot, setParashot] = useState<Parasha[]>([]);
