@@ -26,7 +26,7 @@ const fetchParashot = async (): Promise<Parasha[]> => {
 
     return json.items
       .filter((item: any) =>
-        (item.category === "parashat") || (item.category === "holiday" && item.yomtov) // סינון עבור ימי טוב בלבד
+        item.category === "parashat" || (item.category === "holiday" && item.yomtov) // סינון עבור ימי טוב בלבד
       )
       .map((item: any) => ({
         rawDate: item.date, // תאריך אמיתי למיון
@@ -65,6 +65,16 @@ const ParashaCarousel: React.FC = () => {
     }
   };
 
+  const getCustomParashaName = (parasha: string): string => {
+    if (parasha === "פסח א") {
+      return "ליל הסדר";
+    }
+    if (parasha === "פסח ז") {
+      return "שביעי של פסח";
+    }
+    return parasha; // אם אין התאמה, מחזיר את השם המקורי
+  };
+
   return (
     <div style={{ textAlign: "center" }}>
       <button onClick={prev} disabled={index === 0}>
@@ -81,7 +91,7 @@ const ParashaCarousel: React.FC = () => {
             borderRadius: "5px",
           }}
         >
-          <h3>{parasha.parasha}</h3>
+          <h3>{getCustomParashaName(parasha.parasha)}</h3>
           <p>{parasha.date}</p>
         </div>
       ))}
