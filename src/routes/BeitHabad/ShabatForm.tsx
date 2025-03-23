@@ -5,20 +5,19 @@ interface Parasha {
   parasha: string;
 }
 
-export const fetchParashot = async (): Promise<Parasha[]> => {
+const fetchParashot = async (): Promise<Parasha[]> => {
     try {
+      const startDate = new Date().toISOString().split("T")[0]; // התאריך של היום בפורמט YYYY-MM-DD
       const response = await fetch(
-        "https://www.hebcal.com/shabbat?cfg=json&geonameid=293397&M=on"
+        `https://www.hebcal.com/hebcal/?v=1&cfg=json&maj=on&start=${startDate}&c=on`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch parashot");
       }
       const json = await response.json();
 
-      // הדפסת התוצאה המלאה מה-API לקונסול
-      console.log("API Response:", json);
-
-      // מציאת כל הפרשות מתוך הרשימה
+      console.log(json);
+  
       return json.items
         .filter((item: any) => item.category === "parashat")
         .map((item: any) => ({
@@ -34,7 +33,8 @@ export const fetchParashot = async (): Promise<Parasha[]> => {
       console.error(err);
       return [];
     }
-};
+  };
+  
   
 
 const ParashaCarousel: React.FC = () => {
