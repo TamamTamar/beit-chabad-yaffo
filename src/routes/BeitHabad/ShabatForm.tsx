@@ -32,8 +32,12 @@ const fetchParashot = async (): Promise<Parasha[]> => {
       .map((item: any) => {
         // אם החג כולל זמן הדלקת נרות, נוסיף לו שעה וחצי
         let candleLightingTime = null;
-        if (item.candlelighting) {
-          const time = new Date(item.candlelighting);
+        if (item.title && item.title.includes("Candle lighting")) {
+          const timeStr = item.title.split(":")[1].trim(); // תופס את הזמן אחרי "Candle lighting:"
+          const [hours, minutes] = timeStr.split(":").map((str: string) => parseInt(str, 10));
+
+          const time = new Date();
+          time.setHours(hours, minutes);
           time.setHours(time.getHours() + 1); // הוספת שעה
           time.setMinutes(time.getMinutes() + 30); // הוספת 30 דקות
           candleLightingTime = time.toLocaleTimeString("he-IL", {
@@ -101,7 +105,7 @@ const ParashaCarousel: React.FC = () => {
           <p>{parasha.date}</p>
           <p>{parasha.category === "holiday" ? "Yom Tov" : "Parasha"}</p>
           {parasha.candleLightingTime && (
-            <p>התחלת הסעודה:{parasha.candleLightingTime}</p>
+            <p>התחלת הסעודה: {parasha.candleLightingTime}</p>
           )}
         </div>
       ))}
