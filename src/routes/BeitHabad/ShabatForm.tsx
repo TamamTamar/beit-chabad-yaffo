@@ -68,7 +68,7 @@ const ParashaCarousel: React.FC = () => {
         if (parasha === "פסח א׳" || parasha === "Pesach I") {
             return "ליל הסדר";
         }
-        if (parasha === "פסח ז" || parasha === "Pesach VII") {
+        if (parasha === "פסח ז׳" || parasha === "Pesach VII") {
             return "שביעי של פסח";
         }
         return parasha; // אם אין התאמה, מחזיר את השם המקורי
