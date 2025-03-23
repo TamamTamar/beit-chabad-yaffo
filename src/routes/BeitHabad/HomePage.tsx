@@ -5,6 +5,8 @@ import LatestVideo from './LatestVideo'
 import CarouselChabd from './CarouselChabad'
 import ChabadAboutSection from './AboutChabad'
 import OurServiceN from './ChabadServices'
+import ReservationForm from './ReservationForm'
+import ParashaCarousel from './ShabatForm'
 
 const HomePage = () => {
   return (
@@ -15,6 +17,8 @@ const HomePage = () => {
       <LatestParasha />
       <CandleLightingTimes />
       <LatestVideo />
+      <ParashaCarousel />
+ 
 
 
     </div>
