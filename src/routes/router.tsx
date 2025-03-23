@@ -10,6 +10,7 @@ import Error from "./Error";
 import KampeinPage from "./kampein/KampeinPage";
 import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
 import Aboutkampein from "./kampein/AboutKampein";
+import ReservationForm from "./BeitHabad/ReservationForm";
 
 
 
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
             {
                 path: "kampein",
                 element: <KampeinPage />,
+            },
+            {
+                path: 'shabat',
+                element: <ReservationForm />,
             },
             {
                 path: "admin/parasha/create",
