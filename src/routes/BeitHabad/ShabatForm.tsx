@@ -10,14 +10,14 @@ const fetchParashot = async (): Promise<Parasha[]> => {
   try {
     const startDate = new Date().toISOString().split("T")[0]; // התאריך של היום בפורמט YYYY-MM-DD
     const response = await fetch(
-      `https://www.hebcal.com/hebcal/?v=1&cfg=json&maj=on&start=${startDate}&c=on`
+      `https://www.hebcal.com/hebcal?v=1&cfg=json&maj=on&min=on&mod=on&nx=on&ss=on&s=on&year=now&month=x&geo=geoname&geonameid=293397`
     );
     if (!response.ok) {
       throw new Error("Failed to fetch parashot");
     }
     const json = await response.json();
 
-    console.log("Fetched parashot:" , json);
+    console.log("Fetched parashot:", json);
 
     return json.items
       .filter((item: any) => item.category === "parashat")
@@ -30,7 +30,7 @@ const fetchParashot = async (): Promise<Parasha[]> => {
           year: "numeric",
         }), // תאריך מעוצב להצגה
         parasha: item.hebrew,
-      }))
+      }));
   } catch (err) {
     console.error(err);
     return [];
