@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import './AboutChabad.scss';
+import { Link } from 'react-router-dom';
 
 
 const ChabadAboutSection: FC = () => {
@@ -17,8 +18,8 @@ const ChabadAboutSection: FC = () => {
             בית חב"ד מודרני ונחמד ביפו, מציע מגוון שירותים לקהילה המקומית ולמבקרים. אנו מספקים אווירה חמה ומקבלת, ומזמינים את כולם להשתתף בארוחות שבת, מקווה נשים, שירותי בית הכנסת, ועוד.
           </p>
           <div className="chabad-about-buttons">
-            <a href="/kampein" className="chabad-about-button">תרומה</a>
-            <a href="/shabat" className="chabad-about-button">הרשמה לשבת</a>
+            <Link to='/kampein' className="chabad-about-button">תרומה</Link>
+            <Link to='/shabat' className="chabad-about-button">הרשמה לשבת</Link>
           </div>
         </div>
       </div>

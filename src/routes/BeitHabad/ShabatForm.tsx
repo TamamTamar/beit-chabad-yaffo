@@ -98,11 +98,12 @@ const ParashaCarousel: React.FC = () => {
   return (
     <div className="seuda-form">
       <div className="carousel-container">
+        <h2 className="carousel-title">מתי אתם רוצים להגיע?</h2>
         <div className="carousel-row">
           <button className="carousel-button" onClick={prev} disabled={index === 0}>
-            ◀
+          ▶
           </button>
-          <div className="parasha-list">
+          <div className="parasha-boxes">
             {parashot.slice(index, index + 3).map((parasha) => (
               <div
                 className="parasha-box"
@@ -119,14 +120,15 @@ const ParashaCarousel: React.FC = () => {
             onClick={next}
             disabled={index + 3 >= parashot.length}
           >
-            ▶
+            ◀
+        
           </button>
         </div>
 
         {selectedParasha && (
           <div className="registrants-container">
             <h3 className="registrants-title">
-              בחר כמות נרשמים עבור {getCustomParashaName(selectedParasha.parasha)}
+            כמה באים ב{getCustomParashaName(selectedParasha.parasha)}?
             </h3>
             <div className="registrants-inputs">
               <div>
@@ -158,6 +160,7 @@ const ParashaCarousel: React.FC = () => {
               </div>
             </div>
             <p className="registrants-total">סה"כ לתשלום: {calculateTotalPrice()} ש"ח</p>
+            <button className="registrants-button">לתשלום</button>
           </div>
         )}
       </div>

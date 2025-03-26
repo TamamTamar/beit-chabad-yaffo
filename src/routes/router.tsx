@@ -11,6 +11,7 @@ import KampeinPage from "./kampein/KampeinPage";
 import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
 import Aboutkampein from "./kampein/AboutKampein";
 import ReservationForm from "./BeitHabad/ReservationForm";
+import ShabbatSelector from "./BeitHabad/ShabbatSelector";
 
 
 
@@ -28,7 +29,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'shabat',
-                element: <ReservationForm />,
+                element: <ShabbatSelector />,
             },
             {
                 path: "admin/parasha/create",

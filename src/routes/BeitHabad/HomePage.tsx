@@ -7,18 +7,17 @@ import ChabadAboutSection from './AboutChabad'
 import OurServiceN from './ChabadServices'
 import ReservationForm from './ReservationForm'
 import ParashaCarousel from './ShabatForm'
+import MainBanner from './MainBanner'
+import ShabbatSelector from './ShabbatSelector'
 
 
 const HomePage = () => {
   return (
     <div>
-      <CarouselChabd />
-      <ChabadAboutSection />
-      <OurServiceN />
-      <LatestParasha />
+    <MainBanner />
       <CandleLightingTimes />
-      <LatestVideo />
-      <ParashaCarousel />
+      <ChabadAboutSection />
+
  
 
 

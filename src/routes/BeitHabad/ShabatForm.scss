@@ -10,6 +10,13 @@
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    .carousel-title {
+        font-size: 16px;
+        color: #333;
+      
+       
+    }
 }
 
 // סגנון לשורה של הכפתורים ורשימת הפרשות
@@ -21,9 +28,9 @@
 }
 
 // סגנון לתיבות הפרשות
-.parasha-list {
+.parasha-boxes {
   display: flex;
-  gap: 15px; // רווח בין התיבות
+  gap: 10px; // רווח בין התיבות
 }
 
 .parasha-box {
