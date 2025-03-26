@@ -62,6 +62,10 @@ const ShabbatSelector: React.FC = () => {
         if (parasha === "פסח ז׳" || parasha === "Pesach VII") {
             return "שביעי של פסח";
         }
+        if (parasha === "סוכות א׳" || parasha === "Sukkot I") {
+            return "חג ראשון של סוכות ";
+            
+        }
         return parasha;
     };
 
@@ -88,11 +92,13 @@ const ShabbatSelector: React.FC = () => {
                 }}
             >
                 <option value="">בחר שבת</option>
-                {parashot.map((parasha) => (
-                    <option key={parasha.rawDate} value={parasha.rawDate}>
-                        {getCustomParashaName(parasha.parasha)} - {parasha.date}
-                    </option>
-                ))}
+                {parashot
+                    .filter(parasha => parasha.parasha !== "פסח ז׳" && parasha.parasha !== "Pesach VII") // סינון פרשות לא רצויות
+                    .map((parasha) => (
+                        <option key={parasha.rawDate} value={parasha.rawDate}>
+                            {getCustomParashaName(parasha.parasha)} - {parasha.date}
+                        </option>
+                    ))}
             </select>
 
             {selectedParasha && (
