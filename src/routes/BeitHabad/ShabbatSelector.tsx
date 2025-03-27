@@ -62,9 +62,14 @@ const ShabbatSelector: React.FC = () => {
         if (parasha === "פסח ז׳" || parasha === "Pesach VII") {
             return "שביעי של פסח";
         }
+        if (parasha === "ראש השנה 5786" || parasha === "Rosh Hashana 5786") {
+            return "ראש השנה";
+        }
+        if (parasha === "ראש השנה ב׳" || parasha === "Rosh Hashana II") {
+            return "יום שני של ראש השנה";
+        }
         if (parasha === "סוכות א׳" || parasha === "Sukkot I") {
-            return "חג ראשון של סוכות ";
-            
+            return "חג ראשון של סוכות";
         }
         return parasha;
     };
@@ -82,62 +87,68 @@ const ShabbatSelector: React.FC = () => {
         );
     };
 
-    return (
-        <div className="shabbat-selector">
-            <h2>מתי אתם רוצים להגיע?</h2>
-            <select
-                onChange={(e) => {
-                    const selected = parashot.find(p => p.rawDate === e.target.value);
-                    setSelectedParasha(selected || null);
-                }}
-            >
-                <option value="">בחר שבת</option>
-                {parashot
-                    .filter(parasha => parasha.parasha !== "פסח ז׳" && parasha.parasha !== "Pesach VII") // סינון פרשות לא רצויות
-                    .map((parasha) => (
-                        <option key={parasha.rawDate} value={parasha.rawDate}>
-                            {getCustomParashaName(parasha.parasha)} - {parasha.date}
-                        </option>
-                    ))}
-            </select>
 
-            {selectedParasha && (
-                <div className="registrants-container">
-                    <h3>כמה באים ב{getCustomParashaName(selectedParasha.parasha)}?</h3>
-                    <div className="registrants-inputs">
-                        <div>
-                            <label>יחידים (80 ש"ח):</label>
-                            <input
-                                type="number"
-                                min="0"
-                                value={singleCount}
-                                onChange={(e) => setSingleCount(Number(e.target.value))}
-                            />
+    return (
+        <>
+            <img src="/img/kampein/banner.png" alt="" />
+            <div className="shabbat-selector">
+
+                <h2>מתי אתם רוצים להגיע?</h2>
+
+                <select
+                    onChange={(e) => {
+                        const selected = parashot.find(p => p.rawDate === e.target.value);
+                        setSelectedParasha(selected || null);
+                    }}
+                >
+                    <option value="">בחר שבת</option>
+                    {parashot
+                        .filter(parasha => parasha.parasha !== "פסח ז׳" && parasha.parasha !== "Pesach VII") // סינון פרשות לא רצויות
+                        .map((parasha) => (
+                            <option key={parasha.rawDate} value={parasha.rawDate}>
+                                {getCustomParashaName(parasha.parasha)} - {parasha.date}
+                            </option>
+                        ))}
+                </select>
+
+                {selectedParasha && (
+                    <div className="registrants-container">
+                        <h3>כמה באים ב{getCustomParashaName(selectedParasha.parasha)}?</h3>
+                        <div className="registrants-inputs">
+                            <div>
+                                <label>יחידים (80 ש"ח):</label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    value={singleCount}
+                                    onChange={(e) => setSingleCount(Number(e.target.value))}
+                                />
+                            </div>
+                            <div>
+                                <label>זוגות (150 ש"ח):</label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    value={coupleCount}
+                                    onChange={(e) => setCoupleCount(Number(e.target.value))}
+                                />
+                            </div>
+                            <div>
+                                <label>ילדים (50 ש"ח):</label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    value={childCount}
+                                    onChange={(e) => setChildCount(Number(e.target.value))}
+                                />
+                            </div>
                         </div>
-                        <div>
-                            <label>זוגות (150 ש"ח):</label>
-                            <input
-                                type="number"
-                                min="0"
-                                value={coupleCount}
-                                onChange={(e) => setCoupleCount(Number(e.target.value))}
-                            />
-                        </div>
-                        <div>
-                            <label>ילדים (50 ש"ח):</label>
-                            <input
-                                type="number"
-                                min="0"
-                                value={childCount}
-                                onChange={(e) => setChildCount(Number(e.target.value))}
-                            />
-                        </div>
+                        <p>סה"כ לתשלום: {calculateTotalPrice()} ש"ח</p>
+                        <button>לתשלום</button>
                     </div>
-                    <p>סה"כ לתשלום: {calculateTotalPrice()} ש"ח</p>
-                    <button>לתשלום</button>
-                </div>
-            )}
-        </div>
+                )}
+            </div>
+        </>
     );
 };
 
