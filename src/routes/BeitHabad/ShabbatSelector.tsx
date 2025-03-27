@@ -1,15 +1,38 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import './ShabbatSelector.scss';
 
 const ShabbatSelector = () => {
     const location = useLocation();
     const { parasha } = location.state || {};
 
+    const getCustomParashaName = (parasha: string): string => {
+        if (parasha === "פסח א׳" || parasha === "Pesach I") {
+            return "ליל הסדר";
+        }
+        if (parasha === "פסח ז׳" || parasha === "Pesach VII") {
+            return "שביעי של פסח";
+        }
+        if (parasha === "ראש השנה 5786" || parasha === "Rosh Hashana 5786") {
+            return "ראש השנה";
+        }
+        if (parasha === "ראש השנה ב׳" || parasha === "Rosh Hashana II") {
+            return "יום שני של ראש השנה";
+        }
+        if (parasha === "יום כפור" || parasha === "Yom Kippur") {
+            return "יום כיפור - סעודה מפסקת";
+        }
+        if (parasha === "סוכות א׳" || parasha === "Sukkot I") {
+            return "חג ראשון של סוכות";
+        }
+        return parasha;
+    };
+
     return (
         <div className="registration-page">
-            <h1>הרשמה עבור {parasha?.parasha}</h1>
-            <p>תאריך: {parasha?.date}</p>
-            <button onClick={() => window.history.back()}>חזור</button>
+            <h1 className='registration-title'>{parasha ? getCustomParashaName(parasha.parasha) : "פרשה לא נבחרה"}</h1>
+            <p className='registration-date'>תאריך: {parasha?.date}</p>
+            <button className="back-button" onClick={() => window.history.back()}>לתאריכים נוספים</button>
         </div>
     );
 };

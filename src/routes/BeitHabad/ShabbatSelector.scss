@@ -1,88 +1,42 @@
-.shabbat-selector {
-    text-align: center;
-    padding: 20px;
-    background-color: #f8f8f8;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
-    margin: auto;
+.registration-page {
+  text-align: center;
+  padding: 20px;
+  background-image: url("/img/kampein/banner.png");
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 20px auto;
 
-    h2 {
-        font-size: 22px;
-        margin-bottom: 10px;
-        color: #333;
+  .registration-title {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+  .registration-date {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 20px;
+  }
+
+  .back-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #0056b3;
     }
 
-    select {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #fff;
-        cursor: pointer;
-        transition: all 0.3s ease-in-out;
-
-        &:hover {
-            border-color: #007bff;
-        }
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     }
-
-    .registrants-container {
-        margin-top: 20px;
-        padding: 15px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-        h3 {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .registrants-inputs {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 10px;
-
-            label {
-                font-size: 14px;
-                color: #333;
-                margin-right: 10px;
-            }
-
-            input {
-                width: 60px;
-                padding: 5px;
-                font-size: 16px;
-                text-align: center;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
-        }
-
-        p {
-            font-size: 16px;
-            color: #333;
-            font-weight: bold;
-        }
-
-        button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-
-            &:hover {
-                background-color: #0056b3;
-            }
-        }
-    }
+  }
 }
