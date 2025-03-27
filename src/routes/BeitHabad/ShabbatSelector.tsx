@@ -12,7 +12,7 @@ const fetchParashot = async (): Promise<Parasha[]> => {
     try {
         const startDate = new Date().toISOString().split("T")[0];
         const endDate = new Date();
-        endDate.setFullYear(endDate.getFullYear() + 1);
+        endDate.setMonth(endDate.getMonth() + 4);
         const endDateStr = endDate.toISOString().split("T")[0];
 
         const response = await fetch(
@@ -147,7 +147,7 @@ const ShabbatSelector: React.FC = () => {
                             </div>
                         </div>
                         <p>סה"כ לתשלום: {calculateTotalPrice()} ש"ח</p>
-                        <button>לתשלום</button>
+                        <button type="submit">לתשלום</button>
                     </div>
                 )}
             </div>

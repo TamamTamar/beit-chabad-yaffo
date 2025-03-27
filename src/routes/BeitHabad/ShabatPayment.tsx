@@ -78,25 +78,6 @@ const ShabatPayment = ({ monthlyAmount }) => {
                 <span className={step === 2 ? "active-step" : "inactive-step"}>2</span>
             </div>
 
-            {step === 1 && (
-                <PaymentFormStep1
-                    register={register}
-                    handleSubmit={handleSubmit}
-                    onSubmit={onSubmit}
-                    errors={errors}
-                    watchMonthlyAmount={watchMonthlyAmount}
-                    watchIs12Months={watchIs12Months}
-                    setValue={setValue}
-                />
-            )}
-
-            {step === 2 && (
-                <NedarimDonation
-                    paymentData={paymentData}
-                    handleBack={handleBack}
-                    iframeRef={iframeRef}
-                />
-            )}
         </div>
     );
 };
