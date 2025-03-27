@@ -9,6 +9,8 @@ import ReservationForm from './ReservationForm'
 import ParashaCarousel from './ShabatForm'
 import MainBanner from './MainBanner'
 import ShabbatSelector from './ShabbatSelector'
+import ShabbatNew from './ShabbatNew'
+
 
 
 const HomePage = () => {
@@ -17,6 +19,7 @@ const HomePage = () => {
     <MainBanner />
       <CandleLightingTimes />
       <ChabadAboutSection />
+      <ShabbatNew />
 
  
 

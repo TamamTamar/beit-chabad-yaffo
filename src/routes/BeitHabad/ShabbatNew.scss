@@ -1,0 +1,43 @@
+.shabbat-section {
+  text-align: center;
+  padding: 20px;
+  background-color: #b074c6;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 20px auto;
+
+  .shabbat-title {
+    font-size: 28px;
+    color: #ffffff;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+  .shabbat-subtitle {
+    font-size: 20px;
+    color: #dad7d7;
+    margin-bottom: 20px;
+  }
+
+  .select-shabbat {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+
+    &:hover {
+      border-color: #007bff;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #0056b3;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+  }
+}

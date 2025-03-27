@@ -61,3 +61,9 @@ interface PaymentFormProps {
     callBack: string;
     callBackMailError: string;
 }
+interface shabbat {
+    date: string;
+    rawDate: string;
+    parasha: string;
+    category: string;
+}

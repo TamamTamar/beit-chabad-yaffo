@@ -28,7 +28,7 @@ export const router = createBrowserRouter([
                 element: <KampeinPage />,
             },
             {
-                path: 'shabat',
+                path: 'registration',
                 element: <ShabbatSelector />,
             },
             {
