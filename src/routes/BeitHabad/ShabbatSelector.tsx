@@ -68,6 +68,9 @@ const ShabbatSelector: React.FC = () => {
         if (parasha === "ראש השנה ב׳" || parasha === "Rosh Hashana II") {
             return "יום שני של ראש השנה";
         }
+        if (parasha === "יום כפור" || parasha === "Yom Kippur") {
+            return "יום כיפור - סעודה מפסקת";
+        }
         if (parasha === "סוכות א׳" || parasha === "Sukkot I") {
             return "חג ראשון של סוכות";
         }
