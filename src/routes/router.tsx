@@ -12,6 +12,7 @@ import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
 import Aboutkampein from "./kampein/AboutKampein";
 import ReservationForm from "./BeitHabad/ReservationForm";
 import ShabbatSelector from "./BeitHabad/ShabbatSelector";
+import ShabbatNew from "./BeitHabad/ShabbatNew";
 
 
 
@@ -27,6 +28,10 @@ export const router = createBrowserRouter([
                 path: "kampein",
                 element: <KampeinPage />,
             },
+        {
+            path: "shabbat",
+            element: <ShabbatNew />,
+        },
             {
                 path: 'registration',
                 element: <ShabbatSelector />,

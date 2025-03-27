@@ -1,8 +1,9 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './ShabbatSelector.scss';
 
 const ShabbatSelector = () => {
+    const navigate = useNavigate();
     const location = useLocation();
     const { parasha } = location.state || {};
 
@@ -32,7 +33,7 @@ const ShabbatSelector = () => {
         <div className="registration-page">
             <h1 className='registration-title'>{parasha ? getCustomParashaName(parasha.parasha) : "פרשה לא נבחרה"}</h1>
             <p className='registration-date'>תאריך: {parasha?.date}</p>
-            <button className="back-button" onClick={() => window.history.back()}>לתאריכים נוספים</button>
+            <button className="back-button" onClick={() => navigate('/shabbat')}>לתאריכים נוספים</button>
         </div>
     );
 };
