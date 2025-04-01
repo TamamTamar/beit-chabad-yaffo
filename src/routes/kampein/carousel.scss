@@ -5,6 +5,7 @@
   justify-content: center;
   align-items: center;
   background: #38155DE5;
+  padding: 20px; // ריפוד פנימי
 }
 
 .carousel {
@@ -14,7 +15,7 @@
 
 .carousel-images {
   display: flex;
-  gap: 20px; // רווח קטן בין התמונות
+  gap: 10px; // רווח קטן בין התמונות
 }
 
 .carousel-img {
@@ -24,22 +25,3 @@
   border-radius: 10px; // פינות מעוגלות
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
-/* מחלקות דינמיות להזזת הקרוסלה */
-.carousel.translate-0 {
-  transform: translateX(0);
-}
-
-.carousel.translate-1 {
-  transform: translateX(-310px);
-}
-
-.carousel.translate-2 {
-  transform: translateX(-620px);
-}
-
-.carousel.translate-3 {
-  transform: translateX(-930px);
-}
-
-/* ניתן להוסיף מחלקות נוספות בהתאם למספר התמונות */
