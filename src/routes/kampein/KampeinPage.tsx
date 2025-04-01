@@ -1,3 +1,4 @@
+import CarouselChabd from "../BeitHabad/CarouselChabad"
 import CaruselaImage from "./CaruselaImage"
 import DonationProgressMinimal from "./DonationProgressMinimal"
 import KampeinBanner from "./KampeinBanner"

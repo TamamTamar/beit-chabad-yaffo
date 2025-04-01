@@ -2,21 +2,35 @@ import React, { FC } from 'react';
 import { Carousel } from 'flowbite-react';
 import './CarouselChabad.scss';
 
-
 const CarouselChabd: FC = () => {
     return (
         <div className="custom-carousel">
-            <Carousel pauseOnHover>
+            <Carousel slideInterval={5000} pauseOnHover>
                 <img
-                    src="/img/Banner.jpg"
-                    alt="Elegant Dresses Cover 1"
+                    src="/img/1.jpeg"
+                    alt="Image 1"
                     className="carousel-image desktop-image"
                 />
-                {/* <img
-                    src="/img/PikiWiki_Israel_32536_Old_Jaffa.JPG"
-                    alt="Second Image for Desktop"
+                <img
+                    src="/img/2.jpeg"
+                    alt="Image 2"
                     className="carousel-image desktop-image"
-                /> */}
+                />
+                <img
+                    src="/img/3.jpeg"
+                    alt="Image 3"
+                    className="carousel-image desktop-image"
+                />
+                <img
+                    src="/img/4.jpeg"
+                    alt="Image 4"
+                    className="carousel-image desktop-image"
+                />
+                <img
+                    src="/img/5.jpeg"
+                    alt="Image 5"
+                    className="carousel-image desktop-image"
+                />
             </Carousel>
         </div>
     );

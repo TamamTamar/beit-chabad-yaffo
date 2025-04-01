@@ -1,23 +1,24 @@
 .carousel-container {
   width: 100%;
-  overflow: hidden;
+  overflow: hidden; // מונע גלילה של תמונות מחוץ לתצוגה
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #38155DE5;
+  background: #38155de5;
   padding: 20px;
 }
 
 .carousel-track {
   display: flex;
-  gap: 30px;
-  will-change: transform; // משפר ביצועים
+  gap: 30px; // רווח בין התמונות
+  transition: transform 1s ease; // מעבר חלק בין התמונות
 }
 
 .carousel-img {
-  width: 300px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 10px;
+  flex: 0 0 auto; // מונע מהתמונה להתכווץ
+  width: 300px; // קביעת רוחב אחיד לכל תמונה
+  height: 200px; // קביעת גובה אחיד לכל תמונה
+  object-fit: cover; // מוודא שהתמונה מתמלאת בתוך המסגרת בלי להתעוות
+  border-radius: 10px; // פינות מעוגלות
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
