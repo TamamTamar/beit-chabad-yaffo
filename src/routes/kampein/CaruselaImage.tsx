@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import './carousel.scss';
 
 const CaruselaImage = () => {
@@ -47,8 +47,8 @@ const CaruselaImage = () => {
         'img/42.jpeg',
         'img/43.jpeg',
         'img/44.jpeg',
-
     ];
+
     const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
@@ -59,15 +59,17 @@ const CaruselaImage = () => {
         return () => clearInterval(interval); // לנקות את ה-interval כשמעבר לדף אחר
     }, [images.length]);
 
+    // חישוב התמונות שיוצגו
+    const displayedImages = [
+        images[currentIndex % images.length],
+        images[(currentIndex + 1) % images.length],
+        images[(currentIndex + 2) % images.length],
+    ];
+
     return (
         <div className="carousel-container">
-            <div
-                className="carousel"
-                style={{
-                    transform: `translateX(-${currentIndex * 310}px)`, // הזזה של התמונות
-                }}
-            >
-                {images.map((image, index) => (
+            <div className="carousel">
+                {displayedImages.map((image, index) => (
                     <img
                         className="carousel-img"
                         key={index}
