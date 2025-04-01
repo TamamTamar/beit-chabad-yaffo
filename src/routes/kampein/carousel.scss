@@ -9,27 +9,20 @@
 }
 
 .carousel {
-  display: flex;
-  gap: 30px;
   width: 100%;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  scroll-behavior: smooth; // גלילה חלקה
-  animation: scrollAnimation 10s linear infinite; // אנימציה אינסופית
+  overflow: hidden; // מונע גלילה
+  position: relative; // מאפשר מיקום יחסי של התמונות
+  flex-wrap: nowrap; // מונע מעבר לשורה חדשה
+  gap: 30px; // רווח בין התמונות
+  display: flex;
+  transition: transform 0.5s ease-in-out; // אנימציה חלקה למעבר בין התמונות
 }
-
-@keyframes scrollAnimation {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); } // תנועה שמדמה קרוסלה
-}
-
 
 .carousel-img {
-  width: 300px; // קביעת רוחב אחיד לכל התמונות
-  height: 200px; // קביעת גובה אחיד לכל התמונות
+  width: 300px; // קביעת רוחב אחיד לכל תמונה
+  height: 200px; // קביעת גובה אחיד לכל תמונה
   object-fit: cover; // מוודא שהתמונה מתמלאת בתוך המסגרת בלי להתעוות
   border-radius: 10px; // פינות מעוגלות
+  margin-right: 10px; // רווח בין התמונות
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
