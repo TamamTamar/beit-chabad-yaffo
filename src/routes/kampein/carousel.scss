@@ -10,14 +10,21 @@
 
 .carousel {
   display: flex;
-  transition: transform 4s ease-in-out; // אנימציה חלקה למעבר בין התמונות\
-  gap: 30px; // רווח בין התמונות
-  width: 100%; // רוחב מלא של הקונטיינר
-  justify-content: center; // מרכז את התמונות
-  align-items: center; // מרכז את התמונות
-  flex-wrap: nowrap; // לא מאפשר שורות חדשות
-  overflow-x: auto; // מאפשר גלילה אופקית
+  gap: 30px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-behavior: smooth; // גלילה חלקה
+  animation: scrollAnimation 10s linear infinite; // אנימציה אינסופית
 }
+
+@keyframes scrollAnimation {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } // תנועה שמדמה קרוסלה
+}
+
 
 .carousel-img {
   width: 300px; // קביעת רוחב אחיד לכל התמונות
