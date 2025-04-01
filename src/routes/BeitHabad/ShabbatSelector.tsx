@@ -1,6 +1,8 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './ShabbatSelector.scss';
+import ProductItem from './ProductItem';
+import './shabbat.scss';
 
 const ShabbatSelector = () => {
     const navigate = useNavigate();
@@ -28,13 +30,26 @@ const ShabbatSelector = () => {
         }
         return parasha;
     };
+    const products = [
+        { name: "כיסוי עלויות למבוגר", price: 42 },
+        { name: "כיסוי עלויות לילד (עד גיל 12)", price: 32 },
+        { name: "תומך", price: 82 },
+    ];
 
     return (
-        <div className="registration-page">
-            <h1 className='registration-title'>{parasha ? getCustomParashaName(parasha.parasha) : "פרשה לא נבחרה"}</h1>
-            <p className='registration-date'>תאריך: {parasha?.date}</p>
-            <button className="back-button" onClick={() => navigate('/shabbat')}>לתאריכים נוספים</button>
-        </div>
+        <>
+            <div className="registration-page">
+                <h1 className='registration-title'>{parasha ? getCustomParashaName(parasha.parasha) : "פרשה לא נבחרה"}</h1>
+                <p className='registration-date'>תאריך: {parasha?.date}</p>
+                <button className="back-button" onClick={() => navigate('/shabbat')}>לתאריכים נוספים</button>
+
+            </div>
+            <div className="product-list">
+                {products.map((product, index) => (
+                    <ProductItem key={index} {...product} />
+                ))}
+            </div>
+        </>
     );
 };
 

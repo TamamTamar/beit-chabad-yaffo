@@ -7,6 +7,7 @@ const KampeinPage = () => {
   return (
     <div>
       <KampeinBanner />
+      <CaruselaImage />
       <MoneyCircles />
       <DonationProgressMinimal />
     </div>

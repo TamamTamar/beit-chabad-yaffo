@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import './carousel.scss';
 
 const CaruselaImage = () => {
-    const images = [
-        'img/hanuca.jpeg',
-        'img/light.png',
-        'img/light2.png',
-    ];
+    // טעינת התמונות באופן דינמי מתוך תיקייה
+    const importAll = (r: any) => r.keys().map(r);
+    const images = importAll((require as any).context('../../assets/images', false, /\.(jpeg|jpg|png)$/));
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -24,6 +22,7 @@ const CaruselaImage = () => {
         images[(currentIndex + 1) % images.length],
         images[(currentIndex + 2) % images.length],
     ];
+
     return (
         <div className="carousel-container">
             <div className="carousel">
@@ -39,7 +38,7 @@ const CaruselaImage = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default CaruselaImage
+export default CaruselaImage;
