@@ -10,12 +10,13 @@
 
 .carousel {
   display: flex;
-  transition: transform 1s ease-in-out; // אנימציה חלקה למעבר בין התמונות\
-  gap: 20px; // רווח בין התמונות
+  transition: transform 4s ease-in-out; // אנימציה חלקה למעבר בין התמונות\
+  gap: 30px; // רווח בין התמונות
   width: 100%; // רוחב מלא של הקונטיינר
   justify-content: center; // מרכז את התמונות
   align-items: center; // מרכז את התמונות
   flex-wrap: nowrap; // לא מאפשר שורות חדשות
+  overflow-x: auto; // מאפשר גלילה אופקית
 }
 
 .carousel-img {
