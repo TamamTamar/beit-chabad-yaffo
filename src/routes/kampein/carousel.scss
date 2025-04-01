@@ -1,6 +1,6 @@
 .carousel-container {
   width: 100%;
-  overflow: hidden;
+  overflow: hidden; // מונע גלילה של תמונות מחוץ לתצוגה
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9,13 +9,9 @@
 }
 
 .carousel {
-  width: 100%;
-  overflow: hidden; // מונע גלילה
-  position: relative; // מאפשר מיקום יחסי של התמונות
-  flex-wrap: nowrap; // מונע מעבר לשורה חדשה
   gap: 30px; // רווח בין התמונות
   display: flex;
-  transition: transform 0.5s ease-in-out; // אנימציה חלקה למעבר בין התמונות
+  transition: transform 0.2s ease; // אנימציה חלקה ומהירה יותר
 }
 
 .carousel-img {
