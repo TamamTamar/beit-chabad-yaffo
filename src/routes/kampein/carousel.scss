@@ -4,16 +4,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #38155DE5;
 }
 
 .carousel {
   display: flex;
-  transition: transform 1s ease-in-out;
+  transition: transform 1s ease-in-out; // אנימציה חלקה למעבר בין התמונות
 }
 
 .carousel-images {
   display: flex;
-  gap: 10px; // רווח קטן בין התמונות
+  gap: 20px; // רווח קטן בין התמונות
 }
 
 .carousel-img {
@@ -22,5 +23,23 @@
   object-fit: cover; // מוודא שהתמונה מתמלאת בתוך המסגרת בלי להתעוות
   border-radius: 10px; // פינות מעוגלות
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 20px; // ריפוד פנימי
 }
+
+/* מחלקות דינמיות להזזת הקרוסלה */
+.carousel.translate-0 {
+  transform: translateX(0);
+}
+
+.carousel.translate-1 {
+  transform: translateX(-310px);
+}
+
+.carousel.translate-2 {
+  transform: translateX(-620px);
+}
+
+.carousel.translate-3 {
+  transform: translateX(-930px);
+}
+
+/* ניתן להוסיף מחלקות נוספות בהתאם למספר התמונות */
