@@ -15,25 +15,35 @@ const CarouselImage = () => {
     ];
 
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [isTransitioning, setIsTransitioning] = useState(true);
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-        }, 3000); // שינוי תמונה כל 3 שניות
+            setIsTransitioning(true);
+            setCurrentIndex((prevIndex) => prevIndex + 1);
+        }, 3000);
 
         return () => clearInterval(interval);
     }, []);
 
+    // אם עברנו את סוף המערך - איפוס למיקום הראשון בלי אנימציה
+    useEffect(() => {
+        if (currentIndex >= images.length) {
+            setTimeout(() => {
+                setIsTransitioning(false);
+                setCurrentIndex(0);
+            }, 500); // זמן שווה ל-transition כדי למנוע הבהוב
+        }
+    }, [currentIndex, images.length]);
+
     return (
         <div className="carousel-container">
-            <div className="carousel">
-                {images.map((image, index) => (
-                    <img
-                        key={index}
-                        src={image}
-                        alt={`carousel-img-${index}`}
-                        className={`carousel-img ${index === currentIndex ? 'active' : ''}`}
-                    />
+            <div className="carousel-track" style={{
+                transform: `translateX(${-currentIndex * (300 + 30)}px)`,
+                transition: isTransitioning ? "transform 0.5s ease-in-out" : "none"
+            }}>
+                {images.concat(images[0]).map((image, index) => ( // שכפול של התמונה הראשונה לסוף
+                    <img className="carousel-img" key={index} src={image} alt={`carousel-img-${index}`} />
                 ))}
             </div>
         </div>

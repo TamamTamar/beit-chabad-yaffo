@@ -8,24 +8,16 @@
   padding: 20px;
 }
 
-.carousel {
-  position: relative;
-  width: 300px; // גודל תמונה אחת
-  height: 200px;
+.carousel-track {
+  display: flex;
+  gap: 30px;
+  will-change: transform; // משפר ביצועים
 }
 
 .carousel-img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 300px;
+  height: 200px;
   object-fit: cover;
   border-radius: 10px;
-  opacity: 0; // תמונות נסתרות בהתחלה
-  transform: translateX(20px); // מתחילות מעט ימינה
-  transition: opacity 1s ease-in-out, transform 1s ease-in-out; // אנימציה חלקה
-}
-
-.carousel-img.active {
-  opacity: 1; // תמונה פעילה מופיעה
-  transform: translateX(0); // חוזרת למקומה
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
