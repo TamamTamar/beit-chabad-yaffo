@@ -10,7 +10,12 @@
 
 .carousel {
   display: flex;
-  transition: transform 1s ease-in-out; // אנימציה חלקה למעבר בין התמונות
+  transition: transform 1s ease-in-out; // אנימציה חלקה למעבר בין התמונות\
+  gap: 20px; // רווח בין התמונות
+  width: 100%; // רוחב מלא של הקונטיינר
+  justify-content: center; // מרכז את התמונות
+  align-items: center; // מרכז את התמונות
+  flex-wrap: nowrap; // לא מאפשר שורות חדשות
 }
 
 .carousel-img {
@@ -19,17 +24,4 @@
   object-fit: cover; // מוודא שהתמונה מתמלאת בתוך המסגרת בלי להתעוות
   border-radius: 10px; // פינות מעוגלות
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease; // אנימציה חלקה בעת ריחוף
-  gap: 20px; // רווח פנימי
-  &:hover {
-    transform: scale(1.05); // הגדלה קלה בעת ריחוף
-  }
-  @media (max-width: 768px) {
-    width: 100%; // רוחב מלא במסכים קטנים
-    height: auto; // גובה אוטומטי
-  }
-  @media (max-width: 480px) {
-    width: 100%; // רוחב מלא במסכים קטנים
-    height: auto; // גובה אוטומטי
-  }
 }
