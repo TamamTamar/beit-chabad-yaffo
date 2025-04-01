@@ -39,7 +39,8 @@ const CaruselaImage = () => {
 
     return (
         <div className="carousel-container">
-            <div className="carousel-track">
+            <div className="carousel-track"
+            >
                 {getDisplayedImages().map((image, index) => (
                     <img
                         key={index}

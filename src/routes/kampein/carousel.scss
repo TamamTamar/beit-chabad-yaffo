@@ -10,8 +10,8 @@
 
 .carousel-track {
   display: flex;
+  transition: transform 0.5s ease-in-out; // אנימציה חלקה למעבר בין התמונות
   gap: 30px; // רווח בין התמונות
-  transition: transform 1s ease; // מעבר חלק בין התמונות
 }
 
 .carousel-img {
@@ -19,6 +19,6 @@
   width: 300px; // קביעת רוחב אחיד לכל תמונה
   height: 200px; // קביעת גובה אחיד לכל תמונה
   object-fit: cover; // מוודא שהתמונה מתמלאת בתוך המסגרת בלי להתעוות
-  border-radius: 10px; // פינות מעוגלות
+  border-radius: 10px; // פינות מעוגלותa
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
