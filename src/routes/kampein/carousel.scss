@@ -10,8 +10,6 @@
 
 .carousel-track {
   display: flex;
-  transition: transform 0.5s ease-in-out; 
-  animation: slide 10s infinite; // אנימציה חלקה למעבר בין התמונות
   gap: 30px; // רווח בין התמונות
 }
 
