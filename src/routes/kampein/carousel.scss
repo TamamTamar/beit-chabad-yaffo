@@ -24,12 +24,12 @@
 }
 
 .carousel-img.fade-in {
-  animation: fade-in 2s ease-in; // הפעלת אנימציית fade-in
+  animation: fade-in 4s ease-out; // הפעלת אנימציית fade-in
 }
 
 @keyframes fade-in {
   from {
-    opacity: 0; // שקיפות מלאה בתחילת האנימציה
+    opacity: 0.9; // שקיפות מלאה בתחילת האנימציה
    // transform: scale(0.95); // התמונה קטנה מעט
   }
   to {
