@@ -18,6 +18,22 @@
   width: 300px; // קביעת רוחב אחיד לכל תמונה
   height: 200px; // קביעת גובה אחיד לכל תמונה
   object-fit: cover; // מוודא שהתמונה מתמלאת בתוך המסגרת בלי להתעוות
-  border-radius: 10px; // פינות מעוגלותa
+  border-radius: 10px; // פינות מעוגלות
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  opacity: 1; // ברירת מחדל: התמונה מוצגת
+}
+
+.carousel-img.fade-in {
+  animation: fade-in 0.5s ease; // הפעלת אנימציית fade-in
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0; // שקיפות מלאה בתחילת האנימציה
+    transform: scale(0.95); // התמונה קטנה מעט
+  }
+  to {
+    opacity: 1; // התמונה מופיעה בסוף האנימציה
+    transform: scale(1); // התמונה חוזרת לגודלה המקורי
+  }
 }
