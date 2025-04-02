@@ -1,4 +1,4 @@
-import CarouselChabd from "../BeitHabad/CarouselChabad"
+
 import CaruselaImage from "./CaruselaImage"
 import DonationProgressMinimal from "./DonationProgressMinimal"
 import KampeinBanner from "./KampeinBanner"
@@ -10,6 +10,7 @@ const KampeinPage = () => {
       <KampeinBanner />
       <CaruselaImage />
       <MoneyCircles />
+      <DonationProgressMinimal />
     </div>
 
 
