@@ -30,10 +30,10 @@
 @keyframes fade-in {
   from {
     opacity: 0; // שקיפות מלאה בתחילת האנימציה
-    transform: scale(0.95); // התמונה קטנה מעט
+   // transform: scale(0.95); // התמונה קטנה מעט
   }
   to {
     opacity: 1; // התמונה מופיעה בסוף האנימציה
-    transform: scale(1); // התמונה חוזרת לגודלה המקורי
+   // transform: scale(1); // התמונה חוזרת לגודלה המקורי
   }
 }
