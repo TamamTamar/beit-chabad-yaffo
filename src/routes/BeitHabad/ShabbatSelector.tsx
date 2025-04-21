@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './ShabbatSelector.scss';
 import ProductItem from './ProductItem';
@@ -30,11 +30,28 @@ const ShabbatSelector = () => {
         }
         return parasha;
     };
+
     const products = [
-        { name: "כיסוי עלויות למבוגר", price: 42 },
-        { name: "כיסוי עלויות לילד (עד גיל 12)", price: 32 },
-        { name: "תומך", price: 82 },
+        { name: "כיסוי עלויות למבוגר", price: 42, quantity: 0 },
+        { name: "כיסוי עלויות לילד (עד גיל 12)", price: 32, quantity: 0 },
+        { name: "תומך", price: 82, quantity: 0 },
     ];
+
+    const [productList, setProductList] = useState(products);
+    const [totalPrice, setTotalPrice] = useState(0);
+
+    const handleQuantityChange = (index: number, quantity: number) => {
+        const updatedProducts = [...productList];
+        updatedProducts[index].quantity = quantity;
+        setProductList(updatedProducts);
+
+        // עדכון המחיר הכולל
+        const newTotalPrice = updatedProducts.reduce(
+            (total, product) => total + product.price * product.quantity,
+            0
+        );
+        setTotalPrice(newTotalPrice);
+    };
 
     return (
         <>
@@ -42,16 +59,21 @@ const ShabbatSelector = () => {
                 <h1 className='registration-title'>{parasha ? getCustomParashaName(parasha.parasha) : "פרשה לא נבחרה"}</h1>
                 <p className='registration-date'>תאריך: {parasha?.date}</p>
                 <button className="back-button" onClick={() => navigate('/shabbat')}>לתאריכים נוספים</button>
-
             </div>
             <div className="product-list">
-                {products.map((product, index) => (
-                    <ProductItem key={index} {...product} />
+                {productList.map((product, index) => (
+                    <ProductItem
+                        key={index}
+                        name={product.name}
+                        price={product.price}
+                        quantity={product.quantity}
+                        onQuantityChange={(quantity) => handleQuantityChange(index, quantity)}
+                    />
                 ))}
             </div>
             <div className="total-price">
                 <span>סה"כ לתשלום: €</span>
-                <span className="price-amount">{products.reduce((total, product) => total + product.price, 0)}</span>
+                <span className="price-amount">{totalPrice}</span>
             </div>
             <button className="confirm-button" onClick={() => navigate('/payment')}>אישור</button>
         </>

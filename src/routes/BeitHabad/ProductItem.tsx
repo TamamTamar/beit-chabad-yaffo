@@ -1,17 +1,26 @@
-import QuantitySelector from "./QuantitySelector";
+import React from 'react';
 
 interface ProductItemProps {
     name: string;
     price: number;
-  }
-  
-  export default function ProductItem({ name, price }: ProductItemProps) {
+    quantity: number;
+    onQuantityChange: (quantity: number) => void;
+}
+
+const ProductItem: React.FC<ProductItemProps> = ({ name, price, quantity, onQuantityChange }) => {
     return (
-      <div className="product-item">
-        <span className="price">€{price.toFixed(2)}</span>
-        <span className="name">{name}</span>
-        <QuantitySelector onChange={(value) => console.log("Quantity:", value)} />
-      </div>
+        <div className="product-item">
+            <span className="product-name">{name}</span>
+            <span className="product-price">€{price}</span>
+            <input
+                type="number"
+                min="0"
+                value={quantity}
+                onChange={(e) => onQuantityChange(Number(e.target.value))}
+                className="product-quantity"
+            />
+        </div>
     );
-  }
-  
+};
+
+export default ProductItem;
