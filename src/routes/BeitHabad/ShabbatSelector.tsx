@@ -49,6 +49,11 @@ const ShabbatSelector = () => {
                     <ProductItem key={index} {...product} />
                 ))}
             </div>
+            <div className="total-price">
+                <span>סה"כ לתשלום: €</span>
+                <span className="price-amount">{products.reduce((total, product) => total + product.price, 0)}</span>
+            </div>
+            <button className="confirm-button" onClick={() => navigate('/payment')}>אישור</button>
         </>
     );
 };
