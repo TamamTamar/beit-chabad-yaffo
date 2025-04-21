@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { shabbat } from '../../@Types/chabadType';
-import { fetchParashot } from '../../services/shabbatService';
+import { fetchParashot, getCustomParashaName } from '../../services/shabbatService'; // ייבוא הפונקציה
 import './ShabbatNew.scss';
 
 const ShabbatNew = () => {
@@ -12,28 +12,6 @@ const ShabbatNew = () => {
     useEffect(() => {
         fetchParashot().then(setParashot);
     }, []);
-
-    const getCustomParashaName = (parasha: string): string => {
-        if (parasha === "פסח א׳" || parasha === "Pesach I") {
-            return "ליל הסדר";
-        }
-        if (parasha === "פסח ז׳" || parasha === "Pesach VII") {
-            return "שביעי של פסח";
-        }
-        if (parasha === "ראש השנה 5786" || parasha === "Rosh Hashana 5786") {
-            return "ראש השנה";
-        }
-        if (parasha === "ראש השנה ב׳" || parasha === "Rosh Hashana II") {
-            return "יום שני של ראש השנה";
-        }
-        if (parasha === "יום כפור" || parasha === "Yom Kippur") {
-            return "יום כיפור - סעודה מפסקת";
-        }
-        if (parasha === "סוכות א׳" || parasha === "Sukkot I") {
-            return "חג ראשון של סוכות";
-        }
-        return parasha;
-    };
 
     const handleRegistration = () => {
         if (selectedParasha) {

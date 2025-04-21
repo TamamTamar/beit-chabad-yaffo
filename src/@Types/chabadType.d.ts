@@ -67,3 +67,11 @@ interface shabbat {
     parasha: string;
     category: string;
 }
+export type RishumShabbatType = {
+    date: string; // תאריך השבת
+    parasha: string; // פרשת השבוע
+    name: string; // שם השבת
+    createdAt: Date; // תאריך יצירת הרשומה
+    adult: string; // תאריך יצירת הרשומה
+    child: string; // תאריך יצירת הרשומה
+  }
