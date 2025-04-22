@@ -39,6 +39,7 @@ const ShabbatSelector = () => {
             totalPrice: totalPrice,
             createdAt: new Date(),
             name: data.name,
+            phone: data.phone,
             people: {
                 adults: {
                     quantity: data.adults,
@@ -83,6 +84,15 @@ const ShabbatSelector = () => {
                     type="text"
                     {...register('name', { required: true })}
                     placeholder="הכנס שם מלא"
+                />
+            </div>
+            <div className="form-group">
+                <label htmlFor="phone">מספר טלפון:</label>
+                <input
+                    id="phone"
+                    type="tel"
+                    {...register('phone', { required: true })}
+                    placeholder="הכנס מספר טלפון"
                 />
             </div>
             <div className="form-group">

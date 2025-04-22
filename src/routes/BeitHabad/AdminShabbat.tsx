@@ -54,6 +54,7 @@ const AdminShabbat = () => {
                     <Table.HeadCell>פרשה</Table.HeadCell>
                     <Table.HeadCell>תאריך</Table.HeadCell>
                     <Table.HeadCell>שם</Table.HeadCell>
+                    <Table.HeadCell>טלפון</Table.HeadCell>7uiop[]
                     <Table.HeadCell>מבוגרים</Table.HeadCell>
                     <Table.HeadCell>ילדים</Table.HeadCell>
                     <Table.HeadCell>סה"כ לתשלום</Table.HeadCell>
@@ -67,6 +68,8 @@ const AdminShabbat = () => {
                             </Table.Cell>
                             <Table.Cell>{item.date}</Table.Cell>
                             <Table.Cell>{item.name}</Table.Cell>
+                            <Table.Cell>{item.phone}</Table.Cell>
+                            {/* כמות ומחיר למבוגרים */}
                             <Table.Cell>
                                 כמות: {item.people.adults.quantity}, מחיר: ₪{item.people.adults.price}
                             </Table.Cell>

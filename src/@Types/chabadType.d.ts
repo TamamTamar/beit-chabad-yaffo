@@ -74,6 +74,7 @@ export interface RishumShabbatType {
     totalPrice: number;
     createdAt: Date;
     name: string;
+    phone: string;
     people: {
         adults: {
             quantity: number;
@@ -87,6 +88,7 @@ export interface RishumShabbatType {
   }
   interface RishumShabbatInput {
       name: string;
+      phone: string;
       adults: number;
       children: number;
   }
