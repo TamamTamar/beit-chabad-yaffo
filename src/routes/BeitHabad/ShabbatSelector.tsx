@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { newRishum } from '../../services/shabbatService';
 import './ShabbatSelector.scss';
 import { RishumShabbatInput, RishumShabbatType } from '../../@Types/chabadType';
+import { showErrorDialog, showSuccessDialog } from '../../ui/dialogs';
 
 const ShabbatSelector = () => {
     const navigate = useNavigate();
@@ -30,17 +31,17 @@ const ShabbatSelector = () => {
     const handlePaymentCompletion = () => {
         // פונקציה שתופעל לאחר שהתשלום הושלם
         setPaymentCompleted(true);
-        alert('התשלום הושלם בהצלחה!');
+      showSuccessDialog('תשלום הושלם', 'תודה על התשלום!'); // הצגת הודעת הצלחה
     };
 
     const onSubmit: SubmitHandler<RishumShabbatInput> = async (data) => {
         if (!parasha) {
-            alert('לא נבחרה פרשה');
+           showErrorDialog('שגיאה', 'לא נבחרה פרשה.'); // הצגת הודעת שגיאה
             return;
         }
 
         if (!paymentCompleted) {
-            alert('יש להשלים את התשלום לפני האישור.');
+            showErrorDialog('שגיאה', 'יש להשלים את התשלום לפני ההגשה.'); // הצגת הודעת שגיאה
             return;
         }
 
@@ -66,7 +67,7 @@ const ShabbatSelector = () => {
 
         try {
             await newRishum(rishum);
-            alert('הרישום נשמר בהצלחה!');
+            showSuccessDialog('רישום הושלם', 'תודה על הרישום!'); // הצגת הודעת הצלחה
             navigate('/confirmation'); // נווט לעמוד אישור
         } catch (error) {
             console.error('שגיאה בשמירת הרישום:', error);
