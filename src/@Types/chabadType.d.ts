@@ -68,13 +68,20 @@ interface shabbat {
     category: string;
 }
 export interface RishumShabbatType {
-    _id: string; // Added _id property
+    _id: string;
     parasha: string;
     date: string;
     totalPrice: number;
-    products: {
-        name: string;
-        quantity: number;
-        price: number;
-    }[];
-}
+    createdAt: Date;
+    name: string;
+    people: {
+        adults: {
+            quantity: number;
+            price: number;
+        };
+        children: {
+            quantity: number;
+            price: number;
+        };
+    };
+  }

@@ -53,8 +53,10 @@ const AdminShabbat = () => {
                 <Table.Head>
                     <Table.HeadCell>פרשה</Table.HeadCell>
                     <Table.HeadCell>תאריך</Table.HeadCell>
+                    <Table.HeadCell>שם</Table.HeadCell>
+                    <Table.HeadCell>מבוגרים</Table.HeadCell>
+                    <Table.HeadCell>ילדים</Table.HeadCell>
                     <Table.HeadCell>סה"כ לתשלום</Table.HeadCell>
-                    <Table.HeadCell>מוצרים</Table.HeadCell>
                 </Table.Head>
                 <Table.Body className="divide-y">
                     {filteredRishum.map((item) => (
@@ -63,16 +65,14 @@ const AdminShabbat = () => {
                                 {item.parasha}
                             </Table.Cell>
                             <Table.Cell>{item.date}</Table.Cell>
-                            <Table.Cell>€{item.totalPrice}</Table.Cell>
+                            <Table.Cell>{item.name}</Table.Cell>
                             <Table.Cell>
-                                <ul>
-                                    {item.products.map((product, index) => (
-                                        <li key={index}>
-                                            {product.name} - כמות: {product.quantity} - מחיר: €{product.price}
-                                        </li>
-                                    ))}
-                                </ul>
+                                כמות: {item.people.adults.quantity}, מחיר: €{item.people.adults.price}
                             </Table.Cell>
+                            <Table.Cell>
+                                כמות: {item.people.children.quantity}, מחיר: €{item.people.children.price}
+                            </Table.Cell>
+                            <Table.Cell>€{item.totalPrice}</Table.Cell>
                         </Table.Row>
                     ))}
                 </Table.Body>
