@@ -85,3 +85,8 @@ export interface RishumShabbatType {
         };
     };
   }
+  interface RishumShabbatInput {
+      name: string;
+      adults: number;
+      children: number;
+  }
