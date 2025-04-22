@@ -1,81 +1,107 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { newRishum } from '../../services/shabbatService';
 import './ShabbatSelector.scss';
-import ProductItem from './ProductItem';
-import './shabbat.scss';
+import { RishumShabbatType } from '../../@Types/chabadType';
 
 const ShabbatSelector = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { parasha } = location.state || {};
 
-    const getCustomParashaName = (parasha: string): string => {
-        if (parasha === "פסח א׳" || parasha === "Pesach I") {
-            return "ליל הסדר";
-        }
-        if (parasha === "פסח ז׳" || parasha === "Pesach VII") {
-            return "שביעי של פסח";
-        }
-        if (parasha === "ראש השנה 5786" || parasha === "Rosh Hashana 5786") {
-            return "ראש השנה";
-        }
-        if (parasha === "ראש השנה ב׳" || parasha === "Rosh Hashana II") {
-            return "יום שני של ראש השנה";
-        }
-        if (parasha === "יום כפור" || parasha === "Yom Kippur") {
-            return "יום כיפור - סעודה מפסקת";
-        }
-        if (parasha === "סוכות א׳" || parasha === "Sukkot I") {
-            return "חג ראשון של סוכות";
-        }
-        return parasha;
-    };
-
-    const products = [
-        { name: "כיסוי עלויות למבוגר", price: 42, quantity: 0 },
-        { name: "כיסוי עלויות לילד (עד גיל 12)", price: 32, quantity: 0 },
-        { name: "תומך", price: 82, quantity: 0 },
-    ];
-
-    const [productList, setProductList] = useState(products);
+    const [adultsQuantity, setAdultsQuantity] = useState(0);
+    const [childrenQuantity, setChildrenQuantity] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
 
-    const handleQuantityChange = (index: number, quantity: number) => {
-        const updatedProducts = [...productList];
-        updatedProducts[index].quantity = quantity;
-        setProductList(updatedProducts);
+    const adultPrice = 150; // מחיר למבוגר בשקלים
+    const childPrice = 100; // מחיר לילד בשקלים
 
-        // עדכון המחיר הכולל
-        const newTotalPrice = updatedProducts.reduce(
-            (total, product) => total + product.price * product.quantity,
-            0
-        );
-        setTotalPrice(newTotalPrice);
+    const calculateTotalPrice = () => {
+        const total = adultsQuantity * adultPrice + childrenQuantity * childPrice;
+        setTotalPrice(total);
+    };
+
+    const handleRegistration = async () => {
+        if (!parasha) {
+            alert('לא נבחרה פרשה');
+            return;
+        }
+
+        const rishum: RishumShabbatType = {
+            _id: '', // ייווצר אוטומטית בשרת
+            parasha: parasha.parasha,
+            date: parasha.date,
+            totalPrice: totalPrice,
+            createdAt: new Date(),
+            name: 'שם מלא לדוגמה', // ניתן להחליף בשם מהמשתמש
+            people: {
+                adults: {
+                    quantity: adultsQuantity,
+                    price: adultsQuantity * adultPrice,
+                },
+                children: {
+                    quantity: childrenQuantity,
+                    price: childrenQuantity * childPrice,
+                },
+            },
+        };
+
+        try {
+            await newRishum(rishum);
+            alert('הרישום נשמר בהצלחה!');
+            navigate('/confirmation'); // נווט לעמוד אישור
+        } catch (error) {
+            console.error('שגיאה בשמירת הרישום:', error);
+            alert('שגיאה בשמירת הרישום');
+        }
     };
 
     return (
         <>
             <div className="registration-page">
-                <h1 className='registration-title'>{parasha ? getCustomParashaName(parasha.parasha) : "פרשה לא נבחרה"}</h1>
-                <p className='registration-date'>תאריך: {parasha?.date}</p>
-                <button className="back-button" onClick={() => navigate('/shabbat')}>לתאריכים נוספים</button>
+                <h1 className="registration-title">
+                    {parasha ? parasha.parasha : 'פרשה לא נבחרה'}
+                </h1>
+                <p className="registration-date">תאריך: {parasha?.date}</p>
+                <button className="back-button" onClick={() => navigate('/shabbat')}>
+                    לתאריכים נוספים
+                </button>
             </div>
             <div className="product-list">
-                {productList.map((product, index) => (
-                    <ProductItem
-                        key={index}
-                        name={product.name}
-                        price={product.price}
-                        quantity={product.quantity}
-                        onQuantityChange={(quantity) => handleQuantityChange(index, quantity)}
+                <div className="product-item">
+                    <span>מבוגרים</span>
+                    <input
+                        type="number"
+                        min="0"
+                        value={adultsQuantity}
+                        onChange={(e) => {
+                            setAdultsQuantity(Number(e.target.value));
+                            calculateTotalPrice();
+                        }}
                     />
-                ))}
+                    <span>מחיר ליחידה: ₪{adultPrice}</span>
+                </div>
+                <div className="product-item">
+                    <span>ילדים</span>
+                    <input
+                        type="number"
+                        min="0"
+                        value={childrenQuantity}
+                        onChange={(e) => {
+                            setChildrenQuantity(Number(e.target.value));
+                            calculateTotalPrice();
+                        }}
+                    />
+                    <span>מחיר ליחידה: ₪{childPrice}</span>
+                </div>
             </div>
             <div className="total-price">
-                <span>סה"כ לתשלום: €</span>
+                <span>סה"כ לתשלום: ₪</span>
                 <span className="price-amount">{totalPrice}</span>
             </div>
-            <button className="confirm-button" onClick={() => navigate('/payment')}>אישור</button>
+            <button className="confirm-button" onClick={handleRegistration}>
+                אישור
+            </button>
         </>
     );
 };

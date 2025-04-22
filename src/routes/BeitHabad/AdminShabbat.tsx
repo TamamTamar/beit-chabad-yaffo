@@ -67,12 +67,12 @@ const AdminShabbat = () => {
                             <Table.Cell>{item.date}</Table.Cell>
                             <Table.Cell>{item.name}</Table.Cell>
                             <Table.Cell>
-                                כמות: {item.people.adults.quantity}, מחיר: €{item.people.adults.price}
+                                כמות: {item.people.adults.quantity}, מחיר: ₪{item.people.adults.price}
                             </Table.Cell>
                             <Table.Cell>
-                                כמות: {item.people.children.quantity}, מחיר: €{item.people.children.price}
+                                כמות: {item.people.children.quantity}, מחיר: ₪{item.people.children.price}
                             </Table.Cell>
-                            <Table.Cell>€{item.totalPrice}</Table.Cell>
+                            <Table.Cell>₪{item.totalPrice}</Table.Cell>
                         </Table.Row>
                     ))}
                 </Table.Body>
