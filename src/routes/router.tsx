@@ -13,6 +13,7 @@ import Aboutkampein from "./kampein/AboutKampein";
 import ReservationForm from "./BeitHabad/ReservationForm";
 import ShabbatSelector from "./BeitHabad/ShabbatSelector";
 import ShabbatNew from "./BeitHabad/ShabbatNew";
+import AdminShabbat from "./BeitHabad/AdminShabbat";
 
 
 
@@ -71,6 +72,10 @@ export const router = createBrowserRouter([
             {
                 path: "/about",
                 element: <Aboutkampein />,
+            },
+            {
+                path: "/admin/rishum",
+                element: <AdminShabbat />,
             }
            
 
