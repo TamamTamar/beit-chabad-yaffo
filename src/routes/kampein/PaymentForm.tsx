@@ -96,10 +96,7 @@ const PaymentForm = ({ monthlyAmount }) => {
                     iframeRef={iframeRef}
                 />
             )}
-            <div id="PayBtDiv" className="pay-bt-div">
-                <button className="back-button" onClick={handleBack}>הקודם</button>
-                <button className="back-button" onClick={() => (window as any).PayBtClick()}>בצע תשלום</button>
-            </div>
+            
         </div>
     );
 };
