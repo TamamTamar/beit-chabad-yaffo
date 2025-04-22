@@ -1,20 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { newRishum } from '../../services/shabbatService';
 import './ShabbatSelector.scss';
 import { RishumShabbatInput, RishumShabbatType } from '../../@Types/chabadType';
 
-
-
 const ShabbatSelector = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { parasha } = location.state || {};
 
-    const { register, handleSubmit, watch, setValue } = useForm<RishumShabbatInput>({
+    const { register, handleSubmit, watch } = useForm<RishumShabbatInput>({
         defaultValues: {
             name: '',
+            phone: '',
             adults: 0,
             children: 0,
         },
@@ -26,9 +25,22 @@ const ShabbatSelector = () => {
     const totalPrice =
         watch('adults') * adultPrice + watch('children') * childPrice;
 
+    const [paymentCompleted, setPaymentCompleted] = useState(false);
+
+    const handlePaymentCompletion = () => {
+        // פונקציה שתופעל לאחר שהתשלום הושלם
+        setPaymentCompleted(true);
+        alert('התשלום הושלם בהצלחה!');
+    };
+
     const onSubmit: SubmitHandler<RishumShabbatInput> = async (data) => {
         if (!parasha) {
             alert('לא נבחרה פרשה');
+            return;
+        }
+
+        if (!paymentCompleted) {
+            alert('יש להשלים את התשלום לפני האישור.');
             return;
         }
 
@@ -119,7 +131,18 @@ const ShabbatSelector = () => {
                 <span>סה"כ לתשלום: ₪</span>
                 <span className="price-amount">{totalPrice}</span>
             </div>
-            <button type="submit" className="confirm-button">
+            <div className="payment-section">
+                <h3>תשלום:</h3>
+                <iframe
+                    src={`https://secure.matara.pro/nedarimplus/iframe/Donation.aspx?Mosad=7013920&Amount=${totalPrice}`}
+                    width="100%"
+                    height="400px"
+                    frameBorder="0"
+                    scrolling="no"
+                    onLoad={handlePaymentCompletion} // סימון שהתשלום הושלם
+                ></iframe>
+            </div>
+            <button type="submit" className="confirm-button" disabled={!paymentCompleted}>
                 אישור
             </button>
         </form>
