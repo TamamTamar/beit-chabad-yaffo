@@ -103,10 +103,7 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef }) => {
       <div id="ErrorDiv" className="error-div"></div>
       <div id="OkDiv" className="ok-div">✔️ התשלום הצליח!</div>
       <div id="WaitPay" className="wait-pay">⏳ מעבד תשלום...</div>
-      <div id="PayBtDiv" className="pay-bt-div">
-        <button className="back-button" onClick={handleBack}>הקודם</button>
-        <button className="back-button" onClick={() => (window as any).PayBtClick()}>בצע תשלום</button>
-      </div>
+    
     </div>
   );
 }
