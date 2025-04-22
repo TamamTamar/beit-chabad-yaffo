@@ -54,7 +54,7 @@ const AdminShabbat = () => {
                     <Table.HeadCell>פרשה</Table.HeadCell>
                     <Table.HeadCell>תאריך</Table.HeadCell>
                     <Table.HeadCell>שם</Table.HeadCell>
-                    <Table.HeadCell>טלפון</Table.HeadCell>7uiop[]
+                    <Table.HeadCell>טלפון</Table.HeadCell>
                     <Table.HeadCell>מבוגרים</Table.HeadCell>
                     <Table.HeadCell>ילדים</Table.HeadCell>
                     <Table.HeadCell>סה"כ לתשלום</Table.HeadCell>
