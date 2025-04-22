@@ -63,13 +63,13 @@ export const getCustomParashaName = (parasha: string): string => {
 };
 
 export const newRishum = async (data: RishumShabbatType) => {
- return axios.post(`${baseUrl}/`, data,);
+ return axios.post(`${baseUrl}/register`, data,);
 }
 
 //get all registrations
 export const getAllRishum = async () => {
     try {
-        const response = await axios.get(`${baseUrl}/register`);
+        const response = await axios.get(`${baseUrl}/`);
         return response.data;
     } catch (error) {
         console.error("Error fetching registrations:", error);
