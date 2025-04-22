@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { newRishum } from '../../services/shabbatService';
 import './ShabbatSelector.scss';
 import { RishumShabbatInput, RishumShabbatType } from '../../@Types/chabadType';
 import { showErrorDialog, showSuccessDialog } from '../../ui/dialogs';
+import NedarimDonation from '../kampein/NedarimDonation';
 
 const ShabbatSelector = () => {
     const navigate = useNavigate();
+    const [paymentData, setPaymentData] = useState(null);
     const location = useLocation();
+    const iframeRef = useRef<HTMLIFrameElement | null>(null);
     const { parasha } = location.state || {};
 
     const { register, handleSubmit, watch } = useForm<RishumShabbatInput>({
@@ -67,11 +70,12 @@ const ShabbatSelector = () => {
 
         try {
             await newRishum(rishum);
+            setPaymentData(rishum); // עדכון נתוני התשלום
             showSuccessDialog('רישום הושלם', 'תודה על הרישום!'); // הצגת הודעת הצלחה
             navigate('/confirmation'); // נווט לעמוד אישור
         } catch (error) {
             console.error('שגיאה בשמירת הרישום:', error);
-            alert('שגיאה בשמירת הרישום');
+            showErrorDialog('שגיאה', 'לא הצלחנו לשמור את הרישום שלך.'); // הצגת הודעת שגיאה
         }
     };
 
@@ -134,14 +138,11 @@ const ShabbatSelector = () => {
             </div>
             <div className="payment-section">
                 <h3>תשלום:</h3>
-                <iframe
-                    src={`https://secure.matara.pro/nedarimplus/iframe/Donation.aspx?Mosad=7013920&Amount=${totalPrice}`}
-                    width="100%"
-                    height="400px"
-                    frameBorder="0"
-                    scrolling="no"
-                    onLoad={handlePaymentCompletion} // סימון שהתשלום הושלם
-                ></iframe>
+                <NedarimDonation
+                    paymentData={paymentData}
+                    handleBack={() => navigate('/shabbat')}
+                    iframeRef={iframeRef}
+                />
             </div>
             <button type="submit" className="confirm-button" disabled={!paymentCompleted}>
                 אישור
