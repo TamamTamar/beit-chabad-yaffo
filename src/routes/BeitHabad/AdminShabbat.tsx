@@ -57,6 +57,7 @@ const AdminShabbat = () => {
                     <Table.HeadCell>מבוגרים</Table.HeadCell>
                     <Table.HeadCell>ילדים</Table.HeadCell>
                     <Table.HeadCell>סה"כ לתשלום</Table.HeadCell>
+                    <Table.HeadCell>תאריך רישום</Table.HeadCell>
                 </Table.Head>
                 <Table.Body className="divide-y">
                     {filteredRishum.map((item) => (
@@ -73,6 +74,7 @@ const AdminShabbat = () => {
                                 כמות: {item.people.children.quantity}, מחיר: ₪{item.people.children.price}
                             </Table.Cell>
                             <Table.Cell>₪{item.totalPrice}</Table.Cell>
+                            <Table.Cell>{item.createdAt.toLocaleDateString()}</Table.Cell>
                         </Table.Row>
                     ))}
                 </Table.Body>
