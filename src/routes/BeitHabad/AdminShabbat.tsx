@@ -74,7 +74,9 @@ const AdminShabbat = () => {
                                 כמות: {item.people.children.quantity}, מחיר: ₪{item.people.children.price}
                             </Table.Cell>
                             <Table.Cell>₪{item.totalPrice}</Table.Cell>
-                            <Table.Cell>{item.createdAt.toLocaleDateString()}</Table.Cell>
+                            <Table.Cell>
+                                {new Date(item.createdAt).toLocaleDateString('he-IL')} {/* המרה ל-Date */}
+                            </Table.Cell>
                         </Table.Row>
                     ))}
                 </Table.Body>
