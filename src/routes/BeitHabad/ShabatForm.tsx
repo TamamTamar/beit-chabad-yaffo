@@ -11,7 +11,7 @@ const ShabatForm = ({ totalAmount }) => {
 
     const iframeRef = useRef<HTMLIFrameElement>(null);
 
-    const  shabbatForm = useForm({
+    const shabbatForm = useForm({
         defaultValues: {
             Zeout: "",
             FirstName: "",
@@ -30,6 +30,7 @@ const ShabatForm = ({ totalAmount }) => {
             MonthlyAmount: totalAmount || 0,
             Is12Months: (totalAmount || 0) !== 0,
         }
+
     });
 
 
@@ -62,7 +63,10 @@ const ShabatForm = ({ totalAmount }) => {
 
             {step === 2 && (
                 <ShabbatFormStep2
-                
+                    setPaymentData={(data) => {
+                        console.log("Payment Data from Step 2:", data); // בדיקת הנתונים שמגיעים משלב 2
+                        setPaymentData(data);
+                    }}
                     selectedShabbat={selectedShabbat}
                     setStep={setStep}
                 />

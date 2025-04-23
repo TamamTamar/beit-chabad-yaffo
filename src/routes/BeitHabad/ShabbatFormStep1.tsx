@@ -8,13 +8,13 @@ const ShabbatFormStep1 = ({ setStep, setSelectedShabbat }) => {
     useEffect(() => {
         fetchParashot().then(setParashot);
     }, []);
-
-    const handleParashaSelection = () => {
-        if (selectedParasha) {
-            setSelectedShabbat(selectedParasha); // מעדכן את הפרשה שנבחרה בקומפוננטת האב
-            setStep(2); // מעביר לשלב 2
-        }
-    };
+const handleParashaSelection = () => {
+    if (selectedParasha) {
+        console.log("Selected Parasha:", selectedParasha); // בדיקת הפרשה שנבחרה
+        setSelectedShabbat(selectedParasha); // עדכון הפרשה שנבחרה בקומפוננטת האב
+        setStep(2); // מעבר לשלב 2
+    }
+};
 
     return (
         <div className="shabbat-selection">
