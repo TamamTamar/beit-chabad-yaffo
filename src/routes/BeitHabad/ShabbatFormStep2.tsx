@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { RishumShabbatInput } from "../../@Types/chabadType";
 
 const ADULT_PRICE = 1;
 const CHILD_PRICE = 25;
@@ -10,8 +11,14 @@ const ShabbatFormStep2 = ({ selectedShabbat, setStep, setPaymentData }) => {
             adults: 0,
             children: 0,
             couples: 0,
+            firstname: "",
+            lastname: "",
+            phone: "",
+            mail: "",
         }
     });
+
+    
 
     const adults = watch("adults");
     const children = watch("children");
@@ -22,12 +29,34 @@ const ShabbatFormStep2 = ({ selectedShabbat, setStep, setPaymentData }) => {
         children * CHILD_PRICE +
         couples * COUPLE_PRICE;
 
-    const onSubmit = (data) => {
-        const newPaymentData = {
+    const onSubmit = (data: RishumShabbatInput) => {
+        const PaymentData = {
             ...data,
             selectedShabbat,
             total,
         };
+
+
+        const newPaymentData = {
+            Mosad: "7013920",
+            ApiValid: "zidFYCLaNi",
+            Zeout: "",
+            FirstName: PaymentData.firstname,
+            LastName: PaymentData.lastname,
+            Street: "",
+            City: "",
+            Phone: PaymentData.phone,
+            Mail: data.mail,
+            PaymentType: "Ragil",
+            Amount: total,
+            Tashlumim: 1,
+            Currency: 1,
+            Groupe: "",
+            Comment:"",
+            CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/payment/nedarim",
+            CallBackMailError: "lchabadyaffo@gmail.com",
+        };
+        
 
         console.log("Selected Shabbat:", selectedShabbat); // בדיקת הפרשה שנבחרה
         console.log("Form Data:", data); // בדיקת הנתונים מהטופס

@@ -87,8 +87,10 @@ export interface RishumShabbatType {
     };
   }
   interface RishumShabbatInput {
-      name: string;
+      firstname: string;
+    lastname: string;
       phone: string;
+      mail: string;
       adults: number;
       children: number;
   };

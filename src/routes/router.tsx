@@ -32,7 +32,7 @@ export const router = createBrowserRouter([
             },
         {
             path: "shabbat",
-            element: <ShabatForm totalAmount={0}/>,
+            element: <ShabatForm />,
         },
             {
                 path: 'registration',

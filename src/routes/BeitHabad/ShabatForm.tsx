@@ -4,35 +4,12 @@ import NedarimDonation from '../kampein/NedarimDonation';
 import ShabbatFormStep1 from './ShabbatFormStep1';
 import ShabbatFormStep2 from './ShabbatFormStep2';
 
-const ShabatForm = ({ totalAmount }) => {
+const ShabatForm = ({ }) => {
     const [step, setStep] = useState(1);
     const [paymentData, setPaymentData] = useState(null);
     const [selectedShabbat, setSelectedShabbat] = useState(null); // סטייט לפרשה שנבחרה
 
     const iframeRef = useRef<HTMLIFrameElement>(null);
-
-    const shabbatForm = useForm({
-        defaultValues: {
-            Zeout: "",
-            FirstName: "",
-            LastName: "",
-            Street: "",
-            City: "",
-            Phone: "",
-            Mail: "",
-            Amount: totalAmount || 0,
-            Tashlumim: 1,
-            Currency: 1,
-            Groupe: "",
-            Comment: "",
-            Dedication: "",
-            PaymentType: "Ragil",
-            MonthlyAmount: totalAmount || 0,
-            Is12Months: (totalAmount || 0) !== 0,
-        }
-
-    });
-
 
     const handlePaymentCompletion = () => {
         setStep(4);
