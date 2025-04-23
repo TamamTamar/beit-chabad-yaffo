@@ -5,7 +5,6 @@ import { newRishum } from '../../services/shabbatService';
 import './ShabbatSelector.scss';
 import { RishumShabbatInput, RishumShabbatType } from '../../@Types/chabadType';
 import { showErrorDialog, showSuccessDialog } from '../../ui/dialogs';
-import NedarimDonation from '../kampein/NedarimDonation';
 
 const ShabbatSelector = () => {
     const navigate = useNavigate();
@@ -23,8 +22,8 @@ const ShabbatSelector = () => {
         },
     });
 
-    const adultPrice = 150; // מחיר למבוגר בשקלים
-    const childPrice = 100; // מחיר לילד בשקלים
+    const adultPrice = 1; // מחיר למבוגר בשקלים
+    const childPrice = 1; // מחיר לילד בשקלים
 
     const totalPrice =
         watch('adults') * adultPrice + watch('children') * childPrice;
@@ -32,10 +31,13 @@ const ShabbatSelector = () => {
     const [paymentCompleted, setPaymentCompleted] = useState(false);
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
-    const handlePaymentCompletion = () => {
-        setPaymentCompleted(true);
-        setIsProcessingPayment(false);
-        showSuccessDialog('תשלום הושלם', 'תודה על התשלום!');
+    // פונקציה לשליחת הודעות ל-iframe
+    const PostNedarim = (Data: object) => {
+        if (iframeRef.current && iframeRef.current.contentWindow) {
+            iframeRef.current.contentWindow.postMessage(Data, '*');
+        } else {
+            console.error("⚠️ לא ניתן לשלוח הודעה ל-iframe.");
+        }
     };
 
     const handlePaymentClick = () => {
@@ -44,8 +46,24 @@ const ShabbatSelector = () => {
         if (payBtDiv) payBtDiv.style.display = 'none';
         if (waitPay) waitPay.style.display = 'block';
 
-        (window as any).PayBtClick(); // קריאה לפונקציה של התשלום
+        // קריאה לפונקציה PostNedarim עם הנתונים
+        PostNedarim({
+            Name: 'FinishTransaction2',
+            Value: {
+                Amount: totalPrice,
+                Description: 'תשלום עבור שבת',
+                FullName: watch('name'),
+                Phone: watch('phone'),
+            },
+        });
+
         setIsProcessingPayment(true);
+    };
+
+    const handlePaymentCompletion = () => {
+        setPaymentCompleted(true);
+        setIsProcessingPayment(false);
+        showSuccessDialog('תשלום הושלם', 'תודה על התשלום!');
     };
 
     const onSubmit: SubmitHandler<RishumShabbatInput> = async (data) => {
@@ -149,11 +167,17 @@ const ShabbatSelector = () => {
             </div>
             <div className="payment-section">
                 <h3>תשלום:</h3>
-                <NedarimDonation
-                    paymentData={paymentData}
-                    handleBack={() => navigate('/shabbat')}
-                    iframeRef={iframeRef}
+                <div id="WaitPay" className="wait-pay">⏳ מעבד תשלום...</div>
+                <iframe
+                    ref={iframeRef}
+                    id="NedarimFrame"
+                    title="Nedarim Plus"
+                    src={`https://matara.pro/nedarimplus/iframe?language=he&Amount=${totalPrice}`}
+                    className="payment-iframe"
+                    scrolling="no"
                 />
+                <div id="ErrorDiv" className="error-div"></div>
+                <div id="OkDiv" className="ok-div">✔️ התשלום הצליח!</div>
             </div>
             <button
                 type={paymentCompleted ? 'submit' : 'button'}
