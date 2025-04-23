@@ -1,17 +1,37 @@
-// services/paymentService.js
-export const sendPaymentDataToServer = async (paymentData) => {
-    try {
-        const serverResponse = await fetch("https://node-beit-chabad-yaffo.onrender.com/api/payment/nedarim", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(paymentData),
-        });
+import axios from 'axios';
 
-        if (!serverResponse.ok) throw new Error("Network response was not ok");
+const baseUrl = "https://node-beit-chabad-yaffo.onrender.com/api/payment";
 
-        const responseData = await serverResponse.json();
-        return responseData;
-    } catch (error) {
-        throw new Error("Error sending payment data to server: " + error.message);
-    }
+export const paymentService = {
+
+    sendPaymentDataToServer: async (paymentData) => {
+        try {
+            const response = await axios.post(
+                `${baseUrl}/nedarim`,
+                paymentData,
+                {
+                    headers: { "Content-Type": "application/json" },
+                }
+            );
+            return response.data;
+        } catch (error) {
+            throw new Error("Error sending payment data to server: " + error.message);
+        }
+    },
+    saveTransactionToServer: async (data) => {
+        try {
+            const response = await axios.post(
+                `${baseUrl}/save`,
+                data,
+                {
+                    headers: { "Content-Type": "application/json" },
+                }
+            );
+            console.log('Transaction saved successfully');
+            return response.data;
+        } catch (error) {
+            console.error('Error saving transaction:', error);
+            throw new Error('Failed to save transaction: ' + error.message);
+        }
+    },
 };

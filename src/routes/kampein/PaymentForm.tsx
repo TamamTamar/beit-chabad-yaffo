@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import NedarimDonation from "./NedarimDonation";
+
 import "./PaymentForm.scss";
 import PaymentFormStep1 from "./PaymentFormStep1";
+import NedarimDonation from "../BeitHabad/ShabbatFormStep2";
 
 const PaymentForm = ({ monthlyAmount }) => {
     const [step, setStep] = useState(1);

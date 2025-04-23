@@ -1,85 +1,118 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const PaymentFormStep2 = ({ handleBack, handlePayment, iframeRef }) => {
-  const [status, setStatus] = useState(null);
-  const [transactionResponse, setTransactionResponse] = useState(null);
+const PaymentFormStep2 = ({ paymentData, handleBack, iframeRef }) => {
+    const navigate = useNavigate(); // הוספת ניווט
+
 
   useEffect(() => {
-    const handleMessage = (event) => {
-      // אימות מקור ההודעה לביטחון
-      if (event.origin !== "https://www.matara.pro") return;
+    // 🛡️ טיפול בשגיאות גלובליות
+    window.onerror = function (msg, _url, _line, _col, _error) {
+      const errorDiv = document.getElementById('ErrorDiv');
+      if (errorDiv) {
+        errorDiv.innerHTML = `שגיאת תוכנה. פנה לתמיכה טכנית. שגיאה: ${msg}`;
+      }
+    };
 
-    
-      const { Name, Value } = event.data;
+    // 📩 קריאת הודעות מה-iframe
+    function ReadPostMessage(event: MessageEvent) {
+      const iframe = iframeRef.current;
+      const waitFrame = document.getElementById('WaitNedarimFrame');
+      const resultDiv = document.getElementById('Result');
+      const errorDiv = document.getElementById('ErrorDiv');
+      const payBtDiv = document.getElementById('PayBtDiv');
+      const okDiv = document.getElementById('OkDiv');
+      const waitPay = document.getElementById('WaitPay');
 
-      switch (Name) {
-        case "Height":
-          if (iframeRef.current) {
-            iframeRef.current.style.height = `${parseInt(Value) + 15}px`;
+      switch (event.data.Name) {
+        case 'Height':
+          if (iframe) {
+            iframe.style.height = `${parseInt(event.data.Value, 10) + 15}px`;
+            if (waitFrame) waitFrame.style.display = 'none';
           }
           break;
 
-        case "TransactionResponse":
-          setTransactionResponse(Value);
-          setStatus(Value.Status === "Error" ? "error" : "success");
+        case 'TransactionResponse':
+          if (resultDiv) {
+            resultDiv.innerHTML = `סטטוס: ${event.data.Value.Status}`;
+          }
+
+          if (event.data.Value.Status === 'Error') {
+            if (errorDiv) errorDiv.innerHTML = `שגיאה: ${event.data.Value.Message}`;
+            if (waitPay) waitPay.style.display = 'none';
+            if (payBtDiv) payBtDiv.style.display = 'block';
+          } else {
+            if (waitPay) waitPay.style.display = 'none';
+            if (okDiv) okDiv.style.display = 'block';
+
+            // ניווט לדף אחר לאחר הצלחת התשלום
+            setTimeout(() => {
+              navigate('/confirmation'); // נווט לדף האישור
+            }, 2000); // המתנה של 2 שניות לפני הניווט
+          }
           break;
-
-        default:
-          console.warn("⚠️ הודעה לא מזוהה:", Name);
       }
+    }
+
+    // 🚀 שליחת הודעות ל-iframe
+    function PostNedarim(Data: object) {
+      if (iframeRef.current && iframeRef.current.contentWindow) {
+        iframeRef.current.contentWindow.postMessage(Data, '*');
+      } else {
+        console.error("⚠️ לא ניתן לשלוח הודעה ל-iframe.");
+      }
+    }
+
+    // 🖱️ לחיצה על כפתור תשלום
+    (window as any).PayBtClick = function () {
+      const waitPay = document.getElementById('WaitPay');
+      const payBtDiv = document.getElementById('PayBtDiv');
+      const okDiv = document.getElementById('OkDiv');
+      const errorDiv = document.getElementById('ErrorDiv');
+
+      if (waitPay) waitPay.style.display = 'block';
+      if (payBtDiv) payBtDiv.style.display = 'none';
+      if (okDiv) okDiv.style.display = 'none';
+      if (errorDiv) errorDiv.innerHTML = '';
+
+      PostNedarim({
+        Name: 'FinishTransaction2',
+        Value: paymentData,
+      });
     };
 
-    window.addEventListener("message", handleMessage);
+    // 🖥️ חיבור מאזין להודעות
+    window.addEventListener('message', ReadPostMessage);
 
-    // שליחת בקשת גובה בעת טעינת ה-iframe
-    const iframe = iframeRef.current;
-    const requestHeight = () => {
-      if (iframe && iframe.contentWindow) {
-        iframe.contentWindow.postMessage({ Name: "GetHeight" }, "https://www.matara.pro");
-      }
-    };
+    // 📥 טעינת ה-iframe ושליחת בקשת גובה
+    iframeRef.current?.addEventListener('load', () => {
+      PostNedarim({ Name: 'GetHeight' });
+    });
 
-    iframe?.addEventListener("load", requestHeight);
-
+    // 🧹 ניקוי מאזינים כשעוזבים את הדף
     return () => {
-      window.removeEventListener("message", handleMessage);
-      iframe?.removeEventListener("load", requestHeight);
-    };
-  }, []);
-
-
-
-  return (
-    <div className="iframe-container">
-      <h2 className="payment-title">💳 תשלום</h2>
-
+      <div className="iframe-container">
+      <div id="WaitNedarimFrame">טוען...</div>
       <iframe
         ref={iframeRef}
         id="NedarimFrame"
         title="Nedarim Plus"
         src="https://matara.pro/nedarimplus/iframe?language=he"
-        style={{ width: '100%', border: 'none', minHeight: '600px' }}
+        className="payment-iframe"
         scrolling="no"
       />
-
-      <div className="button-container">
-        <button className="back-button" onClick={handleBack}>⬅️ הקודם</button>
+      <div id="Result" className="result"></div>
+      <div id="ErrorDiv" className="error-div"></div>
+      <div id="OkDiv" className="ok-div">✔️ התשלום הצליח!</div>
+      <div id="WaitPay" className="wait-pay">⏳ מעבד תשלום...</div>
+      <div id="PayBtDiv" className="pay-bt-div">
         <button className="back-button" onClick={() => (window as any).PayBtClick()}>בצע תשלום</button>
       </div>
-
-      {status === "success" && (
-        <div className="success-message">
-          ✅ התשלום עבר בהצלחה! פרטי עסקה: {JSON.stringify(transactionResponse)}
-        </div>
-      )}
-
-      {status === "error" && (
-        <div className="error-message">
-          ❌ אירעה שגיאה בביצוע התשלום. אנא נסה שנית.
-        </div>
-      )}
     </div>
-  );
+      window.removeEventListener('message', ReadPostMessage);
+      delete (window as any).PayBtClick;
+    }
+  }, [paymentData, iframeRef, navigate]);
 };
 
 export default PaymentFormStep2;

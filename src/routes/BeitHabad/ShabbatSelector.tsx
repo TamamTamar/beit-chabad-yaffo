@@ -32,13 +32,6 @@ const ShabbatSelector = () => {
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
     // פונקציה לשליחת הודעות ל-iframe
-    const PostNedarim = (Data: object) => {
-        if (iframeRef.current && iframeRef.current.contentWindow) {
-            iframeRef.current.contentWindow.postMessage(Data, '*');
-        } else {
-            console.error("⚠️ לא ניתן לשלוח הודעה ל-iframe.");
-        }
-    };
 
     const handlePaymentClick = () => {
         const payBtDiv = document.getElementById('PayBtDiv');
@@ -68,10 +61,13 @@ const ShabbatSelector = () => {
         };
 
         // קריאה לפונקציה PostNedarim עם הנתונים
-        PostNedarim({
-            Name: 'FinishTransaction2',
-            Value: newPaymentData,
-        });
+        function PostNedarim(Data: object) {
+            if (iframeRef.current && iframeRef.current.contentWindow) {
+              iframeRef.current.contentWindow.postMessage(Data, '*');
+            } else {
+              console.error("⚠️ לא ניתן לשלוח הודעה ל-iframe.");
+            }
+          }
 
         setIsProcessingPayment(true);
     };

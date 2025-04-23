@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './NedarimDonation.scss';
+import { paymentService } from '../../services/payment-service';
 
 const NedarimDonation = ({ paymentData, handleBack, iframeRef }) => {
-  const navigate = useNavigate(); // הוספת ניווט
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 🛡️ טיפול בשגיאות גלובליות
@@ -44,6 +45,9 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef }) => {
           } else {
             if (waitPay) waitPay.style.display = 'none';
             if (okDiv) okDiv.style.display = 'block';
+
+            // שמירת הנתונים בשרת במקרה של הצלחה
+            paymentService.saveTransactionToServer(paymentData);
 
             // ניווט לדף אחר לאחר הצלחת התשלום
             setTimeout(() => {
@@ -95,6 +99,17 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef }) => {
       delete (window as any).PayBtClick;
     };
   }, [paymentData, iframeRef, navigate]);
+
+  // פונקציה לשמירת הנתונים בשרת
+paymentService.sendPaymentDataToServer = async (paymentData) => {
+    try {
+        const response = await paymentService.saveTransactionToServer(paymentData);
+        console.log('Transaction saved successfully:', response);
+    } catch (error) {
+        console.error('Error saving transaction:', error);
+        throw new Error('Failed to save transaction: ' + error.message);
+    }
+}
 
   return (
     <div className="iframe-container">
