@@ -30,21 +30,32 @@ const ShabbatSelector = () => {
         watch('adults') * adultPrice + watch('children') * childPrice;
 
     const [paymentCompleted, setPaymentCompleted] = useState(false);
+    const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
     const handlePaymentCompletion = () => {
-        // פונקציה שתופעל לאחר שהתשלום הושלם
         setPaymentCompleted(true);
-      showSuccessDialog('תשלום הושלם', 'תודה על התשלום!'); // הצגת הודעת הצלחה
+        setIsProcessingPayment(false);
+        showSuccessDialog('תשלום הושלם', 'תודה על התשלום!');
+    };
+
+    const handlePaymentClick = () => {
+        const payBtDiv = document.getElementById('PayBtDiv');
+        const waitPay = document.getElementById('WaitPay');
+        if (payBtDiv) payBtDiv.style.display = 'none';
+        if (waitPay) waitPay.style.display = 'block';
+
+        (window as any).PayBtClick(); // קריאה לפונקציה של התשלום
+        setIsProcessingPayment(true);
     };
 
     const onSubmit: SubmitHandler<RishumShabbatInput> = async (data) => {
         if (!parasha) {
-           showErrorDialog('שגיאה', 'לא נבחרה פרשה.'); // הצגת הודעת שגיאה
+            showErrorDialog('שגיאה', 'לא נבחרה פרשה.');
             return;
         }
 
         if (!paymentCompleted) {
-            showErrorDialog('שגיאה', 'יש להשלים את התשלום לפני ההגשה.'); // הצגת הודעת שגיאה
+            showErrorDialog('שגיאה', 'יש להשלים את התשלום לפני ההגשה.');
             return;
         }
 
@@ -70,12 +81,12 @@ const ShabbatSelector = () => {
 
         try {
             await newRishum(rishum);
-            setPaymentData(rishum); // עדכון נתוני התשלום
-            showSuccessDialog('רישום הושלם', 'תודה על הרישום!'); // הצגת הודעת הצלחה
-            navigate('/confirmation'); // נווט לעמוד אישור
+            setPaymentData(rishum);
+            showSuccessDialog('רישום הושלם', 'תודה על הרישום!');
+            navigate('/confirmation');
         } catch (error) {
             console.error('שגיאה בשמירת הרישום:', error);
-            showErrorDialog('שגיאה', 'לא הצלחנו לשמור את הרישום שלך.'); // הצגת הודעת שגיאה
+            showErrorDialog('שגיאה', 'לא הצלחנו לשמור את הרישום שלך.');
         }
     };
 
@@ -144,8 +155,13 @@ const ShabbatSelector = () => {
                     iframeRef={iframeRef}
                 />
             </div>
-            <button type="submit" className="confirm-button" disabled={!paymentCompleted}>
-                אישור
+            <button
+                type={paymentCompleted ? 'submit' : 'button'}
+                className="confirm-button"
+                onClick={!paymentCompleted ? handlePaymentClick : undefined}
+                disabled={isProcessingPayment}
+            >
+                {paymentCompleted ? 'אישור' : 'בצע תשלום'}
             </button>
         </form>
     );
