@@ -1,20 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './NedarimDonation.scss';
 import { paymentService } from '../../services/payment-service';
 
-const NedarimDonation = ({ paymentData, handleBack, iframeRef }) => {
+const NedarimDonation = ({ paymentData, handleBack, iframeRef, onPaymentSuccess }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 🛡️ טיפול בשגיאות גלובליות
-    window.onerror = function (msg, _url, _line, _col, _error) {
-      const errorDiv = document.getElementById('ErrorDiv');
-      if (errorDiv) {
-        errorDiv.innerHTML = `שגיאת תוכנה. פנה לתמיכה טכנית. שגיאה: ${msg}`;
-      }
-    };
-
     // 📩 קריאת הודעות מה-iframe
     function ReadPostMessage(event: MessageEvent) {
       const iframe = iframeRef.current;
@@ -48,6 +39,11 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef }) => {
 
             // שמירת הנתונים בשרת במקרה של הצלחה
             paymentService.saveTransactionToServer(paymentData);
+
+            // קריאה ל-onPaymentSuccess במקרה של הצלחה
+            if (onPaymentSuccess) {
+              onPaymentSuccess();
+            }
 
             // ניווט לדף אחר לאחר הצלחת התשלום
             setTimeout(() => {
@@ -98,18 +94,7 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef }) => {
       window.removeEventListener('message', ReadPostMessage);
       delete (window as any).PayBtClick;
     };
-  }, [paymentData, iframeRef, navigate]);
-
-  // פונקציה לשמירת הנתונים בשרת
-paymentService.sendPaymentDataToServer = async (paymentData) => {
-    try {
-        const response = await paymentService.saveTransactionToServer(paymentData);
-        console.log('Transaction saved successfully:', response);
-    } catch (error) {
-        console.error('Error saving transaction:', error);
-        throw new Error('Failed to save transaction: ' + error.message);
-    }
-}
+  }, [paymentData, iframeRef, navigate, onPaymentSuccess]);
 
   return (
     <div className="iframe-container">
@@ -132,6 +117,6 @@ paymentService.sendPaymentDataToServer = async (paymentData) => {
       </div>
     </div>
   );
-}
+};
 
 export default NedarimDonation;

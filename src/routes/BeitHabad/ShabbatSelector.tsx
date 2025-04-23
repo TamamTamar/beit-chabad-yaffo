@@ -5,6 +5,7 @@ import { newRishum } from '../../services/shabbatService';
 import './ShabbatSelector.scss';
 import { RishumShabbatInput, RishumShabbatType } from '../../@Types/chabadType';
 import { showErrorDialog, showSuccessDialog } from '../../ui/dialogs';
+import PaymentFormStep2 from '../kampein/PaymentFormStep2';
 
 const ShabbatSelector = () => {
     const navigate = useNavigate();
@@ -63,11 +64,11 @@ const ShabbatSelector = () => {
         // קריאה לפונקציה PostNedarim עם הנתונים
         function PostNedarim(Data: object) {
             if (iframeRef.current && iframeRef.current.contentWindow) {
-              iframeRef.current.contentWindow.postMessage(Data, '*');
+                iframeRef.current.contentWindow.postMessage(Data, '*');
             } else {
-              console.error("⚠️ לא ניתן לשלוח הודעה ל-iframe.");
+                console.error("⚠️ לא ניתן לשלוח הודעה ל-iframe.");
             }
-          }
+        }
 
         setIsProcessingPayment(true);
     };
@@ -180,25 +181,11 @@ const ShabbatSelector = () => {
             <div className="payment-section">
                 <h3>תשלום:</h3>
                 <div id="WaitPay" className="wait-pay">⏳ מעבד תשלום...</div>
-                <iframe
-                    ref={iframeRef}
-                    id="NedarimFrame"
-                    title="Nedarim Plus"
-                    src={`https://matara.pro/nedarimplus/iframe?language=he&Amount=${totalPrice}`}
-                    className="payment-iframe"
-                    scrolling="no"
-                />
-                <div id="ErrorDiv" className="error-div"></div>
-                <div id="OkDiv" className="ok-div">✔️ התשלום הצליח!</div>
+                <PaymentFormStep2
+                    iframeRef={iframeRef}
+                    paymentData={paymentData}
+                  />
             </div>
-            <button
-                type={paymentCompleted ? 'submit' : 'button'}
-                className="confirm-button"
-                onClick={!paymentCompleted ? handlePaymentClick : undefined}
-                disabled={isProcessingPayment}
-            >
-                {paymentCompleted ? 'אישור' : 'בצע תשלום'}
-            </button>
         </form>
     );
 };

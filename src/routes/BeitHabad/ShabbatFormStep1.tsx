@@ -1,6 +1,5 @@
-import React, { useRef, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import patterns from "../../validations/patterns";
-import { m } from "framer-motion";
 
 const ShabbatFormStep1 = ({
     register,

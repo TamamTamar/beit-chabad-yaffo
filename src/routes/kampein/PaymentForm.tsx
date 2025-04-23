@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form";
 
 import "./PaymentForm.scss";
 import PaymentFormStep1 from "./PaymentFormStep1";
-import NedarimDonation from "../BeitHabad/ShabbatFormStep2";
+import NedarimDonation from "./NedarimDonation";
+
 
 const PaymentForm = ({ monthlyAmount }) => {
     const [step, setStep] = useState(1);
@@ -95,7 +96,18 @@ const PaymentForm = ({ monthlyAmount }) => {
                     paymentData={paymentData}
                     handleBack={handleBack}
                     iframeRef={iframeRef}
+                    onPaymentSuccess={() => {
+                        setStep(3);
+                    }
+                    }
                 />
+            )}
+            {step === 3 && (
+                <div className="confirmation-step">
+                    <h2>תודה רבה!</h2>
+                    <p>התשלום בוצע בהצלחה והרישום הושלם.</p>
+                    <button onClick={() => setStep(1)}>חזור להתחלה</button>
+                </div>
             )}
             
         </div>

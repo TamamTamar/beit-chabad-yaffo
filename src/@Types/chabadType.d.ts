@@ -91,4 +91,23 @@ export interface RishumShabbatType {
       phone: string;
       adults: number;
       children: number;
-  }
+  };
+  export type PaymentData = {
+    Mosad: string; // מזהה המוסד
+    ApiValid: string; // מפתח API
+    Zeout: string; // מספר זהות
+    FirstName: string; // שם פרטי
+    LastName: string; // שם משפחה
+    Street: string; // רחוב
+    City: string; // עיר
+    Phone: string; // מספר טלפון
+    Mail: string; // כתובת דוא"ל
+    PaymentType: "HK" | "Ragil"; // סוג תשלום (הוראת קבע או רגיל)
+    Amount: number; // סכום התשלום
+    Tashlumim: number; // מספר תשלומים
+    Currency: number; // מטבע (1 = שקלים)
+    Groupe: string; // קבוצה
+    Comment: string; // הערה
+    CallBack: string; // כתובת קריאה חוזרת
+    CallBackMailError: string; // כתובת דוא"ל לשגיאות
+};

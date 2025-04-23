@@ -1,171 +1,161 @@
-import React, { useEffect, useState } from "react";
-import "./ShabatForm.scss";
+import React, { useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-interface Parasha {
-  date: string; // תאריך לועזי
-  rawDate: string; // תאריך בפורמט ISO לצורך מיון
-  parasha: string;
-  category: string; // קטגוריה (פרשה/חג)
-}
+import { fetchParashot, getCustomParashaName } from '../../services/shabbatService';
+import PaymentFormStep1 from '../kampein/PaymentFormStep1';
+import NedarimDonation from '../kampein/NedarimDonation';
+import { PaymentData } from '../../@Types/chabadType';
 
-const fetchParashot = async (): Promise<Parasha[]> => {
-  try {
-    const startDate = new Date().toISOString().split("T")[0];
-    const endDate = new Date();
-    endDate.setFullYear(endDate.getFullYear() + 1);
-    const endDateStr = endDate.toISOString().split("T")[0];
+const ShabatForm = ({ totalAmount }) => {
+    const [step, setStep] = useState(1);
+    const [paymentData, setPaymentData] = useState(null);
+    const [parashot, setParashot] = useState([]);
+    const [selectedParasha, setSelectedParasha] = useState(null);
+    const iframeRef = useRef<HTMLIFrameElement>(null);
 
-    const response = await fetch(
-      `https://www.hebcal.com/hebcal?v=1&cfg=json&maj=on&min=on&mod=on&nx=on&ss=on&s=on&year=now&month=x&geo=geoname&geonameid=293397&start=${startDate}&end=${endDateStr}`
-    );
-    if (!response.ok) {
-      throw new Error("Failed to fetch parashot");
-    }
-    const json = await response.json();
+    const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
+        defaultValues: {
+            Zeout: "",
+            FirstName: "",
+            LastName: "",
+            Street: "",
+            City: "",
+            Phone: "",
+            Mail: "",
+            Amount: totalAmount || 0,
+            Tashlumim: 1,
+            Currency: 1,
+            Groupe: "",
+            Comment: "",
+            Dedication: "",
+            PaymentType: "Ragil",
+            MonthlyAmount: totalAmount || 0,
+            Is12Months: (totalAmount || 0) !== 0,
+        }
+    });
 
-    return json.items
-      .filter(
-        (item: any) =>
-          item.category === "parashat" || (item.category === "holiday" && item.yomtov)
-      )
-      .map((item: any) => ({
-        rawDate: item.date,
-        date: new Date(item.date).toLocaleDateString("en-IL", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-        }),
-        parasha: item.hebrew,
-        category: item.category,
-      }));
-  } catch (err) {
-    console.error(err);
-    return [];
-  }
-};
+    const watchIs12Months = watch("Is12Months");
+    const watchMonthlyAmount = watch("MonthlyAmount");
 
-const ParashaCarousel: React.FC = () => {
-  const [parashot, setParashot] = useState<Parasha[]>([]);
-  const [index, setIndex] = useState(0);
-  const [selectedParasha, setSelectedParasha] = useState<Parasha | null>(null);
-  const [singleCount, setSingleCount] = useState(0);
-  const [coupleCount, setCoupleCount] = useState(0);
-  const [childCount, setChildCount] = useState(0);
+    useEffect(() => {
+        const monthlyAmountValue = parseFloat(watchMonthlyAmount) || 0;
+        setValue("MonthlyAmount", monthlyAmountValue);
+        setValue("PaymentType", watchIs12Months ? "HK" : "Ragil");
+    }, [watchIs12Months, watchMonthlyAmount, setValue]);
 
-  useEffect(() => {
-    fetchParashot().then(setParashot);
-  }, []);
+    useEffect(() => {
+        // Fetch parashot for step 1
+        fetchParashot().then(setParashot);
+    }, []);
 
-  const next = () => {
-    if (index + 1 < parashot.length - 2) {
-      setIndex(index + 1);
-    }
-  };
-
-  const prev = () => {
-    if (index > 0) {
-      setIndex(index - 1);
-    }
-  };
-
-  const getCustomParashaName = (parasha: string): string => {
-    if (parasha === "פסח א׳" || parasha === "Pesach I") {
-      return "ליל הסדר";
-    }
-    if (parasha === "פסח ז׳" || parasha === "Pesach VII") {
-      return "שביעי של פסח";
-    }
-    return parasha;
-  };
-
-  const handleParashaClick = (parasha: Parasha) => {
-    setSelectedParasha(parasha);
-  };
-
-  const calculateTotalPrice = (): number => {
-    const prices = {
-      single: 80,
-      couple: 150,
-      child: 50,
+    const handleParashaSelection = () => {
+        if (selectedParasha) {
+            setStep(2); // Move to step 2 after selecting a parasha
+        }
     };
+
+    const onSubmit = (data: PaymentData) => {
+       
+        const newPaymentData = {
+          Mosad: "7013920",
+          ApiValid: "zidFYCLaNi",
+          Zeout: "123456789", // מספר זהות (ניתן להוסיף שדה בטופס אם נדרש)
+          FirstName: data.FirstName.split(' ')[0], // שם פרטי
+          LastName: data.LastName.split(' ')[1] || '', // שם משפחה
+          Street: "", // ניתן להוסיף שדה בטופס
+          City: "", // ניתן להוסיף שדה בטופס
+          Phone: data.Phone,
+          Mail: "", // ניתן להוסיף שדה בטופס
+          PaymentType: "Ragil", // סוג תשלום (רגיל או הוראת קבע)
+          Amount: totalAmount,
+          Tashlumim: 1, // מספר תשלומים (ניתן להוסיף שדה בטופס אם נדרש)
+          Currency: 1, // מטבע (1 = שקלים)
+          Groupe: "", // קבוצה (לדוגמה: שבת)
+          Comment: ``, // הערה
+          CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/payment/nedarim",
+          CallBackMailError: "lchabadyaffo@gmail.com",
+        };
+
+        setPaymentData(newPaymentData);
+        setStep(3);
+    };
+
+    const handlePaymentCompletion = () => {
+        setStep(4); // מעבר לשלב 4 לאחר הצלחת התשלום
+    };
+
+    const handleBack = () => {
+        setStep(step === 3 ? 2 : 1); // חזרה לשלב הקודם
+    };
+
     return (
-      singleCount * prices.single +
-      coupleCount * prices.couple +
-      childCount * prices.child
-    );
-  };
-
-  return (
-    <div className="seuda-form">
-      <div className="carousel-container">
-        <h2 className="carousel-title">מתי אתם רוצים להגיע?</h2>
-        <div className="carousel-row">
-          <button className="carousel-button" onClick={prev} disabled={index === 0}>
-          ▶
-          </button>
-          <div className="parasha-boxes">
-            {parashot.slice(index, index + 3).map((parasha) => (
-              <div
-                className="parasha-box"
-                key={parasha.rawDate}
-                onClick={() => handleParashaClick(parasha)}
-              >
-                <h3 className="parasha-title">{getCustomParashaName(parasha.parasha)}</h3>
-                <p className="parasha-date">{parasha.date}</p>
-              </div>
-            ))}
-          </div>
-          <button
-            className="carousel-button"
-            onClick={next}
-            disabled={index + 3 >= parashot.length}
-          >
-            ◀
-        
-          </button>
-        </div>
-
-        {selectedParasha && (
-          <div className="registrants-container">
-            <h3 className="registrants-title">
-            כמה באים ב{getCustomParashaName(selectedParasha.parasha)}?
-            </h3>
-            <div className="registrants-inputs">
-              <div>
-                <label>יחידים (80 ש"ח):</label>
-                <input
-                  type="number"
-                  min="0"
-                  value={singleCount}
-                  onChange={(e) => setSingleCount(Number(e.target.value))}
-                />
-              </div>
-              <div>
-                <label>זוגות (150 ש"ח):</label>
-                <input
-                  type="number"
-                  min="0"
-                  value={coupleCount}
-                  onChange={(e) => setCoupleCount(Number(e.target.value))}
-                />
-              </div>
-              <div>
-                <label>ילדים (50 ש"ח):</label>
-                <input
-                  type="number"
-                  min="0"
-                  value={childCount}
-                  onChange={(e) => setChildCount(Number(e.target.value))}
-                />
-              </div>
+        <div className="payment-form-container">
+            <div className="step-indicator">
+                <span className={step === 1 ? "active-step" : "inactive-step"}>1</span>
+                <span> - </span>
+                <span className={step === 2 ? "active-step" : "inactive-step"}>2</span>
+                <span> - </span>
+                <span className={step === 3 ? "active-step" : "inactive-step"}>3</span>
+                <span> - </span>
+                <span className={step === 4 ? "active-step" : "inactive-step"}>4</span>
             </div>
-            <p className="registrants-total">סה"כ לתשלום: {calculateTotalPrice()} ש"ח</p>
-            <button className="registrants-button">לתשלום</button>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+
+            {step === 1 && (
+                <div className="shabbat-selection">
+                    <h2>בחר פרשה</h2>
+                    <select
+                        className="select-shabbat"
+                        onChange={(e) => {
+                            const selected = parashot.find(p => p.rawDate === e.target.value);
+                            setSelectedParasha(selected || null);
+                        }}
+                    >
+                        <option value="">בחר שבת</option>
+                        {parashot
+                            .filter(parasha => parasha.parasha !== "פסח ז׳" && parasha.parasha !== "Pesach VII") // סינון פרשות לא רצויות
+                            .map((parasha) => (
+                                <option key={parasha.rawDate} value={parasha.rawDate}>
+                                    {getCustomParashaName(parasha.parasha)} - {parasha.date}
+                                </option>
+                            ))}
+                    </select>
+                    <button onClick={handleParashaSelection} disabled={!selectedParasha}>
+                        המשך
+                    </button>
+                </div>
+            )}
+
+            {step === 2 && (
+                <PaymentFormStep1
+                    register={register}
+                    handleSubmit={handleSubmit}
+                    onSubmit={onSubmit}
+                    errors={errors}
+                    watchMonthlyAmount={watchMonthlyAmount}
+                    watchIs12Months={watchIs12Months}
+                    setValue={setValue}
+                />
+            )}
+
+            {step === 3 && (
+                <NedarimDonation
+                    paymentData={paymentData}
+                    handleBack={handleBack}
+                    iframeRef={iframeRef}
+                    onPaymentSuccess={handlePaymentCompletion}
+                   // קריאה לפונקציה במעבר לשלב 4
+                />
+            )}
+
+            {step === 4 && (
+                <div className="confirmation-step">
+                    <h2>תודה רבה!</h2>
+                    <p>התשלום בוצע בהצלחה והרישום הושלם.</p>
+                    <button onClick={() => setStep(1)}>חזור להתחלה</button>
+                </div>
+            )}
+        </div>
+    );
 };
 
-export default ParashaCarousel;
+export default ShabatForm;
