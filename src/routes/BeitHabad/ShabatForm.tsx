@@ -61,11 +61,11 @@ const ShabatForm = ({ totalAmount }) => {
                 />
             )}
 
-            {step === 2 && (
+                       {step === 2 && (
                 <ShabbatFormStep2
                     setPaymentData={(data) => {
                         console.log("Payment Data from Step 2:", data); // בדיקת הנתונים שמגיעים משלב 2
-                        setPaymentData(data);
+                        setPaymentData(data); // שמירת הנתונים בסטייט של ShabatForm
                     }}
                     selectedShabbat={selectedShabbat}
                     setStep={setStep}
