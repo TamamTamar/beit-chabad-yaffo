@@ -23,7 +23,7 @@ const ShabbatSelector = () => {
     });
 
     const adultPrice = 1; // מחיר למבוגר בשקלים
-    const childPrice = 1; // מחיר לילד בשקלים
+    const childPrice = 100; // מחיר לילד בשקלים
 
     const totalPrice =
         watch('adults') * adultPrice + watch('children') * childPrice;
@@ -46,15 +46,31 @@ const ShabbatSelector = () => {
         if (payBtDiv) payBtDiv.style.display = 'none';
         if (waitPay) waitPay.style.display = 'block';
 
+        // יצירת הנתונים במבנה המתאים
+        const newPaymentData = {
+            Mosad: "7013920",
+            ApiValid: "zidFYCLaNi",
+            Zeout: "123456789", // מספר זהות (ניתן להוסיף שדה בטופס אם נדרש)
+            FirstName: watch('name').split(' ')[0] || '', // שם פרטי
+            LastName: watch('name').split(' ')[1] || '', // שם משפחה
+            Street: "", // ניתן להוסיף שדה בטופס
+            City: "", // ניתן להוסיף שדה בטופס
+            Phone: watch('phone'),
+            Mail: "", // ניתן להוסיף שדה בטופס
+            PaymentType: "Ragil", // סוג תשלום (רגיל או הוראת קבע)
+            Amount: totalPrice,
+            Tashlumim: 1, // מספר תשלומים (ניתן להוסיף שדה בטופס אם נדרש)
+            Currency: 1, // מטבע (1 = שקלים)
+            Groupe: "", // קבוצה (לדוגמה: שבת)
+            Comment: ``, // הערה
+            CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/payment/nedarim",
+            CallBackMailError: "lchabadyaffo@gmail.com",
+        };
+
         // קריאה לפונקציה PostNedarim עם הנתונים
         PostNedarim({
             Name: 'FinishTransaction2',
-            Value: {
-                Amount: totalPrice,
-                Description: 'תשלום עבור שבת',
-                FullName: watch('name'),
-                Phone: watch('phone'),
-            },
+            Value: newPaymentData,
         });
 
         setIsProcessingPayment(true);
