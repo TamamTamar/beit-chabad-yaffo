@@ -16,7 +16,6 @@ import ShabbatNew from './ShabbatNew'
 const HomePage = () => {
   return (
     <div>
-    <MainBanner />
       <CandleLightingTimes />
       <ChabadAboutSection />
 
