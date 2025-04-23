@@ -1,7 +1,10 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './NedarimDonation.scss';
 
 const NedarimDonation = ({ paymentData, handleBack, iframeRef }) => {
+  const navigate = useNavigate(); // הוספת ניווט
+
   useEffect(() => {
     // 🛡️ טיפול בשגיאות גלובליות
     window.onerror = function (msg, _url, _line, _col, _error) {
@@ -31,7 +34,7 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef }) => {
 
         case 'TransactionResponse':
           if (resultDiv) {
-         
+            resultDiv.innerHTML = `סטטוס: ${event.data.Value.Status}`;
           }
 
           if (event.data.Value.Status === 'Error') {
@@ -41,6 +44,11 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef }) => {
           } else {
             if (waitPay) waitPay.style.display = 'none';
             if (okDiv) okDiv.style.display = 'block';
+
+            // ניווט לדף אחר לאחר הצלחת התשלום
+            setTimeout(() => {
+              navigate('/confirmation'); // נווט לדף האישור
+            }, 2000); // המתנה של 2 שניות לפני הניווט
           }
           break;
       }
@@ -86,7 +94,7 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef }) => {
       window.removeEventListener('message', ReadPostMessage);
       delete (window as any).PayBtClick;
     };
-  }, [paymentData, iframeRef]);
+  }, [paymentData, iframeRef, navigate]);
 
   return (
     <div className="iframe-container">
