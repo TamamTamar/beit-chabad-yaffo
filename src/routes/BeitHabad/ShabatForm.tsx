@@ -11,7 +11,7 @@ const ShabatForm = ({ totalAmount }) => {
 
     const iframeRef = useRef<HTMLIFrameElement>(null);
 
-    const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
+    const  shabbatForm = useForm({
         defaultValues: {
             Zeout: "",
             FirstName: "",
@@ -32,39 +32,6 @@ const ShabatForm = ({ totalAmount }) => {
         }
     });
 
-    const watchIs12Months = watch("Is12Months");
-    const watchMonthlyAmount = watch("MonthlyAmount");
-
-    useEffect(() => {
-        const monthlyAmountValue = parseFloat(watchMonthlyAmount) || 0;
-        setValue("MonthlyAmount", monthlyAmountValue);
-        setValue("PaymentType", watchIs12Months ? "HK" : "Ragil");
-    }, [watchIs12Months, watchMonthlyAmount, setValue]);
-
-    const onSubmit = (data) => {
-        const newPaymentData = {
-            Mosad: "7013920",
-            ApiValid: "zidFYCLaNi",
-            Zeout: "123456789",
-            FirstName: data.FirstName.split(' ')[0],
-            LastName: data.LastName.split(' ')[1] || '',
-            Street: "",
-            City: "",
-            Phone: data.Phone,
-            Mail: "",
-            PaymentType: "Ragil",
-            Amount: totalAmount,
-            Tashlumim: 1,
-            Currency: 1,
-            Groupe: "",
-            Comment: "",
-            CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/payment/nedarim",
-            CallBackMailError: "lchabadyaffo@gmail.com",
-        };
-
-        setPaymentData(newPaymentData);
-        setStep(3);
-    };
 
     const handlePaymentCompletion = () => {
         setStep(4);
@@ -95,6 +62,7 @@ const ShabatForm = ({ totalAmount }) => {
 
             {step === 2 && (
                 <ShabbatFormStep2
+                
                     selectedShabbat={selectedShabbat}
                     setStep={setStep}
                 />

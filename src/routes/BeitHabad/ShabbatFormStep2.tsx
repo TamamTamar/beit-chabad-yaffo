@@ -1,7 +1,6 @@
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-const ADULT_PRICE = 50;
+const ADULT_PRICE = 1;
 const CHILD_PRICE = 25;
 const COUPLE_PRICE = 90;
 
@@ -70,8 +69,9 @@ const ShabbatFormStep2 = ({ selectedShabbat,setStep }) => {
                 <div className="total-display">
                     <strong>סה"כ לתשלום: {total.toLocaleString()} ₪</strong>
                 </div>
-
+                <button type="button" onClick={() => setStep(1)}>חזור</button>
                 <button type="submit">המשך</button>
+               
             </form>
         </div>
     );
