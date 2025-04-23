@@ -14,6 +14,7 @@ import ReservationForm from "./BeitHabad/ReservationForm";
 import ShabbatSelector from "./BeitHabad/ShabbatSelector";
 import ShabbatNew from "./BeitHabad/ShabbatNew";
 import AdminShabbat from "./BeitHabad/AdminShabbat";
+import ShabatForm from "./BeitHabad/ShabatForm";
 
 
 
@@ -31,7 +32,7 @@ export const router = createBrowserRouter([
             },
         {
             path: "shabbat",
-            element: <ShabbatNew />,
+            element: <ShabatForm totalAmount={0}/>,
         },
             {
                 path: 'registration',

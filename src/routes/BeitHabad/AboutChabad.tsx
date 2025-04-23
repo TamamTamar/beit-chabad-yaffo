@@ -19,7 +19,7 @@ const ChabadAboutSection: FC = () => {
           </p>
           <div className="chabad-about-buttons">
             <Link to='/kampein' className="chabad-about-button">תרומה</Link>
-            <Link to='/shabat' className="chabad-about-button">הרשמה לשבת</Link>
+            <Link to='/shabbat' className="chabad-about-button">הרשמה לשבת</Link>
           </div>
         </div>
       </div>

@@ -19,7 +19,7 @@ const HomePage = () => {
     <MainBanner />
       <CandleLightingTimes />
       <ChabadAboutSection />
-      <ShabbatNew />
+
 
  
 
