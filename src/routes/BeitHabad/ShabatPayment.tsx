@@ -59,7 +59,7 @@ const ShabatPayment = ({ monthlyAmount }) => {
             Currency: 1,
             Groupe: data.Groupe,
             Comment: data.Comment,
-            CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/payment/nedarim",
+            CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/payment/payment-callback",
             CallBackMailError: "lchabadyaffo@gmail.com",
         };
 
