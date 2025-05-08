@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-
 import "./PaymentForm.scss";
 import PaymentFormStep1 from "./PaymentFormStep1";
 import NedarimDonation from "./NedarimDonation";

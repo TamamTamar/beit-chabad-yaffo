@@ -113,3 +113,10 @@ export interface RishumShabbatType {
     CallBack: string; // כתובת קריאה חוזרת
     CallBackMailError: string; // כתובת דוא"ל לשגיאות
 };
+export type BannerItem = {
+    title: string;
+    subtitle: string;
+    buttonText: string;
+    navigateTo: string;
+    className: string;
+  };
