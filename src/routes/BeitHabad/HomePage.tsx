@@ -1,4 +1,4 @@
-import ChabadAboutSection from './AboutChabad'
+import ChabadAboutSection from './aboutchabad/AboutChabad'
 import CandleLightingTimes from './CandleLightingTimes'
 
 

@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import Footer from "../components/Footer";
+import Footer from "../components/footer/Footer";
 import ChabadHeader from "../routes/BeitHabad/ChabadHeader";
 import NavChabad from "../routes/BeitHabad/NavBarChabad";
 
