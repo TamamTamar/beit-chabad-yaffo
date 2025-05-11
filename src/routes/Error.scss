@@ -1,119 +1,89 @@
-$error-bg: #5e35b1;
-$error-bg-light: #7e57c2;
-$error-text: #f3e5f5;
-$error-accent: #d1c4e9;
+$error-bg: #f5f0fa;
+$error-text: #4b2676;
+$error-accent: #a678de;
 
 .error-page {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     height: 100vh;
-    background: linear-gradient(135deg, $error-bg, $error-bg-light);
-    color: $error-text;
-    font-family: 'Varela Round', sans-serif;
+    background-color: $error-bg;
     text-align: center;
     padding: 1rem;
+}
 
-    .error-container {
-        background-color: rgba(255, 255, 255, 0.08);
-        padding: 2.5rem;
-        border-radius: 1.5rem;
-        box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
-        max-width: 600px;
-        width: 100%;
-        animation: fadeInUp 0.7s ease;
+.error-container {
+    max-width: 500px;
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    color: $error-text;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-        .error-gif {
-            width: 100%;
-            max-width: 300px;
-            border-radius: 1rem;
-            margin-bottom: 1.5rem;
-        }
+.error-gif {
+    width: 220px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid lighten($error-accent, 10%);
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 
-        .error-icon {
-            font-size: 3rem;
-            color: $error-accent;
-            margin-bottom: 1rem;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin: 0;
-        }
-
-        h2 {
-            font-size: 1.2rem;
-            margin-top: 0.5rem;
-            color: lighten($error-text, 10%);
-        }
-
-        .error-status {
-            margin-top: 1.2rem;
-            font-size: 1.1rem;
-        }
-
-        .error-data {
-            margin-top: 0.5rem;
-            font-style: italic;
-            color: #eee;
-        }
-
-        .back-home {
-            display: inline-block;
-            margin-top: 2rem;
-            background: #ffffff;
-            color: $error-bg;
-            padding: 0.6rem 1.8rem;
-            border-radius: 2rem;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-
-            &:hover {
-                background: $error-accent;
-                color: #fff;
-            }
-        }
+    &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
     }
 }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.error-icon {
+    font-size: 2.5rem;
+    color: $error-accent;
+    margin-bottom: 1rem;
 }
-@media (max-width: 768px) {
-    .error-page {
-        padding: 1rem;
 
-        .error-container {
-            padding: 1.5rem;
-            max-width: 90%;
-        }
-    }
+h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
 }
-@media (max-width: 480px) {
-    .error-page {
-        padding: 0.5rem;
 
-        .error-container {
-            padding: 1rem;
-            max-width: 100%;
-        }
-    }
+h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: darken($error-text, 10%);
 }
-@media (max-width: 320px) {
-    .error-page {
-        padding: 0.5rem;
 
-        .error-container {
-            padding: 0.5rem;
-            max-width: 100%;
-        }
+.error-caption {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    color: lighten($error-text, 15%);
+}
+
+.error-status, .error-data {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: darken($error-text, 5%);
+}
+
+.back-home {
+    display: inline-flex;
+    align-items: center;
+    background-color: $error-accent;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.95rem;
+    transition: background-color 0.3s ease;
+
+    .home-icon {
+        margin-left: 0.5rem;
+    }
+
+    &:hover {
+        background-color: darken($error-accent, 10%);
     }
 }

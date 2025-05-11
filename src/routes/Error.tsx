@@ -1,8 +1,12 @@
 import { useRouteError } from "react-router-dom";
-import { FaExclamationCircle } from "react-icons/fa";
+import { FaExclamationCircle, FaHome } from "react-icons/fa";
 import "./Error.scss";
-import { ErrorType } from "../@Types/types";
 
+type ErrorType = {
+    status: number;
+    statusText: string;
+    data: string;
+};
 
 const Error = () => {
     const { data, status, statusText } = useRouteError() as ErrorType;
@@ -11,18 +15,22 @@ const Error = () => {
         <div className="error-page">
             <div className="error-container">
                 <img
-                    src="https://media.giphy.com/media/hEc4k5pN17GZq/giphy.gif"
-                    alt="Error animation"
+                    src="https://media.giphy.com/media/gX3u0staej6wAnRlcP/giphy.gif"
+                    alt="Funny confused animation"
                     className="error-gif"
                 />
                 <FaExclamationCircle className="error-icon" />
                 <h1>אופס!</h1>
-                <h2>משהו השתבש, אבל אנחנו עובדים על זה 😊</h2>
+                <h2>משהו השתבש, אבל אנחנו כבר מטפלים בזה 😊</h2>
+                <p className="error-caption">גם אנחנו לא יודעים איך הגענו לפה 😅</p>
                 <p className="error-status">
                     <strong>שגיאה {status}:</strong> {statusText}
                 </p>
                 {data && <p className="error-data">{data}</p>}
-                <a href="/" className="back-home">חזרה לדף הבית</a>
+                <a href="/" className="back-home">
+                    <FaHome className="home-icon" />
+                    חזרה לדף הבית
+                </a>
             </div>
         </div>
     );
