@@ -4,7 +4,7 @@ import { IParashaInput } from "../../@Types/productType";
 import { createNewParasha } from "../../services/parasha-service";
 import dialogs from "../../ui/dialogs";
 import { useAuth } from "../../hooks/useAuth";
-import CandleLightingTimes from "./CandleLightingTimes";
+import CandleLightingTimes from "../../components/CandleLightingTimes/CandleLightingTimes";
 import { useState } from "react";
 
 const CreateParasha = () => {

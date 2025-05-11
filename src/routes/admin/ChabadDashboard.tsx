@@ -1,6 +1,6 @@
 import { Tabs } from "flowbite-react";
 import { FiBox } from "react-icons/fi";
-import AdminParashot from "./AdminParashot";
+import AdminParashot from "../admin/AdminParashot";
 
 const ChabadDashboard = () => {
     return (

@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Footer from "../components/footer/Footer";
-import ChabadHeader from "../routes/BeitHabad/ChabadHeader";
+import ChabadHeader from "../components/header/ChabadHeader";
 import NavChabad from "../routes/BeitHabad/NavBarChabad";
 
 const Root = () => {

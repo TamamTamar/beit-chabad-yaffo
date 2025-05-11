@@ -88,8 +88,8 @@ export interface AuthContextType {
 
 export type ErrorType = {
     status: number;
-    message: string;
-    details: string;
+    statusText: string;
+    data: string;
 };
 
 export interface DecodedToken {

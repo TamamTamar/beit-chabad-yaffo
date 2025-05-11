@@ -1,5 +1,5 @@
-import ChabadAboutSection from './aboutchabad/AboutChabad'
-import CandleLightingTimes from './CandleLightingTimes'
+import ChabadAboutSection from '../../components/aboutchabad/AboutChabad'
+import CandleLightingTimes from '../../components/CandleLightingTimes/CandleLightingTimes'
 
 
 
@@ -11,7 +11,7 @@ const HomePage = () => {
       <ChabadAboutSection />
 
 
- 
+
 
 
     </div>

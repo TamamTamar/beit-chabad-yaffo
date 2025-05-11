@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import Root from "../layout/BeitChabadLayout";
-import AdminShabbat from "./BeitHabad/AdminShabbat";
-import ChabadDashboard from "./BeitHabad/ChabadDashboard";
-import CreateNewParasha from "./BeitHabad/createNewParasha";
-import EditParasha from "./BeitHabad/EditParasha";
+import AdminShabbat from "./admin/AdminShabbat";
+
+import CreateNewParasha from "./createParasha/createNewParasha";
+import EditParasha from "./editParasha/EditParasha";
 import HomePage from "./BeitHabad/HomePage";
 import ParashaDetail from "./BeitHabad/ParashaDetail";
 import ParashaList from "./BeitHabad/ParashaList";
@@ -13,6 +13,7 @@ import Error from "./Error";
 import Aboutkampein from "./kampein/AboutKampein";
 import KampeinPage from "./kampein/KampeinPage";
 import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
+import ChabadDashboard from "./admin/ChabadDashboard";
 
 
 
@@ -28,11 +29,11 @@ export const router = createBrowserRouter([
                 path: "kampein",
                 element: <KampeinPage />,
             },
-        {
-            path: "shabbat",
-            element: <ShabatForm />,
-        },
-            
+            {
+                path: "shabbat",
+                element: <ShabatForm />,
+            },
+
             {
                 path: "admin/parasha/create",
                 element: (
@@ -73,7 +74,7 @@ export const router = createBrowserRouter([
                 path: "/admin/rishum",
                 element: <AdminShabbat />,
             }
-           
+
 
         ],
     },
