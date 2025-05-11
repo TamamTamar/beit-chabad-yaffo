@@ -1,28 +1,27 @@
-// bannersData.ts
+// components/Banner/bannersData.ts
 
 import { BannerItem } from "../../@Types/chabadType";
 
-
 export const bannersData: BannerItem[] = [
-    {
-        title: 'ברוכים הבאים לבית חב"ד יפו',
-        subtitle: "מקום של אהבה, חום ועזרה לכל יהודי.",
-        buttonText: "הירשם עכשיו",
-        navigateTo: "/register",
-        className: "banner-1",
-    },
-    {
-        title: "שיעורי תורה והשראה",
-        subtitle: "בואו ללמוד ולהתחבר לאור התורה.",
-        buttonText: "למידע נוסף",
-        navigateTo: "/torah-classes",
-        className: "banner-2",
-    },
-    {
-        title: "תמכו בפעילות שלנו",
-        subtitle: "עזרו לנו להמשיך להפיץ יהדות ולסייע לנזקקים.",
-        buttonText: "תרום עכשיו",
-        navigateTo: "/donate",
-        className: "banner-3",
-    },
+  {
+    title: "רישום לשבת",
+    subtitle: "הצטרפו לארוחות שבת באווירה חמה ומשפחתית.",
+    buttonText: "הרשמה לשבת",
+    navigateTo: "/shabbat", // זה הנתיב לטופס רישום
+    className: "banner-1",
+  },
+  {
+    title: "תמכו בפעילות בית חב״ד",
+    subtitle: "עזרו לנו להמשיך להפיץ יהדות ולסייע לנזקקים.",
+    buttonText: "תרום עכשיו",
+    navigateTo: "/kampein", // דף הקמפיין
+    className: "banner-2",
+  },
+  {
+    title: "פרשת השבוע",
+    subtitle: "קראו והעמיקו בפרשת השבוע באתר שלנו.",
+    buttonText: "לפרשת השבוע",
+    navigateTo: "/parasha", // רשימת הפרשות
+    className: "banner-3",
+  },
 ];
