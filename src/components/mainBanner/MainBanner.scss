@@ -1,61 +1,73 @@
 .banner-container {
-    position: relative;
-    width: 100%;
-    height: 400px;
-    overflow: hidden;
-  
-    .banner {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      transition: opacity 0.5s ease-in-out;
+  position: relative;
+  width: 100%;
+  min-height: 400px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  padding: 2rem;
+
+  .banner-content {
+    background-color: rgba(0, 0, 0, 0.5); // שכבת כהות על התמונה
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 800px;
+
+    .banner-title {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
     }
-  
-    .banner-1 {
-      background: url("/images/banner1.jpg") center/cover no-repeat;
+
+    .banner-subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
     }
-    .banner-2 {
-      background: url("/images/banner2.jpg") center/cover no-repeat;
-    }
-    .banner-3 {
-      background: url("/images/banner3.jpg") center/cover no-repeat;
-    }
-  
-    button {
-      margin-top: 10px;
-      padding: 10px 20px;
-      background: #ffcc00;
+
+    .banner-button {
+      background-color: rgb(110, 74, 158);
+      color: white;
       border: none;
-      font-size: 18px;
+      padding: 0.6rem 1.4rem;
+      border-radius: 6px;
+      font-size: 1rem;
       cursor: pointer;
-    }
-  
-    .dots {
-      position: absolute;
-      bottom: 10px;
-      display: flex;
-      justify-content: center;
-      width: 100%;
-  
-      .dot {
-        width: 10px;
-        height: 10px;
-        margin: 0 5px;
-        background: white;
-        border-radius: 50%;
-        opacity: 0.5;
-        cursor: pointer;
-        transition: opacity 0.3s;
-  
-        &.active {
-          opacity: 1;
-        }
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: rgb(130, 94, 178);
       }
     }
   }
-  
+
+  .dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+    gap: 0.5rem;
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #d1c9e6;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &.active {
+        background-color: rgb(110, 74, 158);
+        box-shadow: 0 0 0 3px rgba(110, 74, 158, 0.2);
+        transform: scale(1.2);
+      }
+
+      &:hover {
+        background-color: rgb(130, 94, 178);
+      }
+    }
+  }
+}

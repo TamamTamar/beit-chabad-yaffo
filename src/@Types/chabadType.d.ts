@@ -119,4 +119,5 @@ export type BannerItem = {
     buttonText: string;
     navigateTo: string;
     className: string;
+    image: string;
   };
