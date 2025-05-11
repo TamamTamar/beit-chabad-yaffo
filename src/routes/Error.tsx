@@ -1,8 +1,7 @@
 import { useRouteError } from "react-router-dom";
-import { FaExclamationTriangle } from "react-icons/fa";
+import { FaExclamationCircle } from "react-icons/fa";
 import "./Error.scss";
 import { ErrorType } from "../@Types/types";
-
 
 
 const Error = () => {
@@ -10,16 +9,18 @@ const Error = () => {
 
     return (
         <div className="error-page">
-            <div className="error-content">
+            <div className="error-container">
                 <img
-                    src="https://media.giphy.com/media/14uQ3cOFteDaU/giphy.gif"
-                    alt="Funny error"
+                    src="https://media.giphy.com/media/hEc4k5pN17GZq/giphy.gif"
+                    alt="Error animation"
                     className="error-gif"
                 />
-                <FaExclamationTriangle className="error-icon" />
-                <h1>!אופס</h1>
-                <h2>משהו השתבש</h2>
-                <p className="error-status">שגיאה {status}: {statusText}</p>
+                <FaExclamationCircle className="error-icon" />
+                <h1>אופס!</h1>
+                <h2>משהו השתבש, אבל אנחנו עובדים על זה 😊</h2>
+                <p className="error-status">
+                    <strong>שגיאה {status}:</strong> {statusText}
+                </p>
                 {data && <p className="error-data">{data}</p>}
                 <a href="/" className="back-home">חזרה לדף הבית</a>
             </div>

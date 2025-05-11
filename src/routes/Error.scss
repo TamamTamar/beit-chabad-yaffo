@@ -1,32 +1,39 @@
+$error-bg: #5e35b1;
+$error-bg-light: #7e57c2;
+$error-text: #f3e5f5;
+$error-accent: #d1c4e9;
+
 .error-page {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(135deg, #f44336, #e57373);
-    color: #fff;
-    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, $error-bg, $error-bg-light);
+    color: $error-text;
+    font-family: 'Varela Round', sans-serif;
     text-align: center;
     padding: 1rem;
 
-    .error-content {
-        background-color: rgba(255, 255, 255, 0.1);
-        padding: 2rem;
-        border-radius: 1rem;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        animation: fadeIn 0.7s ease;
-        max-width: 500px;
+    .error-container {
+        background-color: rgba(255, 255, 255, 0.08);
+        padding: 2.5rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
+        max-width: 600px;
+        width: 100%;
+        animation: fadeInUp 0.7s ease;
 
         .error-gif {
             width: 100%;
+            max-width: 300px;
             border-radius: 1rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .error-icon {
             font-size: 3rem;
+            color: $error-accent;
             margin-bottom: 1rem;
-            color: #fffde7;
         }
 
         h1 {
@@ -37,43 +44,76 @@
         h2 {
             font-size: 1.2rem;
             margin-top: 0.5rem;
+            color: lighten($error-text, 10%);
         }
 
         .error-status {
-            font-weight: bold;
-            margin-top: 1rem;
+            margin-top: 1.2rem;
+            font-size: 1.1rem;
         }
 
         .error-data {
             margin-top: 0.5rem;
             font-style: italic;
+            color: #eee;
         }
 
         .back-home {
             display: inline-block;
             margin-top: 2rem;
-            background: #fff;
-            color: #f44336;
-            padding: 0.5rem 1.5rem;
+            background: #ffffff;
+            color: $error-bg;
+            padding: 0.6rem 1.8rem;
             border-radius: 2rem;
             text-decoration: none;
             font-weight: bold;
-            transition: background 0.3s;
+            transition: all 0.3s;
 
             &:hover {
-                background: #fdd;
+                background: $error-accent;
+                color: #fff;
             }
         }
     }
 }
 
-@keyframes fadeIn {
+@keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(20px);
     }
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+@media (max-width: 768px) {
+    .error-page {
+        padding: 1rem;
+
+        .error-container {
+            padding: 1.5rem;
+            max-width: 90%;
+        }
+    }
+}
+@media (max-width: 480px) {
+    .error-page {
+        padding: 0.5rem;
+
+        .error-container {
+            padding: 1rem;
+            max-width: 100%;
+        }
+    }
+}
+@media (max-width: 320px) {
+    .error-page {
+        padding: 0.5rem;
+
+        .error-container {
+            padding: 0.5rem;
+            max-width: 100%;
+        }
     }
 }
