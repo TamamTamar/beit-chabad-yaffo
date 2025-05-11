@@ -1,5 +1,6 @@
+import NavChabad from "../../routes/BeitHabad/NavBarChabad";
 import "./Header.scss";
-import NavChabad from "../routes/BeitHabad/NavBarChabad";
+
 
 function Header() {
     return (
