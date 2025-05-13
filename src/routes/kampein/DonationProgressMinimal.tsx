@@ -69,7 +69,7 @@ const DonationProgressMinimal: React.FC = () => {
             strokeLinecap="round"
             strokeLinejoin="round"
             points="183.392 75.2522 128.291 45.2293 54.47 41.6972 47.4058 36.7424"
-            stroke="#6B4B9A"
+            stroke="#f58b28"
             strokeDasharray={progressPathLength}
             strokeDashoffset={progressPathLength * (1 - percentage / 100)}
             initial={{ strokeDashoffset: progressPathLength }}
