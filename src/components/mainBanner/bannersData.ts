@@ -11,18 +11,18 @@ export const bannersData: BannerItem[] = [
   },
   {
     title: "תמכו בפעילות בית חב״ד",
-    subtitle: "עזרו לנו להמשיך להפיץ יהדות ולסייע לנזקקים.",
+    subtitle: "עזרו לנו להמשיך להפיץ יהדות ולסייע.",
     buttonText: "תרום עכשיו",
     navigateTo: "/kampein",
     className: "banner-2",
     image: "/images/donation-banner.jpg",
   },
   {
-    title: "פרשת השבוע",
-    subtitle: "קראו והעמיקו בפרשת השבוע באתר שלנו.",
-    buttonText: "לפרשת השבוע",
-    navigateTo: "/parasha",
-    className: "banner-3",
-    image: "/images/parasha-banner.jpg",
-  },
+    title: "שאל את הרב",
+    subtitle: "יש לך שאלה? אנחנו כאן בשבילך",
+    buttonText: "שלח שאלה",
+    navigateTo: "/ask-rabbi",
+    image: "/img/rabbi.jpg",
+    className: "slide-3"
+  }
 ];

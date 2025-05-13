@@ -14,6 +14,7 @@ import Aboutkampein from "./kampein/AboutKampein";
 import KampeinPage from "./kampein/KampeinPage";
 import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
 import ChabadDashboard from "./admin/ChabadDashboard";
+import AskRabbiPage from "./AskRabbiPage";
 
 
 
@@ -65,6 +66,10 @@ export const router = createBrowserRouter([
                         <ChabadDashboard />
                     </ProtectedRouteAdmin>
                 ),
+            },
+            {
+            path: "/ask-rabbi",
+            element:  <AskRabbiPage />
             },
             {
                 path: "/about",
