@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #38155de5;
+  background: #68001f;
   padding: 20px;
 }
 
@@ -19,7 +19,7 @@
   height: 200px; // קביעת גובה אחיד לכל תמונה
   object-fit: cover; // מוודא שהתמונה מתמלאת בתוך המסגרת בלי להתעוות
   border-radius: 10px; // פינות מעוגלות
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px #0000001a;
   opacity: 1; // ברירת מחדל: התמונה מוצגת
 }
 
