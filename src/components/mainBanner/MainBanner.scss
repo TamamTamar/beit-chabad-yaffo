@@ -14,7 +14,7 @@
   padding: 2rem;
 
   .banner-content {
-    background-color: rgba(0, 0, 0, 0.5); // שכבת כהות על התמונה
+    background-color: rgba(104, 0, 31, 0.8); // שכבת כהות על התמונה בצבע #68001f
     padding: 2rem;
     border-radius: 12px;
     max-width: 800px;
@@ -22,15 +22,17 @@
     .banner-title {
       font-size: 2.5rem;
       margin-bottom: 1rem;
+      color: #f58b28; // צבע כותרת בצבע #f58b28
     }
 
     .banner-subtitle {
       font-size: 1.2rem;
       margin-bottom: 1.5rem;
+      color: #f58b28; // צבע תת-כותרת בצבע #f58b28
     }
 
     .banner-button {
-      background-color: rgb(110, 74, 158);
+      background-color: #68001f; // צבע רקע הכפתור בצבע #68001f
       color: white;
       border: none;
       padding: 0.6rem 1.4rem;
@@ -40,7 +42,7 @@
       transition: background-color 0.3s;
 
       &:hover {
-        background-color: rgb(130, 94, 178);
+        background-color: #f58b28; // צבע רקע הכפתור במעבר עכבר בצבע #f58b28
       }
     }
   }
@@ -55,18 +57,18 @@
       width: 12px;
       height: 12px;
       border-radius: 50%;
-      background-color: #d1c9e6;
+      background-color: #f58b28; // צבע נקודות בצבע #f58b28
       cursor: pointer;
       transition: all 0.3s ease;
 
       &.active {
-        background-color: rgb(110, 74, 158);
-        box-shadow: 0 0 0 3px rgba(110, 74, 158, 0.2);
+        background-color: #68001f; // צבע נקודה פעילה בצבע #68001f
+        box-shadow: 0 0 0 3px #68001f33;
         transform: scale(1.2);
       }
 
       &:hover {
-        background-color: rgb(130, 94, 178);
+        background-color: #68001f; // צבע נקודה במעבר עכבר בצבע #68001f
       }
     }
   }
