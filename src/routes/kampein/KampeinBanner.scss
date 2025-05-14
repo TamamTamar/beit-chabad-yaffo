@@ -1,81 +1,143 @@
 .kampein-banner {
-    background-image: url('/img/kampein/Main Banner.png');
-    background-size: cover;
-    background-position: center;
-    height: 450px;
-    width: 100%;
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
+  background-image: url('/img/kampein/Main Banner empty.png');
+  background-size: cover;
+  background-position: center;
+  height: 450px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    background-image: url('/img/kampein/Main Banner - Mobile.png');
+    height: 320px;
+  }
+
+  .kampein-banner-image {
+    margin-top: 20px;
+  }
+
+  .kampein-banner-title {
+    color: #f58b28;
+    font-size: 82px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
 
     @media (max-width: 768px) {
-        background-image: url('/img/kampein/Main Banner - Mobile.png'); 
-        height: 320px;
+      font-size: 32px;
+      margin-bottom: 8px;
     }
+  }
 
-    .kampein-banner-button {
-        color: #dfa167;
-        padding: 10px 20px;
-        text-align: right;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 800;
-        line-height: 20px; /* 125% */
-        text-decoration: underline solid auto;
-        text-underline-offset: auto;
-        text-underline-position: from-font;
-        text-transform: uppercase;
-        border-radius: 5px;
-        transition: background 0.3s, color 0.3s;
-        text-decoration-thickness: auto;
-        margin-bottom: 50px; /* הוספת מרווח תחתון כדי להעלות את הכפתור למעלה */
+  .kampein-banner-description {
+    color: #fff;
+    font-size: 52px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
 
-        &:hover {
-            background: #e9bc92;
-            color: #fff;
-        }
+    @media (max-width: 768px) {
+      font-size: 20px;
+      margin-bottom: 12px;
     }
+  }
 
-    .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
+  .kampein-buttons {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 50px;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
     }
+  }
 
-    .info-wrapper {
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        position: relative;
-        max-width: 600px;
-        width: 90%;
+  .kampein-banner-button {
+    color: #dfa167;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 800;
+    text-transform: uppercase;
+    border-radius: 5px;
+    text-decoration: underline;
+    text-underline-offset: auto;
+    text-decoration-thickness: auto;
+    transition: background 0.3s, color 0.3s;
+    background: none;
+    border: none;
+    cursor: pointer;
 
-        @media (max-width: 768px) {
-            padding: 10px;
-          
-        }
+    &:hover {
+      background: #e9bc92;
+      color: #fff;
     }
+  }
 
-    .close-button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background: none;
-        border: none;
-        cursor: pointer;
-    }
+  .donate-button {
+    color: #fff;
+    background-color: #dfa167;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 800;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s;
+    cursor: pointer;
 
-    .info-content {
-        text-align: right; /* התאמה לעברית */
-        max-height: 60vh;
-        overflow-y: auto;
+    &:hover {
+      background-color: #b87545;
+      color: #fff;
     }
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .info-wrapper {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    max-width: 600px;
+    width: 90%;
+
+    @media (max-width: 768px) {
+      padding: 10px;
+    }
+  }
+
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .info-content {
+    text-align: right;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
 }
