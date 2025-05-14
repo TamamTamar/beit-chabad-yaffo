@@ -1,5 +1,5 @@
 .kampein-banner {
-    background-image: url('/img/kampein/Main Banner - Desktop.jpg');
+    background-image: url('/img/kampein/Main Banner.png');
     background-size: cover;
     background-position: center;
     height: 450px;
@@ -29,6 +29,11 @@
         transition: background 0.3s, color 0.3s;
         text-decoration-thickness: auto;
         margin-bottom: 50px; /* הוספת מרווח תחתון כדי להעלות את הכפתור למעלה */
+
+        &:hover {
+            background: #e9bc92;
+            color: #fff;
+        }
     }
 
     .overlay {
