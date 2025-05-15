@@ -25,7 +25,7 @@ const KampeinBanner = () => {
     <div className="kampein-banner">
    
       <div className="kampein-buttons">
-        <button className="donate-button" onClick={handleButtonClick}>
+   {/*      <button className="donate-button" onClick={handleButtonClick}>
           אודות הקמפיין
         </button>
         <button
@@ -35,7 +35,7 @@ const KampeinBanner = () => {
           }}
         >
           תרום עכשיו
-        </button>
+        </button> */}
       </div>
 
       {showInfo && (
