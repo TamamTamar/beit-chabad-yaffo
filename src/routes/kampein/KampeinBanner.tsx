@@ -23,10 +23,7 @@ const KampeinBanner = () => {
 
   return (
     <div className="kampein-banner">
-      <img src="/img/kampein/logo chabad.svg" alt="logo" className="kampein-banner-image" />
-      <h2 className="kampein-banner-title">אור ליהודי יפו – בזכותכם!</h2>
-      <p className="kampein-banner-description">הצטרפו לתמיכה בפעילות השוטפת של בית חב״ד יפו</p>
-
+   
       <div className="kampein-buttons">
         <button className="donate-button" onClick={handleButtonClick}>
           אודות הקמפיין
