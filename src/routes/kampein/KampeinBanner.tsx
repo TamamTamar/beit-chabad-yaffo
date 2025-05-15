@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import './KampeinBanner.scss';
 import Aboutkampein from './AboutKampein';
+import PaymentForm from './PaymentForm'; // ייבוא רכיב הטופס
+import { useNavigate } from 'react-router-dom';
 
 const KampeinBanner = () => {
   const [showInfo, setShowInfo] = useState(false);
+  const [showPaymentForm, setShowPaymentForm] = useState(false); // state לניהול תצוגת הטופס
+  const navigate = useNavigate();
 
   const handleButtonClick = () => {
     setShowInfo(true);
@@ -13,6 +17,10 @@ const KampeinBanner = () => {
     setShowInfo(false);
   };
 
+  if (showPaymentForm) {
+    return <PaymentForm monthlyAmount={0} />; // הצגת רכיב הטופס עם סכום ברירת מחדל
+  }
+
   return (
     <div className="kampein-banner">
       <img src="/img/kampein/logo chabad.svg" alt="logo" className="kampein-banner-image" />
@@ -20,17 +28,17 @@ const KampeinBanner = () => {
       <p className="kampein-banner-description">הצטרפו לתמיכה בפעילות השוטפת של בית חב״ד יפו</p>
 
       <div className="kampein-buttons">
-        <button className="kampein-banner-button" onClick={handleButtonClick}>
+        <button className="donate-button" onClick={handleButtonClick}>
           אודות הקמפיין
         </button>
-        <a
-          href="https://www.matara.pro/nedarimplus/online/?mosad=7004217"
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
           className="donate-button"
+          onClick={() => {
+            setShowPaymentForm(true); // הצגת רכיב הטופס
+          }}
         >
-          לתרומה
-        </a>
+          תרום עכשיו
+        </button>
       </div>
 
       {showInfo && (
