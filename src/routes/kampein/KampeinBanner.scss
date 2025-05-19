@@ -1,12 +1,12 @@
 .kampein-banner {
-  background-image: url('/img/kampein/banner new.png');
+  background-image: url('/img/kampein/banner desktop.png');
     background-size: cover;
     background-position: center;
-    height: 370px;
+    height: 200px;
     width: 100%;
     display: flex;
     flex-direction: column-reverse;
-    align-items: center;
+    background-position: center;
 
   @media (max-width: 768px) {
     background-image: url('/img/kampein/mobile.png');
