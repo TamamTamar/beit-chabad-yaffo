@@ -92,9 +92,7 @@
     border-radius: 5px;
     text-decoration: none;
     transition: background 0.3s, color 0.3s;
-    border: 4px solid; /* הגדרת עובי */
-  border-image: linear-gradient(90deg, #f68b29, #faa940) 1;
-  border-radius: 25px;
+    border: #f58b28 solid 4px;
     cursor: pointer;
 
     &:hover {
@@ -104,7 +102,7 @@
   }
 
   .donate-button {
-    color: #fff;
+    color: #68001f;
     background: linear-gradient(90deg, #f68b29, #faa940);
     padding: 10px 20px;
     font-size: 16px;
