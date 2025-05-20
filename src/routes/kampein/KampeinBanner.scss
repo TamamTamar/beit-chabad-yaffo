@@ -7,6 +7,8 @@
   background-repeat: no-repeat;
   margin: 0;                   // לוודא שאין רווח חיצוני
   padding: 0; 
+  display: flex;       
+  flex-direction: column;       // מאפשר שימוש ב-flexbox
 
 
   @media (max-width: 768px) {
