@@ -72,11 +72,12 @@
     text-transform: uppercase;
     text-decoration: none;
     transition: background 0.3s, color 0.3s;
-    border: #f58b28 solid 4px;
+    border: #f58b28 solid 2px;
     cursor: pointer;
      border-radius: 14px;
 
     &:hover {
+      border: #68001f solid 2px;
       background-color: #68001f;
       color: #fff;
     }
@@ -95,7 +96,7 @@
     cursor: pointer;
 
     &:hover {
-      background-color: #68001f;
+      background: linear-gradient(90deg, #68001f, #68001f);
       color: #fff;
     }
   }
