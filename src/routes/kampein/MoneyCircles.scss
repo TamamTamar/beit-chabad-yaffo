@@ -7,7 +7,6 @@
     height: auto;
     flex-shrink: 0;
     background: #68001f;
-    
     display: flex;
     gap: 60px;
     justify-content: center;
@@ -15,7 +14,7 @@
     flex-wrap: wrap;
     padding: 20px;
 
- 
+
 
     @media (max-width: 1400px) {
         width: 100vw;
@@ -27,6 +26,7 @@
         //flex-direction: column;
         gap: 20px;
     }
+
     .circle {
         display: flex;
         justify-content: center;
@@ -35,17 +35,19 @@
         height: 120px;
         border-radius: 50%;
         background: #e5e5e5;
-        color: #000;
+        color: #68001f;
         text-align: center;
         padding: 10px;
         gap: 10px;
         font-size: 28px;
 
-           &:hover {
-        cursor: pointer;
-        background: #908f8f;
-        
-    }
+        &:hover {
+            cursor: pointer;
+            background: #68001f;
+            color: #e5e5e5;
+            transition: background 0.3s, color 0.3s;
+
+        }
 
         @media (max-width: 768px) {
             width: 100px;
@@ -53,7 +55,7 @@
             font-size: 24px;
         }
 
-   
+
 
         .amount-container {
             display: flex;
@@ -66,14 +68,14 @@
 
         .amount {
             font-weight: 700;
-            color: #000;
+         //  color: #000;
             line-height: 1;
         }
 
         .to-month {
             font-size: 16px;
             font-weight: 700;
-            color: #000;
+           // color: #000;
             line-height: 1;
             letter-spacing: 0.1em;
         }
@@ -81,7 +83,7 @@
         .another-amount {
             font-weight: 700;
             line-height: 1;
-            color: #68001f;
+          //  color: #68001f;
         }
     }
 }
@@ -104,7 +106,7 @@
     border-radius: 8px;
     box-shadow: 0 2px 10px #0000001a;
     position: relative;
-   
+
     @media (max-width: 768px) {
         width: 90%;
     }
