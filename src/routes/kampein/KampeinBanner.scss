@@ -61,27 +61,7 @@
       align-items: center;
       gap: 10px;
     }
-  }
-
-  .kampein-banner-button {
-    color: #E9BC92;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: 800;
-    text-transform: uppercase;
-
-    text-decoration: underline;
-    text-underline-offset: auto;
-    text-decoration-thickness: auto;
-    transition: background 0.3s, color 0.3s;
-    background: none;
-    border: none;
-    cursor: pointer;
-    &:hover {
-      background: #f58b28;
-      color: #fff;
-    }
-  }
+  
 
   .info-button {
     color: #68001f;
@@ -118,6 +98,8 @@
       color: #fff;
     }
   }
+}
+
 
   .overlay {
     position: fixed;
