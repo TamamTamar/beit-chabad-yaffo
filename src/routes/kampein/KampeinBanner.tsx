@@ -33,7 +33,7 @@ const KampeinBanner = () => {
           תרום עכשיו
         </button>
         <button
-          className="donate-button"
+          className="info-button"
           onClick={handleButtonClick}
         >
           אודות הקמפיין
