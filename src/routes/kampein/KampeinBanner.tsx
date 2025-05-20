@@ -24,12 +24,10 @@ const KampeinBanner = () => {
   return (
     <div className="kampein-banner">
 
+      <h2 className="kampein-banner-title">אור ליהודי יפו – בזכותכם!</h2>
+      <p className="kampein-banner-description">הצטרפו לתמיכה בפעילות השוטפת של בית חב״ד יפו</p>
       <div className="kampein-buttons">
-
-        <h2 className="kampein-banner-title">אור ליהודי יפו – בזכותכם!</h2>
-        <p className="kampein-banner-description">הצטרפו לתמיכה בפעילות השוטפת של בית חב״ד יפו</p>
-
-            <button className="donate-button" onClick={handleButtonClick}>
+        <button className="donate-button" onClick={handleButtonClick}>
           אודות הקמפיין
         </button>
         <button
@@ -39,7 +37,7 @@ const KampeinBanner = () => {
           }}
         >
           תרום עכשיו
-        </button> 
+        </button>
       </div>
 
       {showInfo && (
