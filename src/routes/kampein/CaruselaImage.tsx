@@ -50,23 +50,38 @@ const CaruselaImage = () => {
     ];
 
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [isAnimating, setIsAnimating] = useState(false); // מצב לאנימציה
+    const [isAnimating, setIsAnimating] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth <= 600);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     useEffect(() => {
         const interval = setInterval(() => {
             nextSlide();
-        }, 5000); // כל 5 שניות
+        }, 5000);
 
-        return () => clearInterval(interval); // לנקות את ה-interval כשמעבר לדף אחר
-    }, []);
+        return () => clearInterval(interval);
+    }, [isMobile, currentIndex]);
 
     const nextSlide = () => {
-        setIsAnimating(true); // הפעלת האנימציה
-        setTimeout(() => setIsAnimating(false), 500); // כיבוי האנימציה לאחר 500ms
-        setCurrentIndex((prevIndex) => (prevIndex + 3) % images.length);
+        setIsAnimating(true);
+        setTimeout(() => setIsAnimating(false), 500);
+        if (isMobile) {
+            setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+        } else {
+            setCurrentIndex((prevIndex) => (prevIndex + 3) % images.length);
+        }
     };
 
     const getDisplayedImages = () => {
+        if (isMobile) {
+            return [images[currentIndex % images.length]];
+        }
         return [
             images[currentIndex % images.length],
             images[(currentIndex + 1) % images.length],
@@ -82,7 +97,7 @@ const CaruselaImage = () => {
                         key={index}
                         src={image}
                         alt={`carousel-img-${index}`}
-                        className={`carousel-img ${isAnimating ? 'fade-in' : ''}`} // הוספת מחלקת fade-in לכל התמונות המוצגות
+                        className={`carousel-img ${isAnimating ? 'fade-in' : ''}`}
                     />
                 ))}
             </div>
