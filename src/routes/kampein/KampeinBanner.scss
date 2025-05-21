@@ -53,54 +53,71 @@
   .kampein-buttons {
     display: flex;
     gap: 16px;
-    margin-bottom:25px;
-   
+    margin-bottom: 25px;
+
 
     @media (max-width: 768px) {
       flex-direction: column;
       align-items: center;
       gap: 10px;
     }
-  
 
-  .info-button {
-    color: #68001f;
-    background-color: #fff;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: 800;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: background 0.3s, color 0.3s;
-    border: #f58b28 solid 2px;
-    cursor: pointer;
-     border-radius: 14px;
 
-    &:hover {
-      border: #68001f solid 2px;
-      background-color: #68001f;
-      color: #fff;
+    .info-button {
+      color: #68001f;
+      background-color: #fff;
+      padding: 14px 20px;
+      font-size: 16px;
+      font-weight: 800;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.3s, color 0.3s;
+      border: #f58b28 solid 2px;
+      cursor: pointer;
+      border-radius: 14px;
+
+      &:hover {
+        border: #68001f solid 2px;
+        background-color: #68001f;
+        color: #fff;
+      }
+      @media (max-width: 768px) {
+        font-size: 14px;
+        padding: 8px 20px;
+      }
+      @media (max-width: 480px) {
+        font-size: 12px;
+        padding: 6px 12px;
+      }
+    }
+
+
+    .donate-button {
+      color: #68001f;
+      background: linear-gradient(90deg, #f68b29, #faa940);
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: 800;
+      text-transform: uppercase;
+      border-radius: 14px;
+      text-decoration: none;
+      transition: background 0.3s, color 0.3s;
+      cursor: pointer;
+
+      &:hover {
+        background: linear-gradient(90deg, #68001f, #68001f);
+        color: #fff;
+      }
+      @media (max-width: 768px) {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+      @media (max-width: 480px) {
+        font-size: 12px;
+        padding: 6px 12px;
+      }
     }
   }
-
-  .donate-button {
-    color: #68001f;
-    background: linear-gradient(90deg, #f68b29, #faa940);
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: 800;
-    text-transform: uppercase;
-     border-radius: 14px;
-    text-decoration: none;
-    transition: background 0.3s, color 0.3s;
-    cursor: pointer;
-
-    &:hover {
-      background: linear-gradient(90deg, #68001f, #68001f);
-      color: #fff;
-    }
-  }
-}
 
 
   .overlay {
