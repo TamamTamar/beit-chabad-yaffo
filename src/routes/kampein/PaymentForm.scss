@@ -17,14 +17,14 @@
         margin-bottom: 20px;
         font-size: 18px;
         font-weight: bold;
-        color: #D7CBEA;
+        color: #f58b28;
 
         span {
             margin: 0 5px;
         }
 
         .active-step {
-            color: #6B4B9A;
+            color: #68001f;
         }
     }
 
@@ -38,7 +38,7 @@
             display: flex;
             width: 100%;
             justify-content: space-between;
-            background: #D7CBEA;
+            background: #f58b28;
             padding: 10px;
             border-radius: 5px;
             max-width: 100%;
@@ -74,7 +74,7 @@
                 .monthly-amount {
                     padding: 20px 15px 10px;
                     border-radius: 8px;
-                    background-color: #ffffff;
+                    background-color: #68001f;
                     margin-bottom: 10px;
 
                     .monthly-amount-wrapper {
@@ -90,6 +90,7 @@
                     outline: none;
                     font-size: 24px;
                     width: 100%;
+                    color: #f58b28;
 
                     &:focus {
                         box-shadow: none;
@@ -126,7 +127,7 @@
         .amount-text {
             margin: 10px 0;
             font-size: 18px;
-            color: #333;
+            color: #68001f;
 
             @media (max-width: 768px) {
                 font-size: 16px;
@@ -136,7 +137,7 @@
         .checkbox-label {
             display: flex;
             font-size: 12px;
-            color: #555;
+            color: #68001f;
             margin-bottom: 10px;
             text-align: right;
 
@@ -152,7 +153,7 @@
                 }
 
                 &:checked {
-                    background-color: #6B4B9A;
+                    background-color: #f58b28;
                 }
 
                 @media (max-width: 768px) {
@@ -171,9 +172,11 @@
         .form-input {
             margin-bottom: 15px;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #f58b28;
             border-radius: 4px;
             font-size: 14px;
+            color: #68001f;
+            background: #fff;
 
             @media (max-width: 768px) {
                 font-size: 14px;
@@ -182,8 +185,8 @@
         }
 
         .payment-button {
-            background: #6B4B9A;
-            color: #fff;
+            background: #68001f;
+            color: #f58b28;
             cursor: pointer;
             border: none;
             padding: 10px 20px;
@@ -191,12 +194,13 @@
             border-radius: 4px;
 
             &:hover {
-                background-color: #5a3f82;
+                background-color: #f58b28;
+                color: #68001f;
             }
         }
 
         .error {
-            color: #ff0000;
+            color: #f58b28;
             font-size: 14px;
             margin-top: -10px;
             margin-bottom: 10px;
@@ -237,8 +241,8 @@
 
         .back-button {
             padding: 10px 20px;
-            background: #6B4B9A;
-            color: #fff;
+            background: #68001f;
+            color: #f58b28;
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -249,14 +253,15 @@
             }
 
             &:hover {
-                background-color: #5a3f82;
+                background-color: #f58b28;
+                color: #68001f;
             }
         }
 
         .next-button {
             padding: 10px 20px;
-            background: #6B4B9A;
-            color: #fff;
+            background: #68001f;
+            color: #f58b28;
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -266,7 +271,8 @@
             }
 
             &:hover {
-                background-color: #5a3f82;
+                background-color: #f58b28;
+                color: #68001f;
             }
         }
 
@@ -278,20 +284,20 @@
 
     .ok-div {
         display: none;
-        color: green;
+        color: #f58b28;
         font-size: 16px;
         margin-top: 20px;
     }
 
     .wait-pay {
         display: none;
-        color: #6B4B9A;
+        color: #68001f;
         font-size: 16px;
         margin-top: 20px;
     }
 
     .error-div {
-        color: red;
+        color: #f58b28;
         font-size: 16px;
         margin-top: 20px;
     }

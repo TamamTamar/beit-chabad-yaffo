@@ -65,18 +65,16 @@ const KampeinBanner = () => {
         </div>
       )}
 
-      {showPaymentForm && (
-        <div className="overlay">
-          <div className="info-wrapper">
-            <button className="close-button" onClick={closePaymentForm}>
-              <img src="/img/kampein/x.svg" alt="Close" />
-            </button>
-            <div className="info-content">
-              <PaymentForm monthlyAmount={0} />
-            </div>
-          </div>
-        </div>
-      )}
+            {showPaymentForm && (
+                <div className="overlay">
+                    <div className="payment-form-wrapper">
+                        <button className="close-button" onClick={closePaymentForm}>
+                            <img src="/img/kampein/x.svg" alt="Close" />
+                        </button>
+                        <PaymentForm monthlyAmount={0} />
+                    </div>
+                </div>
+            )}
     </div>
   );
 };
