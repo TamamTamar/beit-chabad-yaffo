@@ -7,7 +7,7 @@ function Footer() {
         <footer className="footer">
             <div className="footer-content">
                 <span className="footer-text">
-                    2025 orime-Studio ©
+                    2025 Tamar Tamam ©
                 </span>
                 <ul className="footer-icons">
                     <li className="icon-item">
