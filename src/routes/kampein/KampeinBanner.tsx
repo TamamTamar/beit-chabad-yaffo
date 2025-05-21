@@ -3,6 +3,17 @@ import './KampeinBanner.scss';
 import Aboutkampein from './AboutKampein';
 import PaymentForm from './PaymentForm';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+
+<Helmet>
+  <title>קמפיין חב"ד יפו - תנו יד לשליחות</title>
+  <meta name="description" content="הצטרפו למען המשך פעילות חב״ד ביפו - הבית של כל יהודי. תרמו עכשיו והיו שותפים לשליחות." />
+  <meta name="keywords" content="חבד יפו, תרומות, קמפיין, שליחות, צדקה, יהדות, תרומה לחבד" />
+  <meta property="og:title" content="קמפיין חב״ד יפו" />
+  <meta property="og:description" content="תמכו בשליחות חב״ד ביפו – תרמו עכשיו והפיצו אור יהדות." />
+  <meta property="og:image" content="https://beit-chabad-yaffo.onrender.com/img/kampein/banner-u.png" />
+</Helmet>
+
 
 const KampeinBanner = () => {
   const [showInfo, setShowInfo] = useState(false);
@@ -23,7 +34,7 @@ const KampeinBanner = () => {
 
   return (
     <div className="kampein-banner">
-      <h2 className="kampein-banner-title">יחד ממשיכים את השליחות ביפו</h2>
+      <h1 className="kampein-banner-title">יחד ממשיכים את השליחות ביפו</h1>
       <p className="kampein-banner-description">הבית של כל יהודי – בזכותכם.
 תרמו והיו שותפים</p>
       <div className="kampein-buttons">
