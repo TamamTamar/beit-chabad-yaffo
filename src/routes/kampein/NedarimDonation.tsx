@@ -99,6 +99,7 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef, onPaymentSuccess 
   return (
     <div className="iframe-container">
       <div id="WaitNedarimFrame">טוען...</div>
+    
       <iframe
         ref={iframeRef}
         id="NedarimFrame"
