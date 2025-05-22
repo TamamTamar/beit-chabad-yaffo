@@ -26,7 +26,7 @@ function Footer() {
                     </li>
                     <li className="icon-item">
                         <Tooltip content="Contact" placement="top" className="tooltip">
-                            <a href="mailto:chabadyaffo@gmail.com" className="icon-link">
+                            <a href="mailto:lchabadyaffo@gmail.com" className="icon-link">
                                 <FiMail size={20} />
                             </a>
 
