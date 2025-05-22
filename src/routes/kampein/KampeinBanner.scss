@@ -1,7 +1,4 @@
 .kampein-banner {
-  position: sticky;
-  top: 0;
-  z-index: 1000; // לוודא שהבאנר מעל כל התוכן
   width: 100vw; // תופס את כל הרוחב של המסך
   height: 300px; // גובה הבאנר (לפי מה שכתבת)
   background-image: url('/img/kampein/banner.png');

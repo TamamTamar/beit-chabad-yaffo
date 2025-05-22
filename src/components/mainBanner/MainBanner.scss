@@ -1,7 +1,5 @@
 .banner-container {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  position: relative;
   width: 100%;
   min-height: 400px;
   overflow: hidden;
