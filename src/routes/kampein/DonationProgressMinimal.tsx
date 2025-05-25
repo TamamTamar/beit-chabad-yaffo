@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import axios from 'axios';
+import { paymentService } from '../../services/payment-service';
 import './DonationProgressMinimal.scss';
 
 const DonationProgressMinimal: React.FC = () => {
@@ -8,37 +8,28 @@ const DonationProgressMinimal: React.FC = () => {
   const [raised, setRaised] = useState<number>(0); // סכום שהושג
   const [percentage, setPercentage] = useState<number>(0); // אחוז מהיעד שהושג
 
-  // שליפת נתוני תרומות מה-API
+  // שליפת נתוני תרומות מה-service
   const fetchDonationData = async () => {
     try {
-      const response = await axios.get('https://matara.pro/nedarimplus/Reports/Manage3.aspx', {
-        params: {
-          Action: 'GetKevaNew',
-          MosadNumber: '7013920', // הכנס את מזהה המוסד שלך
-          ApiPassword: 'fp203',  // הכנס את סיסמת ה-API שלך
-        },
-      });
-
-      const { TotalYear } = response.data;
+      const data = await paymentService.fetchDonationData();
+      const { TotalYear } = data;
 
       if (TotalYear) {
-        const totalRaised = parseFloat(TotalYear); // המרה למספר
-        setRaised(totalRaised); // עדכון הסטייט עם הסכום מה-API
+        const totalRaised = parseFloat(TotalYear);
+        setRaised(totalRaised);
       } else {
         console.error('TotalYear לא נמצא בתגובה');
       }
-
     } catch (error) {
       console.error('שגיאה בעת שליפת הנתונים מה-API:', error);
     }
   };
 
   useEffect(() => {
-    fetchDonationData(); // קריאה ל-API בעת טעינת הקומפוננטה
+    fetchDonationData();
   }, []);
 
   useEffect(() => {
-    // חישוב האחוזים רק כאשר raised או goal משתנים
     const calculatedPercentage = Math.min(Math.floor((raised / goal) * 100), 100);
     setPercentage(calculatedPercentage);
   }, [raised, goal]);
