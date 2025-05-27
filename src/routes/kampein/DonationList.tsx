@@ -17,7 +17,9 @@ type AggregatedDonation = {
 
 const DonationList: React.FC = () => {
     const [donations, setDonations] = useState<AggregatedDonation[]>([]);
+    const [originalDonations, setOriginalDonations] = useState<AggregatedDonation[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [isSorted, setIsSorted] = useState(false);
 
     useEffect(() => {
         const fetchDonationData = async () => {
@@ -46,9 +48,8 @@ const DonationList: React.FC = () => {
                     return { name, pastTotal, futureTotal, combinedTotal, lizchut };
                 });
 
-                aggregated.sort((a, b) => b.combinedTotal - a.combinedTotal);
-
                 setDonations(aggregated);
+                setOriginalDonations(aggregated);
             } catch (err: any) {
                 console.error('שגיאה בטעינת הנתונים:', err);
                 setError('נכשלה טעינת התרומות');
@@ -58,27 +59,42 @@ const DonationList: React.FC = () => {
         fetchDonationData();
     }, []);
 
+    const handleSortClick = () => {
+        if (isSorted) {
+            // ביטול מיון – חזרה לרשימה המקורית
+            setDonations(originalDonations);
+        } else {
+            // מיון לפי combinedTotal מהגבוה לנמוך
+            const sorted = [...donations].sort((a, b) => b.combinedTotal - a.combinedTotal);
+            setDonations(sorted);
+        }
+        setIsSorted(!isSorted);
+    };
+
     return (
         <div className="donation-list-cards">
-            <h2 className='donation-list-title'>השותפים שלנו</h2>
+            <h2 className="donation-list-title">השותפים שלנו</h2>
+            <button className="sort-button" onClick={handleSortClick}>
+                {isSorted ? 'בטל מיון' : 'מיין לפי סכום'}
+            </button>
             {error ? (
                 <p className="error">{error}</p>
             ) : donations.length === 0 ? (
                 <p>טוען נתונים...</p>
             ) : (
                 <div className="cards-container">
-                                   {donations.map((d, idx) => (
-                      <div className="donation-card" key={idx}>
-                        <div className="donation-card-content">
-                          <div className="donor-row">
-                            <span className="donor-name">{d.name}</span>
-                            <span className="donor-amount">{d.combinedTotal.toLocaleString()} ₪</span>
-                          </div>
-                          {d.lizchut && (
-                            <div className="donor-message">לזכות: {d.lizchut}</div>
-                          )}
+                    {donations.map((d, idx) => (
+                        <div className="donation-card" key={idx}>
+                            <div className="donation-card-content">
+                                <div className="donor-row">
+                                    <span className="donor-name">{d.name}</span>
+                                    <span className="donor-amount">{d.combinedTotal.toLocaleString()} ₪</span>
+                                </div>
+                                {d.lizchut && (
+                                    <div className="donor-message">לזכות: {d.lizchut}</div>
+                                )}
+                            </div>
                         </div>
-                      </div>
                     ))}
                 </div>
             )}
