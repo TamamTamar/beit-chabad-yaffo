@@ -1,22 +1,22 @@
-.donors-list {
+.donation-list-cards {
   direction: rtl;
   padding: 1rem;
 
-  .donors-title {
+  .donation-list-title {
     text-align: center;
     color: #68001f;
     font-size: 1.5rem;
     margin-bottom: 1rem;
   }
 
-  .donors-grid {
+  .cards-container {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     justify-content: flex-start;
   }
 
-  .donor-card {
+  .donation-card {
     background: #fff;
     border: 2px solid #f58b28;
     border-radius: 16px;
@@ -57,7 +57,7 @@
   }
 
   @media (max-width: 900px) {
-    .donor-card {
+    .donation-card {
       width: 100%;
     }
   }

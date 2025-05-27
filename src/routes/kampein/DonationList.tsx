@@ -75,7 +75,7 @@ const DonationList: React.FC = () => {
                   <span className="value total"><strong>{d.combinedTotal.toLocaleString()} ₪</strong></span>
                 </div>
                 <div>
-                    <span>לזכות: {d.lizchut}</span>
+                    <span className="value lizchut">לזכות: {d.lizchut}</span>
                 </div>
               </div>
             </div>
