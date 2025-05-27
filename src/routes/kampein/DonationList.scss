@@ -1,7 +1,7 @@
 .donation-list-cards {
     direction: 'rtl'; /* התאמה לעברית */
     padding: 1rem ;
-    width: 40%;
+    width: 100%;
 
     .donation-list-title {
       font-size: 1.5rem;
@@ -18,6 +18,9 @@
     gap: 20px;
     justify-content: flex-start;
     margin-top: 24px;
+    width: 100%;
+    max-width: 1200px; /* הגבלת רוחב מקסימלי */
+    margin: 0 auto; /* מרכז את הכרטיסיות */
   }
 
   .donation-card {
