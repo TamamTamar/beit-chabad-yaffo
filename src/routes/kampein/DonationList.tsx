@@ -1,47 +1,89 @@
 import React, { useEffect, useState } from 'react';
-import './DonorsList.scss';
+import axios from 'axios';
+import './DonationList.scss';
 
-type Donor = {
-  name: string;
-  amount: number;
-  message?: string;
+type DonationItem = {
+  DT_RowId: string;
+  [key: string]: string;
 };
 
-const DonorsList: React.FC = () => {
-  const [donors, setDonors] = useState<Donor[]>([]);
+type AggregatedDonation = {
+  name: string;
+  pastTotal: number;
+  futureTotal: number;
+  combinedTotal: number;
+  lizchut: string;
+};
+
+const DonationList: React.FC = () => {
+  const [donations, setDonations] = useState<AggregatedDonation[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchDonors = async () => {
+    const fetchDonationData = async () => {
       try {
-        const response = await fetch('/api/donors'); // החלף ב-API שלך
-        const data = await response.json();
-        setDonors(data);
-      } catch (error) {
-        console.error('שגיאה בשליפת תורמים:', error);
+        const response = await axios.get('https://matara.pro/nedarimplus/Reports/Manage3.aspx', {
+          params: {
+            Action: 'GetKevaNew',
+            MosadNumber: '7013920',
+            ApiPassword: 'fp203',
+          },
+        });
+
+        const rawData: DonationItem[] = response.data.data;
+
+        const aggregated: AggregatedDonation[] = rawData.map(item => {
+          const name = item['2']?.trim() || '—';
+          const monthly = parseFloat(item['4']?.replace(/[^\d.]/g, '') || '0');
+          const monthsPaid = parseInt(item['8'] || '0', 10);
+          const remaining = parseInt(item['7'] || '0', 10);
+          const lizchut = item['6']?.trim() || '';
+
+          const pastTotal = monthly * monthsPaid;
+          const futureTotal = monthly * remaining;
+          const combinedTotal = pastTotal + futureTotal;
+
+          return { name, pastTotal, futureTotal, combinedTotal, lizchut };
+        });
+
+        aggregated.sort((a, b) => b.combinedTotal - a.combinedTotal);
+
+        setDonations(aggregated);
+      } catch (err: any) {
+        console.error('שגיאה בטעינת הנתונים:', err);
+        setError('נכשלה טעינת התרומות');
       }
     };
 
-    fetchDonors();
+    fetchDonationData();
   }, []);
 
   return (
-    <div className="donors-list" dir="rtl">
-      <h3 className="donors-title">תורמים</h3>
-      <div className="donors-grid">
-        {donors.map((donor, index) => (
-          <div key={index} className="donor-card">
-            <div className="donor-row">
-              <span className="donor-name">{donor.name || 'אנונימי'}</span>
-              <span className="donor-amount">₪{donor.amount.toLocaleString()}</span>
+    <div className="donation-list-cards">
+      <h2 className='donation-list-title'>השותפים שלנו</h2>
+      {error ? (
+        <p className="error">{error}</p>
+      ) : donations.length === 0 ? (
+        <p>טוען נתונים...</p>
+      ) : (
+        <div className="cards-container">
+          {donations.map((d, idx) => (
+            <div className="donation-card" key={idx}>
+              <div className="donor-name">{d.name}</div>
+              <div className="donation-amounts">
+                <div>
+                  <span className="value total"><strong>{d.combinedTotal.toLocaleString()} ₪</strong></span>
+                </div>
+                <div>
+                    <span>לזכות: {d.lizchut}</span>
+                </div>
+              </div>
             </div>
-            {donor.message && (
-              <div className="donor-message">לזכות {donor.message}</div>
-            )}
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
-export default DonorsList;
+export default DonationList;
