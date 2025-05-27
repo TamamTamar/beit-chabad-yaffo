@@ -67,22 +67,18 @@ const DonationList: React.FC = () => {
                 <p>טוען נתונים...</p>
             ) : (
                 <div className="cards-container">
-                    {donations.map((d, idx) => (
-                        <div className="donation-card" key={idx}>
-                            <div className="donation-card-content">
-                                <div className="donor-name">{d.name}</div>
-                                <div className="donation-amounts">
-                                    <div>
-                                        <span className="value total"><strong>{d.combinedTotal.toLocaleString()} ₪</strong></span>
-                                    </div>
-                                </div>
-                                <div>
-                                    if (d.lizchut) {
-                                        <span className="value lizchut">לזכות: {d.lizchut}</span>
-                                    }
-                                </div>
-                            </div>
+                                   {donations.map((d, idx) => (
+                      <div className="donation-card" key={idx}>
+                        <div className="donation-card-content">
+                          <div className="donor-row">
+                            <span className="donor-name">{d.name}</span>
+                            <span className="donor-amount">{d.combinedTotal.toLocaleString()} ₪</span>
+                          </div>
+                          {d.lizchut && (
+                            <div className="donor-message">לזכות: {d.lizchut}</div>
+                          )}
                         </div>
+                      </div>
                     ))}
                 </div>
             )}
