@@ -58,7 +58,7 @@ const DonationList: React.FC = () => {
 
   return (
     <div className="donation-list-cards" style={{ direction: 'rtl', padding: '1rem' }}>
-      <h2>סיכום תרומות (עבר + עתיד)</h2>
+      <h2>השותפים שלנו</h2>
       {error ? (
         <p style={{ color: 'red' }}>{error}</p>
       ) : donations.length === 0 ? (
@@ -69,14 +69,6 @@ const DonationList: React.FC = () => {
             <div className="donation-card" key={idx}>
               <div className="donor-name">{d.name}</div>
               <div className="donation-amounts">
-                <div>
-                  <span className="label">סך נגבה:</span>
-                  <span className="value">{d.pastTotal.toLocaleString()} ₪</span>
-                </div>
-                <div>
-                  <span className="label">סך עתידי:</span>
-                  <span className="value">{d.futureTotal.toLocaleString()} ₪</span>
-                </div>
                 <div>
                   <span className="label total">סך הכול:</span>
                   <span className="value total"><strong>{d.combinedTotal.toLocaleString()} ₪</strong></span>
