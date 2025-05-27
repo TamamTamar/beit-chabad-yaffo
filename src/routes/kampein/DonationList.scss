@@ -1,0 +1,60 @@
+.donation-list-cards {
+  .cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+    margin-top: 24px;
+  }
+
+  .donation-card {
+    background: #fff;
+    border: 2px solid #f58b28;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(104, 0, 31, 0.07);
+    padding: 20px 24px;
+    min-width: 240px;
+    max-width: 320px;
+    flex: 1 1 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: box-shadow 0.2s;
+    margin-bottom: 10px;
+
+    &:hover {
+      box-shadow: 0 4px 16px rgba(104, 0, 31, 0.15);
+      border-color: #68001f;
+    }
+
+    .donor-name {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #68001f;
+      margin-bottom: 12px;
+    }
+
+    .donation-amounts {
+      width: 100%;
+
+      div {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 6px;
+
+        .label {
+          color: #f58b28;
+          font-weight: 500;
+        }
+        .value {
+          color: #68001f;
+          font-weight: 600;
+        }
+        &.total, .total {
+          color: #f58b28;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

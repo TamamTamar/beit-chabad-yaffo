@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './DonationList.scss';
 
 type DonationItem = {
   DT_RowId: string;
   [key: string]: string;
 };
 
+type AggregatedDonation = {
+  name: string;
+  pastTotal: number;
+  futureTotal: number;
+  combinedTotal: number;
+};
+
 const DonationList: React.FC = () => {
-  const [donations, setDonations] = useState<DonationItem[]>([]);
+  const [donations, setDonations] = useState<AggregatedDonation[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -21,15 +29,26 @@ const DonationList: React.FC = () => {
           },
         });
 
-        const rawData = response.data.data;
+        const rawData: DonationItem[] = response.data.data;
 
-        if (Array.isArray(rawData)) {
-          setDonations(rawData);
-        } else {
-          setError('פורמט הנתונים לא תקין');
-        }
+        const aggregated: AggregatedDonation[] = rawData.map(item => {
+          const name = item['2']?.trim() || '—';
+          const monthly = parseFloat(item['4']?.replace(/[^\d.]/g, '') || '0');
+          const monthsPaid = parseInt(item['8'] || '0', 10);
+          const remaining = parseInt(item['7'] || '0', 10);
+
+          const pastTotal = monthly * monthsPaid;
+          const futureTotal = monthly * remaining;
+          const combinedTotal = pastTotal + futureTotal;
+
+          return { name, pastTotal, futureTotal, combinedTotal };
+        });
+
+        aggregated.sort((a, b) => b.combinedTotal - a.combinedTotal);
+
+        setDonations(aggregated);
       } catch (err: any) {
-        console.error('שגיאה בעת משיכת התרומות:', err);
+        console.error('שגיאה בטעינת הנתונים:', err);
         setError('נכשלה טעינת התרומות');
       }
     };
@@ -38,20 +57,34 @@ const DonationList: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ direction: 'rtl', padding: '1rem' }}>
-      <h2>רשימת תורמים</h2>
+    <div className="donation-list-cards" style={{ direction: 'rtl', padding: '1rem' }}>
+      <h2>סיכום תרומות (עבר + עתיד)</h2>
       {error ? (
         <p style={{ color: 'red' }}>{error}</p>
       ) : donations.length === 0 ? (
         <p>טוען נתונים...</p>
       ) : (
-        <ul>
-          {donations.map((donation) => (
-            <li key={donation.DT_RowId}>
-              <strong>{donation['2']}</strong> — {donation['4']}
-            </li>
+        <div className="cards-container">
+          {donations.map((d, idx) => (
+            <div className="donation-card" key={idx}>
+              <div className="donor-name">{d.name}</div>
+              <div className="donation-amounts">
+                <div>
+                  <span className="label">סך נגבה:</span>
+                  <span className="value">{d.pastTotal.toLocaleString()} ₪</span>
+                </div>
+                <div>
+                  <span className="label">סך עתידי:</span>
+                  <span className="value">{d.futureTotal.toLocaleString()} ₪</span>
+                </div>
+                <div>
+                  <span className="label total">סך הכול:</span>
+                  <span className="value total"><strong>{d.combinedTotal.toLocaleString()} ₪</strong></span>
+                </div>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
