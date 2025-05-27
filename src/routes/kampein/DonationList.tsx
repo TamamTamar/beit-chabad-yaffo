@@ -31,23 +31,26 @@ const DonationList: React.FC = () => {
                         ApiPassword: 'fp203',
                     },
                 });
-
+    
                 const rawData: DonationItem[] = response.data.data;
-
+                console.log('rawData:', rawData); // בדוק מה התקבל מהשרת
+    
                 const aggregated: AggregatedDonation[] = rawData.map(item => {
                     const name = item['2']?.trim() || '—';
                     const monthly = parseFloat(item['4']?.replace(/[^\d.]/g, '') || '0');
                     const monthsPaid = parseInt(item['8'] || '0', 10);
                     const remaining = parseInt(item['7'] || '0', 10);
                     const lizchut = item['6']?.trim() || '';
-
+    
                     const pastTotal = monthly * monthsPaid;
                     const futureTotal = monthly * remaining;
                     const combinedTotal = pastTotal + futureTotal;
-
+    
                     return { name, pastTotal, futureTotal, combinedTotal, lizchut };
                 });
-
+    
+                console.log('aggregated:', aggregated); // בדוק את התוצאה אחרי עיבוד
+    
                 setDonations(aggregated);
                 setOriginalDonations(aggregated);
             } catch (err: any) {
@@ -55,7 +58,7 @@ const DonationList: React.FC = () => {
                 setError('נכשלה טעינת התרומות');
             }
         };
-
+    
         fetchDonationData();
     }, []);
 
