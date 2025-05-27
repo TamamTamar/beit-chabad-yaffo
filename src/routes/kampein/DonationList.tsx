@@ -57,10 +57,10 @@ const DonationList: React.FC = () => {
   }, []);
 
   return (
-    <div className="donation-list-cards" style={{ direction: 'rtl', padding: '1rem' }}>
-      <h2>השותפים שלנו</h2>
+    <div className="donation-list-cards">
+      <h2 className='donation-list-title'>השותפים שלנו</h2>
       {error ? (
-        <p style={{ color: 'red' }}>{error}</p>
+        <p className="error">{error}</p>
       ) : donations.length === 0 ? (
         <p>טוען נתונים...</p>
       ) : (
