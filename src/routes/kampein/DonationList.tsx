@@ -33,7 +33,8 @@ const DonationList: React.FC = () => {
                     const name = item['2']?.trim() || '—';
                     const monthly = parseFloat(item['4']?.replace(/[^\d.]/g, '') || '0');
                     const monthsPaid = parseInt(item['8'] || '0', 10);
-                    const remaining = parseInt(item['7'] || '0', 10);
+                    // אם item['7'] ריק, נחשב future ל-12 פחות מה ששולם
+                    const remaining = item['7'] !== "" ? parseInt(item['7'], 10) : 12 - monthsPaid;
                     const lizchut = item['6']?.trim() || '';
 
                     const pastTotal = monthly * monthsPaid;
