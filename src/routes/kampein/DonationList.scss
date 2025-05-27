@@ -39,8 +39,8 @@
     border-radius: 16px;
     box-shadow: 0 2px 8px rgba(104, 0, 31, 0.07);
     padding: 18px 20px;
-    width: 48%;
-    height: 300px;
+    width: 30%;
+    height: 150px;
     min-width: 220px;
     margin-bottom: 10px;
     display: flex;
@@ -63,19 +63,19 @@
       .donor-name {
         font-weight: bold;
         color: #68001f;
-        font-size: 1.1rem;
+        font-size: 36px;
       }
       .donor-amount {
         color: #f58b28;
         font-weight: bold;
-        font-size: 1.1rem;
+        font-size: 36px;
         margin-right: 10px;
       }
     }
 
     .donor-message {
       color: #68001f;
-      font-size: 1rem;
+      font-size: 24px;
       margin-top: 4px;
     }
   }
