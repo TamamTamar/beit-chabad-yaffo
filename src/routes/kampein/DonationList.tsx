@@ -26,7 +26,7 @@ const DonationList: React.FC = () => {
             try {
                 const response = await paymentService.fetchDonationData();
                 // אם אתה מקבל response.data.data, השאר כך. אם לא, שנה ל-response.data
-                const rawData: DonationItem[] = response.data.data;
+                const rawData: DonationItem[] = response.data;
                 console.log('rawData:', rawData);
 
                 const aggregated: AggregatedDonation[] = rawData.map(item => {
