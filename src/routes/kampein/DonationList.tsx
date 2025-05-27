@@ -74,6 +74,13 @@ const DonationList: React.FC = () => {
             ) : donations.length === 0 ? (
                 <p>טוען נתונים...</p>
             ) : (
+                <div className="donation-list-container">
+                    <div className="donation-list-header">
+                        <button className="sort-button" onClick={handleSortClick}>
+                            {isSorted ? 'בטל מיון' : 'מיין לפי סכום'}
+                        </button>
+                        <button>nnln</button>
+                    </div>
                 <div className="cards-container">
                     {donations.map((d, idx) => (
                         <div className="donation-card" key={idx}>
@@ -88,6 +95,7 @@ const DonationList: React.FC = () => {
                             </div>
                         </div>
                     ))}
+                    </div>
                 </div>
             )}
         </div>
