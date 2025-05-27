@@ -12,10 +12,11 @@ const DonationProgressMinimal: React.FC = () => {
   const fetchDonationData = async () => {
     try {
       const data = await paymentService.fetchDonationData();
-      const { TotalYear } = data;
+      const { TotalMonth } = data;
+      const TotalYear  = TotalMonth * 12; // חישוב סכום שנתי על בסיס חודשי
 
       if (TotalYear) {
-        const totalRaised = parseFloat(TotalYear);
+        const totalRaised = TotalYear;
         setRaised(totalRaised);
       } else {
         console.error('TotalYear לא נמצא בתגובה');
