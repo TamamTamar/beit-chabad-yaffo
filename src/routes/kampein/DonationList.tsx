@@ -65,7 +65,7 @@ const DonationList: React.FC = () => {
 
     return (
         <div className="donation-list-cards">
-           
+             <h2 className="donation-list-title">השותפים שלנו</h2>
          {/*    <button className="sort-button" onClick={handleSortClick}>
                 {isSorted ? 'בטל מיון' : 'מיין לפי סכום'}
             </button> */}
@@ -82,7 +82,7 @@ const DonationList: React.FC = () => {
                         <button>nnln</button>
                     </div>
                 <div className="cards-container">
-                     <h2 className="donation-list-title">השותפים שלנו</h2>
+                   
                     {donations.map((d, idx) => (
                         <div className="donation-card" key={idx}>
                             <div className="donation-card-content">
