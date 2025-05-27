@@ -3,12 +3,13 @@
     padding: 1rem;
 
     .donation-list-container {
+        display: flex;
         .donation-list-header {
             display: flex;
             //justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
-            flex-direction: row;
+            flex-direction: column;
 
             .sort-button {
                 margin: 1rem 0;
@@ -30,21 +31,19 @@
     }
 
 
+    .cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
 
-
-    .donation-list-title {
+           .donation-list-title {
         text-align: center;
         color: #68001f;
         font-size: 1.8rem;
         margin-bottom: 1rem;
         font-weight: bold;
     }
-
-    .cards-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        justify-content: center;
     }
 
     .donation-card {
