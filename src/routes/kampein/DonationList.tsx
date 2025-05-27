@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import './DonationList.scss';
+import { paymentService } from '../../services/payment-service';
 
 type DonationItem = {
     DT_RowId: string;
@@ -24,33 +24,27 @@ const DonationList: React.FC = () => {
     useEffect(() => {
         const fetchDonationData = async () => {
             try {
-                const response = await axios.get('https://matara.pro/nedarimplus/Reports/Manage3.aspx', {
-                    params: {
-                        Action: 'GetKevaNew',
-                        MosadNumber: '7013920',
-                        ApiPassword: 'fp203',
-                    },
-                });
-    
+                const response = await paymentService.fetchDonationData();
+                // אם אתה מקבל response.data.data, השאר כך. אם לא, שנה ל-response.data
                 const rawData: DonationItem[] = response.data.data;
-                console.log('rawData:', rawData); // בדוק מה התקבל מהשרת
-    
+                console.log('rawData:', rawData);
+
                 const aggregated: AggregatedDonation[] = rawData.map(item => {
                     const name = item['2']?.trim() || '—';
                     const monthly = parseFloat(item['4']?.replace(/[^\d.]/g, '') || '0');
                     const monthsPaid = parseInt(item['8'] || '0', 10);
                     const remaining = parseInt(item['7'] || '0', 10);
                     const lizchut = item['6']?.trim() || '';
-    
+
                     const pastTotal = monthly * monthsPaid;
                     const futureTotal = monthly * remaining;
                     const combinedTotal = pastTotal + futureTotal;
-    
+
                     return { name, pastTotal, futureTotal, combinedTotal, lizchut };
                 });
-    
-                console.log('aggregated:', aggregated); // בדוק את התוצאה אחרי עיבוד
-    
+
+                console.log('aggregated:', aggregated);
+
                 setDonations(aggregated);
                 setOriginalDonations(aggregated);
             } catch (err: any) {
@@ -58,16 +52,14 @@ const DonationList: React.FC = () => {
                 setError('נכשלה טעינת התרומות');
             }
         };
-    
+
         fetchDonationData();
     }, []);
 
     const handleSortClick = () => {
         if (isSorted) {
-            // ביטול מיון – חזרה לרשימה המקורית
             setDonations(originalDonations);
         } else {
-            // מיון לפי combinedTotal מהגבוה לנמוך
             const sorted = [...donations].sort((a, b) => b.combinedTotal - a.combinedTotal);
             setDonations(sorted);
         }
