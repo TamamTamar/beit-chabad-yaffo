@@ -83,7 +83,9 @@ const DonationList: FC = () => {
                         <button>nnln</button>
                     </div>
                     <div className="cards-container">
+                        <div className="donation-list-title-container">
                         <h2 className="donation-list-title">השותפים שלנו</h2>
+                        </div>
                         {donations.map((d, idx) => (
                             <div className="donation-card" key={idx}>
                                 <div className="donation-card-content">
