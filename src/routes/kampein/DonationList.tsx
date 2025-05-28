@@ -65,9 +65,9 @@ const DonationList: React.FC = () => {
 
     return (
         <div className="donation-list-cards">
-             <h2 className="donation-list-title">השותפים שלנו</h2>
-            
-         {/*    <button className="sort-button" onClick={handleSortClick}>
+
+
+            {/*    <button className="sort-button" onClick={handleSortClick}>
                 {isSorted ? 'בטל מיון' : 'מיין לפי סכום'}
             </button> */}
             {error ? (
@@ -82,22 +82,24 @@ const DonationList: React.FC = () => {
                         </button>
                         <button>nnln</button>
                     </div>
-                    
-                <div className="cards-container">
-                   
-                    {donations.map((d, idx) => (
-                        <div className="donation-card" key={idx}>
-                            <div className="donation-card-content">
-                                <div className="donor-row">
-                                    <span className="donor-name">{d.name}</span>
-                                    <span className="donor-amount">{d.combinedTotal.toLocaleString()} ₪</span>
+
+                    <div className="cards-container">
+                        <h2 className="donation-list-title">השותפים שלנו</h2>
+                        <div className="donation-cards">
+                        {donations.map((d, idx) => (
+                            <div className="donation-card" key={idx}>
+                                <div className="donation-card-content">
+                                    <div className="donor-row">
+                                        <span className="donor-name">{d.name}</span>
+                                        <span className="donor-amount">{d.combinedTotal.toLocaleString()} ₪</span>
+                                    </div>
+                                    {d.lizchut && (
+                                        <div className="donor-message">לזכות: {d.lizchut}</div>
+                                    )}
                                 </div>
-                                {d.lizchut && (
-                                    <div className="donor-message">לזכות: {d.lizchut}</div>
-                                )}
                             </div>
+                        ))}
                         </div>
-                    ))}
                     </div>
                 </div>
             )}
