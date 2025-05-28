@@ -4,22 +4,24 @@ import { paymentService } from '../../services/payment-service';
 import './DonationProgressMinimal.scss';
 
 const DonationProgressMinimal: React.FC = () => {
-  const goal = 770000; // יעד התרומות
-  const [raised, setRaised] = useState<number>(0); // סכום שהושג
-  const [percentage, setPercentage] = useState<number>(0); // אחוז מהיעד שהושג
+  const goal = 770000;
+  const [raised, setRaised] = useState<number>(0);
+  const [percentage, setPercentage] = useState<number>(0);
 
-  // שליפת נתוני תרומות מה-service
   const fetchDonationData = async () => {
     try {
-      const data = await paymentService.fetchDonationData();
-      const { TotalYear } = data;
+      const response = await paymentService.fetchDonationData();
 
-      if (TotalYear) {
-        const totalRaised = parseFloat(TotalYear);
-        setRaised(totalRaised);
-      } else {
-        console.error('TotalYear לא נמצא בתגובה');
+      if (!Array.isArray(response)) {
+        throw new Error('Response is not an array');
       }
+
+      const totalRaised = response.reduce((sum: number, item: any) => {
+        const amount = parseFloat(item.Amount);
+        return sum + (isNaN(amount) ? 0 : amount);
+      }, 0);
+
+      setRaised(totalRaised);
     } catch (error) {
       console.error('שגיאה בעת שליפת הנתונים מה-API:', error);
     }
@@ -34,16 +36,14 @@ const DonationProgressMinimal: React.FC = () => {
     setPercentage(calculatedPercentage);
   }, [raised, goal]);
 
-  const progressPathLength = 223; // אורך המסלול לגרף
+  const progressPathLength = 223;
 
   return (
     <div className="donation-progress-container" dir="rtl">
       <h2 className="donation-title">הסכום שהושג</h2>
 
-      {/* גרף ההתקדמות */}
       <div className="graph-container">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 187 79" className="graph-svg">
-          {/* קו רקע אפור */}
           <polyline 
             fill="none" 
             strokeWidth="7.06422" 
@@ -52,8 +52,6 @@ const DonationProgressMinimal: React.FC = () => {
             points="183.392 75.2523 128.291 45.2293 54.4703 41.6972 3.60791 6.02289" 
             style={{ stroke: '#E5E5E5' }}
           />
-
-          {/* קו מתקדם עם אנימציה */}
           <motion.polyline
             fill="none"
             strokeWidth="7.06422"
@@ -70,12 +68,10 @@ const DonationProgressMinimal: React.FC = () => {
         </svg>
       </div>
 
-      {/* סכום שהושג */}
       <div className="amount-container">
         <span className="amount-text">₪{raised.toLocaleString()}</span>
       </div>
 
-      {/* אחוז השגת היעד */}
       <div className="percentage-text">
         {percentage}% מהיעד {goal.toLocaleString()}₪
       </div>
