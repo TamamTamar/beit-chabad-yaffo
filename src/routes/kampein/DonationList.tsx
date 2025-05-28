@@ -30,41 +30,42 @@ const DonationList: React.FC = () => {
                 const response = await paymentService.fetchDonationData();
 
                 const aggregatedMap = new Map<string, AggregatedDonation>();
+response.forEach((item: RawDonation) => {
+    const name = item.ClientName?.trim() || '—';
+    const type = item.TransactionType?.trim();
+    
+    // סכום ראשוני
+    let amount = parseFloat(item.Amount) || 0;
 
-                response.forEach((item: RawDonation) => {
-                    const name = item.ClientName?.trim() || '—';
-                    const type = item.TransactionType?.trim();
-                    
-                    // סכום ראשוני
-                    let amount = parseFloat(item.Amount) || 0;
+    // במידה ויש תשלומים עתידיים
+    if (type === 'הו"ק') {
+        const Tashloumim = parseInt(item.Tashloumim || '1');
+        const FirstTashloum = parseFloat(item.FirstTashloum || '0');
+        const NextTashloum = parseFloat(item.NextTashloum || '0');
 
-                    // במידה ויש תשלומים עתידיים
-                    if (type === 'הו"ק') {
-                        const Tashloumim = parseInt(item.Tashloumim || '1');
-                        const FirstTashloum = parseFloat(item.FirstTashloum || '0');
-                        const NextTashloum = parseFloat(item.NextTashloum || '0');
+        amount = FirstTashloum;
+        if (Tashloumim > 1) {
+            amount += NextTashloum * (Tashloumim - 1);
+        }
+    }
 
-                        amount = FirstTashloum;
-                        if (Tashloumim > 1) {
-                            amount += NextTashloum * (Tashloumim - 1);
-                        }
-                    }
+    console.log('amount:', amount); // הוספת בדיקת amount
 
-                    const lizchut = item.Groupe?.trim() || '';
-                    const date = item.TransactionTime?.split(' ')[0] || '';
+    const lizchut = item.Groupe?.trim() || '';
+    const date = item.TransactionTime?.split(' ')[0] || '';
 
-                    if (aggregatedMap.has(name)) {
-                        const existing = aggregatedMap.get(name)!;
-                        aggregatedMap.set(name, {
-                            ...existing,
-                            amount: existing.amount + amount,
-                            lizchut: existing.lizchut || lizchut,
-                            date: existing.date, // אפשר לבחור לשמור תאריך ראשון או אחרון
-                        });
-                    } else {
-                        aggregatedMap.set(name, { name, amount, lizchut, date });
-                    }
-                });
+    if (aggregatedMap.has(name)) {
+        const existing = aggregatedMap.get(name)!;
+        aggregatedMap.set(name, {
+            ...existing,
+            amount: existing.amount + amount,
+            lizchut: existing.lizchut || lizchut,
+            date: existing.date,
+        });
+    } else {
+        aggregatedMap.set(name, { name, amount, lizchut, date });
+    }
+});
 
                 setDonations(Array.from(aggregatedMap.values()));
             } catch (err: any) {
