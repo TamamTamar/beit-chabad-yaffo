@@ -12,7 +12,7 @@ const DonationProgressMinimal: React.FC = () => {
   // שליפת נתוני תרומות מה-API
   const fetchDonationData = async () => {
     try {
-      const response = await paymentService.fetchDonationProgress();
+      const response = await paymentService.fetchDonationData();
 
       const { TotalYear } = response;
 
