@@ -2,72 +2,48 @@ import React, { useEffect, useState } from 'react';
 import './DonationList.scss';
 import { paymentService } from '../../services/payment-service';
 
-type RawDonation = {
-    ClientName: string;
-    Amount: string;
-    TransactionType: string;
-    TransactionTime: string;
-    Groupe: string;
-    Tashloumim?: string;       // מספר תשלומים (לפריסת תשלומים)
-    FirstTashloum?: string;    // סכום תשלום ראשון
-    NextTashloum?: string;     // סכום שאר התשלומים
+type DonationItem = {
+    DT_RowId: string;
+    [key: string]: string;
 };
 
 type AggregatedDonation = {
     name: string;
-    amount: number;
+    pastTotal: number;
+    futureTotal: number;
+    combinedTotal: number;
     lizchut: string;
-    date: string;
 };
 
 const DonationList: React.FC = () => {
     const [donations, setDonations] = useState<AggregatedDonation[]>([]);
+    const [originalDonations, setOriginalDonations] = useState<AggregatedDonation[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [isSorted, setIsSorted] = useState(false);
 
     useEffect(() => {
         const fetchDonationData = async () => {
             try {
                 const response = await paymentService.fetchDonationData();
+                // אם אתה מקבל response.data.data, השאר כך. אם לא, שנה ל-response.data
+                const rawData: DonationItem[] = response.data;
 
-                const aggregatedMap = new Map<string, AggregatedDonation>();
-response.forEach((item: RawDonation) => {
-    const name = item.ClientName?.trim() || '—';
-    const type = item.TransactionType?.trim();
-    
-    // סכום ראשוני
-    let amount = parseFloat(item.Amount) || 0;
+                const aggregated: AggregatedDonation[] = rawData.map(item => {
+                    const name = item['2']?.trim() || '—';
+                    const monthly = parseFloat(item['4']?.replace(/[^\d.]/g, '') || '0');
+                    const monthsPaid = parseInt(item['8'] || '0', 10);
+                    // אם item['7'] ריק, נחשב future ל-12 פחות מה ששולם
+                    const remaining = item['7'] !== "" ? parseInt(item['7'], 10) : 12 - monthsPaid;
+                    const lizchut = item['6']?.trim() || '';
 
-    // במידה ויש תשלומים עתידיים
-    if (type === 'הו"ק') {
-        const Tashloumim = parseInt(item.Tashloumim || '1');
-        const FirstTashloum = parseFloat(item.FirstTashloum || '0');
-        const NextTashloum = parseFloat(item.NextTashloum || '0');
+                    const pastTotal = monthly * monthsPaid;
+                    const futureTotal = monthly * remaining;
+                    const combinedTotal = pastTotal + futureTotal;
 
-        amount = FirstTashloum;
-        if (Tashloumim > 1) {
-            amount += NextTashloum * (Tashloumim - 1);
-        }
-    }
-
-    console.log('amount:', amount); // הוספת בדיקת amount
-
-    const lizchut = item.Groupe?.trim() || '';
-    const date = item.TransactionTime?.split(' ')[0] || '';
-
-    if (aggregatedMap.has(name)) {
-        const existing = aggregatedMap.get(name)!;
-        aggregatedMap.set(name, {
-            ...existing,
-            amount: existing.amount + amount,
-            lizchut: existing.lizchut || lizchut,
-            date: existing.date,
-        });
-    } else {
-        aggregatedMap.set(name, { name, amount, lizchut, date });
-    }
-});
-
-                setDonations(Array.from(aggregatedMap.values()));
+                    return { name, pastTotal, futureTotal, combinedTotal, lizchut };
+                });
+                setDonations(aggregated);
+                setOriginalDonations(aggregated);
             } catch (err: any) {
                 console.error('שגיאה בטעינת הנתונים:', err);
                 setError('נכשלה טעינת התרומות');
@@ -77,34 +53,55 @@ response.forEach((item: RawDonation) => {
         fetchDonationData();
     }, []);
 
+    const handleSortClick = () => {
+        if (isSorted) {
+            setDonations(originalDonations);
+        } else {
+            const sorted = [...donations].sort((a, b) => b.combinedTotal - a.combinedTotal);
+            setDonations(sorted);
+        }
+        setIsSorted(!isSorted);
+    };
+
     return (
         <div className="donation-list-cards">
+            <h2 className="donation-list-title">השותפים שלנו</h2>
+
+            {/*    <button className="sort-button" onClick={handleSortClick}>
+               {isSorted ? 'בטל מיון' : 'מיין לפי סכום'}
+           </button> */}
             {error ? (
                 <p className="error">{error}</p>
             ) : donations.length === 0 ? (
                 <p>טוען נתונים...</p>
             ) : (
                 <div className="donation-list-container">
+                    <div className="donation-list-header">
+                        <button className="sort-button" onClick={handleSortClick}>
+                            {isSorted ? 'בטל מיון' : 'מיין לפי סכום'}
+                        </button>
+                        <button>nnln</button>
+                    </div>
+                    <h2 className="donation-list-title">השותפים שלנו</h2>
                     <div className="cards-container">
-                        <h2 className="donation-list-title">השותפים שלנו</h2>
-                        <div className="donation-cards">
-                            {donations.map((d, idx) => (
-                                <div className="donation-card" key={idx}>
-                                    <div className="donation-card-content">
-                                        <div className="donor-row">
-                                            <span className="donor-name">{d.name}</span>
-                                            <span className="donor-amount">{d.amount.toLocaleString()} ₪</span>
-                                        </div>
-                                        {d.lizchut && <div className="donor-message">לזכות: {d.lizchut}</div>}
+
+                        {donations.map((d, idx) => (
+                            <div className="donation-card" key={idx}>
+                                <div className="donation-card-content">
+                                    <div className="donor-row">
+                                        <span className="donor-name">{d.name}</span>
+                                        <span className="donor-amount">{d.combinedTotal.toLocaleString()} ₪</span>
                                     </div>
+                                    {d.lizchut && (
+                                        <div className="donor-message">לזכות: {d.lizchut}</div>
+                                    )}
                                 </div>
-                            ))}
-                        </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             )}
         </div>
     );
 };
-
 export default DonationList;
