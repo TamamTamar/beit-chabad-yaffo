@@ -76,12 +76,12 @@ const DonationList: FC = () => {
                 <p>טוען נתונים...</p>
             ) : (
                 <div className="donation-list-container">
-                    <div className="donation-list-header">
+                    {/* <div className="donation-list-header">
                         <button className="sort-button" onClick={handleSortClick}>
                             {isSorted ? 'בטל מיון' : 'מיין לפי סכום'}
                         </button>
                         <button>nnln</button>
-                    </div>
+                    </div> */}
                     <div className="cards-container">
                         <div className="donation-list-title-container">
                         <h2 className="donation-list-title">השותפים שלנו</h2>
