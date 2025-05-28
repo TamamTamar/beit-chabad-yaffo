@@ -1,57 +1,63 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { paymentService } from '../../services/payment-service';
+import axios from 'axios';
 import './DonationProgressMinimal.scss';
+import { paymentService } from '../../services/payment-service';
 
 const DonationProgressMinimal: React.FC = () => {
-  const goal = 770000;
-  const [raised, setRaised] = useState<number>(0);
-  const [percentage, setPercentage] = useState<number>(0);
+  const goal = 770000; // יעד התרומות
+  const [raised, setRaised] = useState<number>(0); // סכום שהושג
+  const [percentage, setPercentage] = useState<number>(0); // אחוז מהיעד שהושג
 
+  // שליפת נתוני תרומות מה-API
   const fetchDonationData = async () => {
     try {
-      const response = await paymentService.fetchDonationData();
+      const response = await paymentService.fetchDonationProgress();
 
-      if (!Array.isArray(response)) {
-        throw new Error('Response is not an array');
+      const { TotalYear } = response.data;
+
+      if (TotalYear) {
+        const totalRaised = parseFloat(TotalYear); // המרה למספר
+        setRaised(totalRaised); // עדכון הסטייט עם הסכום מה-API
+      } else {
+        console.error('TotalYear לא נמצא בתגובה');
       }
 
-      const totalRaised = response.reduce((sum: number, item: any) => {
-        const amount = parseFloat(item.Amount);
-        return sum + (isNaN(amount) ? 0 : amount);
-      }, 0);
-
-      setRaised(totalRaised);
     } catch (error) {
       console.error('שגיאה בעת שליפת הנתונים מה-API:', error);
     }
   };
 
   useEffect(() => {
-    fetchDonationData();
+    fetchDonationData(); // קריאה ל-API בעת טעינת הקומפוננטה
   }, []);
 
   useEffect(() => {
+    // חישוב האחוזים רק כאשר raised או goal משתנים
     const calculatedPercentage = Math.min(Math.floor((raised / goal) * 100), 100);
     setPercentage(calculatedPercentage);
   }, [raised, goal]);
 
-  const progressPathLength = 223;
+  const progressPathLength = 223; // אורך המסלול לגרף
 
   return (
     <div className="donation-progress-container" dir="rtl">
       <h2 className="donation-title">הסכום שהושג</h2>
 
+      {/* גרף ההתקדמות */}
       <div className="graph-container">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 187 79" className="graph-svg">
-          <polyline 
-            fill="none" 
-            strokeWidth="7.06422" 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
-            points="183.392 75.2523 128.291 45.2293 54.4703 41.6972 3.60791 6.02289" 
+          {/* קו רקע אפור */}
+          <polyline
+            fill="none"
+            strokeWidth="7.06422"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            points="183.392 75.2523 128.291 45.2293 54.4703 41.6972 3.60791 6.02289"
             style={{ stroke: '#E5E5E5' }}
           />
+
+          {/* קו מתקדם עם אנימציה */}
           <motion.polyline
             fill="none"
             strokeWidth="7.06422"
@@ -68,10 +74,12 @@ const DonationProgressMinimal: React.FC = () => {
         </svg>
       </div>
 
+      {/* סכום שהושג */}
       <div className="amount-container">
         <span className="amount-text">₪{raised.toLocaleString()}</span>
       </div>
 
+      {/* אחוז השגת היעד */}
       <div className="percentage-text">
         {percentage}% מהיעד {goal.toLocaleString()}₪
       </div>
