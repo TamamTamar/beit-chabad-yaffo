@@ -39,7 +39,7 @@ export const paymentService = {
         try {
             const response = await axios.get('https://matara.pro/nedarimplus/Reports/Manage3.aspx', {
                 params: {
-                    Action: 'GetKevaNew',
+                    Action: 'GetHistoryJson',
                     MosadNumber: '7013920',
                     ApiPassword: 'fp203',
                 },

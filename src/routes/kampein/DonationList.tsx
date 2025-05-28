@@ -2,10 +2,6 @@ import React, { useEffect, useState } from 'react';
 import './DonationList.scss';
 import { paymentService } from '../../services/payment-service';
 
-type DonationItem = {
-    DT_RowId: string;
-    [key: string]: string;
-};
 
 type AggregatedDonation = {
     name: string;
@@ -15,6 +11,13 @@ type AggregatedDonation = {
     lizchut: string;
 };
 
+type RawDonation = {
+    ClientName?: string;
+    Amount?: string;
+    Comments?: string;
+    // Add other fields if needed
+};
+
 const DonationList: React.FC = () => {
     const [donations, setDonations] = useState<AggregatedDonation[]>([]);
     const [originalDonations, setOriginalDonations] = useState<AggregatedDonation[]>([]);
@@ -22,36 +25,45 @@ const DonationList: React.FC = () => {
     const [isSorted, setIsSorted] = useState(false);
 
     useEffect(() => {
-        const fetchDonationData = async () => {
-            try {
-                const response = await paymentService.fetchDonationData();
-                // אם אתה מקבל response.data.data, השאר כך. אם לא, שנה ל-response.data
-                const rawData: DonationItem[] = response.data;
+    const fetchDonationData = async () => {
+        try {
+            const response = await paymentService.fetchDonationData();
+            const rawData: RawDonation[] = response.data;
 
-                const aggregated: AggregatedDonation[] = rawData.map(item => {
-                    const name = item['2']?.trim() || '—';
-                    const monthly = parseFloat(item['4']?.replace(/[^\d.]/g, '') || '0');
-                    const monthsPaid = parseInt(item['8'] || '0', 10);
-                    // אם item['7'] ריק, נחשב future ל-12 פחות מה ששולם
-                    const remaining = item['7'] !== "" ? parseInt(item['7'], 10) : 12 - monthsPaid;
-                    const lizchut = item['6']?.trim() || '';
+            // לא מפלטרים לפי סוג עסקה, כוללים הכל
+            const grouped: { [name: string]: AggregatedDonation } = {};
 
-                    const pastTotal = monthly * monthsPaid;
-                    const futureTotal = monthly * remaining;
-                    const combinedTotal = pastTotal + futureTotal;
+            rawData.forEach(item => {
+                const name = item.ClientName?.trim() || '—';
+                const amount = parseFloat(item.Amount || '0');
+                const lizchut = item.Comments?.trim() || '';
 
-                    return { name, pastTotal, futureTotal, combinedTotal, lizchut };
-                });
-                setDonations(aggregated);
-                setOriginalDonations(aggregated);
-            } catch (err: any) {
-                console.error('שגיאה בטעינת הנתונים:', err);
-                setError('נכשלה טעינת התרומות');
-            }
-        };
+                if (!grouped[name]) {
+                    grouped[name] = {
+                        name,
+                        pastTotal: 0,
+                        futureTotal: 0,
+                        combinedTotal: 0,
+                        lizchut,
+                    };
+                }
 
-        fetchDonationData();
-    }, []);
+                grouped[name].pastTotal += amount;
+                grouped[name].combinedTotal += amount;
+            });
+
+            const result: AggregatedDonation[] = Object.values(grouped);
+            setDonations(result);
+            setOriginalDonations(result);
+        } catch (err: any) {
+            console.error('שגיאה בטעינת הנתונים:', err);
+            setError('נכשלה טעינת התרומות');
+        }
+    };
+
+    fetchDonationData();
+}, []);
+
 
     const handleSortClick = () => {
         if (isSorted) {
