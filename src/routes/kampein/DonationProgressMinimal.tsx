@@ -14,7 +14,7 @@ const DonationProgressMinimal: React.FC = () => {
     try {
       const response = await paymentService.fetchDonationProgress();
 
-      const { TotalYear } = response.data;
+      const { TotalYear } = response;
 
       if (TotalYear) {
         const totalRaised = parseFloat(TotalYear); // המרה למספר
