@@ -2,6 +2,11 @@ import React, { useEffect, useState } from 'react';
 import './DonationList.scss';
 import { paymentService } from '../../services/payment-service';
 
+type RawDonation = {
+    ClientName: string;
+    Amount: string;
+    Comments: string;
+};
 
 type AggregatedDonation = {
     name: string;
@@ -11,13 +16,6 @@ type AggregatedDonation = {
     lizchut: string;
 };
 
-type RawDonation = {
-    ClientName?: string;
-    Amount?: string;
-    Comments?: string;
-    // Add other fields if needed
-};
-
 const DonationList: React.FC = () => {
     const [donations, setDonations] = useState<AggregatedDonation[]>([]);
     const [originalDonations, setOriginalDonations] = useState<AggregatedDonation[]>([]);
@@ -25,45 +23,43 @@ const DonationList: React.FC = () => {
     const [isSorted, setIsSorted] = useState(false);
 
     useEffect(() => {
-    const fetchDonationData = async () => {
-        try {
-            const response = await paymentService.fetchDonationData();
-            const rawData: RawDonation[] = response.data;
+        const fetchDonationData = async () => {
+            try {
+                const response = await paymentService.fetchDonationData();
+                const rawData: RawDonation[] = response.data;
 
-            // לא מפלטרים לפי סוג עסקה, כוללים הכל
-            const grouped: { [name: string]: AggregatedDonation } = {};
+                const grouped: { [name: string]: AggregatedDonation } = {};
 
-            rawData.forEach(item => {
-                const name = item.ClientName?.trim() || '—';
-                const amount = parseFloat(item.Amount || '0');
-                const lizchut = item.Comments?.trim() || '';
+                rawData.forEach(item => {
+                    const name = item.ClientName?.trim() || '—';
+                    const amount = parseFloat(item.Amount || '0');
+                    const lizchut = item.Comments?.trim() || '';
 
-                if (!grouped[name]) {
-                    grouped[name] = {
-                        name,
-                        pastTotal: 0,
-                        futureTotal: 0,
-                        combinedTotal: 0,
-                        lizchut,
-                    };
-                }
+                    if (!grouped[name]) {
+                        grouped[name] = {
+                            name,
+                            pastTotal: 0,
+                            futureTotal: 0,
+                            combinedTotal: 0,
+                            lizchut,
+                        };
+                    }
 
-                grouped[name].pastTotal += amount;
-                grouped[name].combinedTotal += amount;
-            });
+                    grouped[name].pastTotal += amount;
+                    grouped[name].combinedTotal += amount;
+                });
 
-            const result: AggregatedDonation[] = Object.values(grouped);
-            setDonations(result);
-            setOriginalDonations(result);
-        } catch (err: any) {
-            console.error('שגיאה בטעינת הנתונים:', err);
-            setError('נכשלה טעינת התרומות');
-        }
-    };
+                const result: AggregatedDonation[] = Object.values(grouped);
+                setDonations(result);
+                setOriginalDonations(result);
+            } catch (err: any) {
+                console.error('שגיאה בטעינת הנתונים:', err);
+                setError('נכשלה טעינת התרומות');
+            }
+        };
 
-    fetchDonationData();
-}, []);
-
+        fetchDonationData();
+    }, []);
 
     const handleSortClick = () => {
         if (isSorted) {
@@ -77,39 +73,34 @@ const DonationList: React.FC = () => {
 
     return (
         <div className="donation-list-cards">
-
-
-            {/*    <button className="sort-button" onClick={handleSortClick}>
-                {isSorted ? 'בטל מיון' : 'מיין לפי סכום'}
-            </button> */}
             {error ? (
                 <p className="error">{error}</p>
             ) : donations.length === 0 ? (
                 <p>טוען נתונים...</p>
             ) : (
                 <div className="donation-list-container">
-                 {/*    <div className="donation-list-header">
+                    <div className="donation-list-header">
                         <button className="sort-button" onClick={handleSortClick}>
                             {isSorted ? 'בטל מיון' : 'מיין לפי סכום'}
                         </button>
-                    </div> */}
+                    </div>
 
                     <div className="cards-container">
                         <h2 className="donation-list-title">השותפים שלנו</h2>
                         <div className="donation-cards">
-                        {donations.map((d, idx) => (
-                            <div className="donation-card" key={idx}>
-                                <div className="donation-card-content">
-                                    <div className="donor-row">
-                                        <span className="donor-name">{d.name}</span>
-                                        <span className="donor-amount">{d.combinedTotal.toLocaleString()} ₪</span>
+                            {donations.map((d, idx) => (
+                                <div className="donation-card" key={idx}>
+                                    <div className="donation-card-content">
+                                        <div className="donor-row">
+                                            <span className="donor-name">{d.name}</span>
+                                            <span className="donor-amount">{d.combinedTotal.toLocaleString()} ₪</span>
+                                        </div>
+                                        {d.lizchut && (
+                                            <div className="donor-message">לזכות: {d.lizchut}</div>
+                                        )}
                                     </div>
-                                    {d.lizchut && (
-                                        <div className="donor-message">לזכות: {d.lizchut}</div>
-                                    )}
                                 </div>
-                            </div>
-                        ))}
+                            ))}
                         </div>
                     </div>
                 </div>
