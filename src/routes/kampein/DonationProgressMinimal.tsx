@@ -16,7 +16,10 @@ const fetchDonationData = async () => {
     const donations = await getAllDonations(); // שליפת כל התרומות מהשרת
 
     const totalRaised = donations.reduce((sum, donation) => {
-      return sum + (donation.Amount || 0);
+      const tashlumim = donation.Tashlumim || 0;
+      // אם אין Tashlumim או אם הוא 0, נחשב כתשלום ללא הגבלה => תקרה 12
+      const cappedTashlumim = tashlumim > 0 ? Math.min(tashlumim, 12) : 12;
+      return sum + (donation.Amount || 0) * cappedTashlumim;
     }, 0);
 
     setRaised(totalRaised); // עדכון הסטייט עם הסכום הכולל
@@ -24,6 +27,7 @@ const fetchDonationData = async () => {
     console.error('שגיאה בעת שליפת הנתונים מה-API:', error);
   }
 };
+
 
   useEffect(() => {
     fetchDonationData(); // קריאה ל-API בעת טעינת הקומפוננטה
