@@ -13,23 +13,17 @@ const DonationProgressMinimal: FC = () => {
   // שליפת נתוני תרומות מה-API
 const fetchDonationData = async () => {
   try {
-    const donations = await getAllDonations(); // קבלת כל התרומות מהשרת
-
-    const currentYear = new Date().getFullYear();
+    const donations = await getAllDonations(); // שליפת כל התרומות מהשרת
 
     const totalRaised = donations.reduce((sum, donation) => {
-      const createdAt = donation.createdAt ? new Date(donation.createdAt) : null;
-      const year = createdAt?.getFullYear();
-
-      return year === currentYear ? sum + donation.Amount : sum;
+      return sum + (donation.Amount || 0);
     }, 0);
 
-    setRaised(totalRaised); // עדכון הסטייט
+    setRaised(totalRaised); // עדכון הסטייט עם הסכום הכולל
   } catch (error) {
     console.error('שגיאה בעת שליפת הנתונים מה-API:', error);
   }
 };
-
 
   useEffect(() => {
     fetchDonationData(); // קריאה ל-API בעת טעינת הקומפוננטה
