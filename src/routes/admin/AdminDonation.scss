@@ -1,0 +1,120 @@
+.admin-donation-container {
+  direction: rtl;
+  padding: 2rem;
+  background: #fff;
+  min-height: 100vh;
+
+  .admin-donation-header {
+    color: #68001f;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .admin-donation-add-button {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+
+    .button-add-donation {
+      background: #f58b28;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+
+      &:hover {
+        background: #68001f;
+        color: #fff;
+      }
+    }
+  }
+
+  .admin-donation-table {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(104, 0, 31, 0.07);
+    padding: 1rem;
+    overflow-x: auto;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: right;
+
+      th, td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #f3f3f3;
+      }
+
+      th {
+        background: #f58b28;
+        color: #fff;
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
+
+      tr {
+        transition: background 0.2s;
+      }
+
+      tr:hover {
+        background: #fff3e6;
+      }
+    }
+  }
+
+  .error-message {
+    color: #d32f2f;
+    text-align: center;
+    margin: 1rem 0;
+    font-weight: bold;
+  }
+
+  .text-center {
+    text-align: center;
+    margin: 1rem 0;
+  }
+}
+
+// רספונסיביות
+@media (max-width: 900px) {
+  .admin-donation-container {
+    padding: 1rem;
+
+    .admin-donation-table {
+      padding: 0.5rem;
+    }
+    .admin-donation-header {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-donation-container {
+    padding: 0.5rem;
+
+    .admin-donation-header {
+      font-size: 1.2rem;
+    }
+    .admin-donation-add-button .button-add-donation {
+      font-size: 0.9rem;
+      padding: 0.4rem 1rem;
+    }
+    .admin-donation-table {
+      padding: 0.2rem;
+      table {
+        th, td {
+          padding: 0.5rem 0.3rem;
+          font-size: 0.95rem;
+        }
+      }
+    }
+  }
+}

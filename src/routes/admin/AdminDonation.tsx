@@ -1,13 +1,11 @@
 import { Table, Tooltip } from 'flowbite-react';
 import { useEffect, useState } from 'react';
-import { FiTrash2 } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useSearch } from '../../hooks/useSearch';
 
-import dialogs from '../../ui/dialogs';
-import './AdminDonation.scss'; // ייבוא קובץ Sass חדש
 import { Donation } from '../../@Types/chabadType';
 import { getAllDonations } from '../../services/donation-service';
+import './AdminDonation.scss'; // ייבוא קובץ Sass חדש
 
 const AdminDonation = () => {
     const { searchTerm } = useSearch();
