@@ -85,16 +85,16 @@ export interface RishumShabbatType {
             price: number;
         };
     };
-  }
-  interface RishumShabbatInput {
-      firstname: string;
+}
+interface RishumShabbatInput {
+    firstname: string;
     lastname: string;
-      phone: string;
-      mail: string;
-      adults: number;
-      children: number;
-  };
-  export type PaymentData = {
+    phone: string;
+    mail: string;
+    adults: number;
+    children: number;
+};
+export type PaymentData = {
     Mosad: string; // מזהה המוסד
     ApiValid: string; // מפתח API
     Zeout: string; // מספר זהות
@@ -120,25 +120,25 @@ export type BannerItem = {
     navigateTo: string;
     className: string;
     image: string;
-  };
+};
 export type DonationItem = {
-      DT_RowId: string;
-      [key: string]: string;
-  };
-  
-export type AggregatedDonation = {
-      name: string;
-      pastTotal: number;
-      futureTotal: number;
-      combinedTotal: number;
-      lizchut: string;
-  };
+    DT_RowId: string;
+    [key: string]: string;
+};
 
-  export interface Donation {
-  FirstName: string;
-  LastName: string;
-  Phone?: string;
-  Amount: number;
-  Tashlumim: number;
-  createdAt?: Date;
-}
+export type AggregatedDonation = {
+    name: string;
+    pastTotal: number;
+    futureTotal: number;
+    combinedTotal: number;
+    lizchut: string;
+};
+
+export interface Donation {
+    FirstName: string;
+    LastName: string;
+    Phone?: string;
+    Amount: number;
+    Tashlumim: number;
+    createdAt?: Date;
+};
