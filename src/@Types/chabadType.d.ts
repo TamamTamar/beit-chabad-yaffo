@@ -121,3 +121,15 @@ export type BannerItem = {
     className: string;
     image: string;
   };
+export type DonationItem = {
+      DT_RowId: string;
+      [key: string]: string;
+  };
+  
+export type AggregatedDonation = {
+      name: string;
+      pastTotal: number;
+      futureTotal: number;
+      combinedTotal: number;
+      lizchut: string;
+  };

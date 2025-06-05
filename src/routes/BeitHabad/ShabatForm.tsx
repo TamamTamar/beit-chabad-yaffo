@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import NedarimDonation from '../kampein/NedarimDonation';
 import ShabbatFormStep1 from './ShabbatFormStep1';
 import ShabbatFormStep2 from './ShabbatFormStep2';
+import { paymentService } from '../../services/payment-service';
 
 const ShabatForm = ({ }) => {
     const [step, setStep] = useState(1);
@@ -12,7 +13,19 @@ const ShabatForm = ({ }) => {
     const iframeRef = useRef<HTMLIFrameElement>(null);
 
     const handlePaymentCompletion = () => {
-        setStep(4);
+        paymentService.saveTransactionToServer(paymentData)
+            .then(() => {
+                console.log('Transaction saved successfully');
+            }
+            )
+            .catch((error) => {
+                console.error('Error saving transaction:', error);
+            }).finally(() => {
+
+                setStep(4);
+            }
+            );
+
     };
 
     const handleBack = () => {
@@ -38,7 +51,7 @@ const ShabatForm = ({ }) => {
                 />
             )}
 
-                       {step === 2 && (
+            {step === 2 && (
                 <ShabbatFormStep2
                     setPaymentData={(data) => {
                         console.log("Payment Data from Step 2:", data); // בדיקת הנתונים שמגיעים משלב 2

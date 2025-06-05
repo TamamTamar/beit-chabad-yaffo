@@ -1,19 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import './DonationList.scss';
 import { paymentService } from '../../services/payment-service';
+import { AggregatedDonation, DonationItem } from '../../@Types/chabadType';
 
-type DonationItem = {
-    DT_RowId: string;
-    [key: string]: string;
-};
 
-type AggregatedDonation = {
-    name: string;
-    pastTotal: number;
-    futureTotal: number;
-    combinedTotal: number;
-    lizchut: string;
-};
 
 const DonationList: FC = () => {
     const [donations, setDonations] = useState<AggregatedDonation[]>([]);
