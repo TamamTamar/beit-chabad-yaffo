@@ -1,9 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import './DonationList.scss';
-import { paymentService } from '../../services/payment-service';
-import { AggregatedDonation, DonationItem } from '../../@Types/chabadType';
-
-
+import { getAllDonations } from '../../services/donation-service';
+import { AggregatedDonation, Donation } from '../../@Types/chabadType';
 
 const DonationList: FC = () => {
     const [donations, setDonations] = useState<AggregatedDonation[]>([]);
@@ -12,26 +10,23 @@ const DonationList: FC = () => {
     const [isSorted, setIsSorted] = useState(false);
 
     useEffect(() => {
-        const fetchDonationData = async () => {
+        const fetchDonations = async () => {
             try {
-                const response = await paymentService.fetchDonationData();
-                // אם אתה מקבל response.data.data, השאר כך. אם לא, שנה ל-response.data
-                const rawData: DonationItem[] = response.data;
+                const rawData: Donation[] = await getAllDonations();
 
                 const aggregated: AggregatedDonation[] = rawData.map(item => {
-                    const name = item['2']?.trim() || '—';
-                    const monthly = parseFloat(item['4']?.replace(/[^\d.]/g, '') || '0');
-                    const monthsPaid = parseInt(item['8'] || '0', 10);
-                    // אם item['7'] ריק, נחשב future ל-12 פחות מה ששולם
-                    const remaining = item['7'] !== "" ? parseInt(item['7'], 10) : 12 - monthsPaid;
-                    const lizchut = item['6']?.trim() || '';
-
+                    const name = [item.FirstName, item.LastName].filter(Boolean).join(' ') || '—';
+                    const monthly = item.Amount || 0;
+                    const monthsPaid = item.Tashlumim || 1;
                     const pastTotal = monthly * monthsPaid;
-                    const futureTotal = monthly * remaining;
+                    // אין לנו futureTotal אמיתי, אז נשים 0
+                    const futureTotal = 0;
                     const combinedTotal = pastTotal + futureTotal;
+                    const lizchut = ''; // אם יש לך שדה כזה, הוסף אותו
 
                     return { name, pastTotal, futureTotal, combinedTotal, lizchut };
                 });
+
                 setDonations(aggregated);
                 setOriginalDonations(aggregated);
             } catch (err: any) {
@@ -40,7 +35,7 @@ const DonationList: FC = () => {
             }
         };
 
-        fetchDonationData();
+        fetchDonations();
     }, []);
 
     const handleSortClick = () => {
@@ -55,26 +50,18 @@ const DonationList: FC = () => {
 
     return (
         <div className="donation-list-cards">
-
-
-            {/*    <button className="sort-button" onClick={handleSortClick}>
-               {isSorted ? 'בטל מיון' : 'מיין לפי סכום'}
-           </button> */}
+            {/* <button className="sort-button" onClick={handleSortClick}>
+                {isSorted ? 'בטל מיון' : 'מיין לפי סכום'}
+            </button> */}
             {error ? (
                 <p className="error">{error}</p>
             ) : donations.length === 0 ? (
                 <p>טוען נתונים...</p>
             ) : (
                 <div className="donation-list-container">
-                    {/* <div className="donation-list-header">
-                        <button className="sort-button" onClick={handleSortClick}>
-                            {isSorted ? 'בטל מיון' : 'מיין לפי סכום'}
-                        </button>
-                        <button>nnln</button>
-                    </div> */}
                     <div className="cards-container">
                         <div className="donation-list-title-container">
-                        <h2 className="donation-list-title">השותפים שלנו</h2>
+                            <h2 className="donation-list-title">השותפים שלנו</h2>
                         </div>
                         {donations.map((d, idx) => (
                             <div className="donation-card" key={idx}>
@@ -95,4 +82,5 @@ const DonationList: FC = () => {
         </div>
     );
 };
+
 export default DonationList;
