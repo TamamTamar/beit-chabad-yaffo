@@ -133,3 +133,12 @@ export type AggregatedDonation = {
       combinedTotal: number;
       lizchut: string;
   };
+
+  export interface Donation {
+  FirstName: string;
+  LastName: string;
+  Phone?: string;
+  Amount: number;
+  Tashlumim: number;
+  createdAt?: Date;
+}
