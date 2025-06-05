@@ -44,14 +44,6 @@ const AdminDonation = () => {
     return (
         <div className="admin-donation-container">
             <h2 className="admin-donation-header">רשימת תרומות</h2>
-            <div className="admin-donation-add-button">
-                <Tooltip content="הוסף תרומה" placement="top">
-                    <Link to="admin/donation/create" className="button-add-donation">
-                        {/* אפשר להוסיף אייקון פה אם תרצי */}
-                        הוסף תרומה
-                    </Link>
-                </Tooltip>
-            </div>
             {loading && <div className="text-center">טוען...</div>}
             {error && <div className="error-message">{error.message}</div>}
             {!loading && filteredDonations.length === 0 && <div className="text-center">לא נמצאו תרומות.</div>}
