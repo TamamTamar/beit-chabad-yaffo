@@ -141,4 +141,5 @@ export interface Donation {
     Amount: number;
     Tashlumim: number;
     createdAt?: Date;
+    lizchut?: string;
 };

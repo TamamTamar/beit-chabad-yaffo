@@ -58,6 +58,7 @@ const AdminDonation = () => {
                             <Table.HeadCell>סכום</Table.HeadCell>
                             <Table.HeadCell>מספר תשלומים</Table.HeadCell>
                             <Table.HeadCell>תאריך יצירה</Table.HeadCell>
+                            <Table.HeadCell>לזכות</Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
                             {filteredDonations.map((donation) => (
@@ -68,6 +69,13 @@ const AdminDonation = () => {
                                     <Table.Cell>{donation.Amount.toFixed(2)}</Table.Cell>
                                     <Table.Cell>{donation.Tashlumim}</Table.Cell>
                                     <Table.Cell>{donation.createdAt ? new Date(donation.createdAt).toLocaleDateString() : '-'}</Table.Cell>
+                                    <Table.Cell>
+                                        {donation.lizchut ? (
+                                          donation.lizchut
+                                        ) : (
+                                            '-'
+                                        )}
+                                    </Table.Cell>
                                 </Table.Row>
                             ))}
                         </Table.Body>
