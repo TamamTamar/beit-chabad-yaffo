@@ -1,32 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import './DonationProgressMinimal.scss';
 import { paymentService } from '../../services/payment-service';
+import { getAllDonations } from '../../services/donation-service';
 
-const DonationProgressMinimal: React.FC = () => {
+const DonationProgressMinimal: FC = () => {
   const goal = 770000; // יעד התרומות
   const [raised, setRaised] = useState<number>(0); // סכום שהושג
   const [percentage, setPercentage] = useState<number>(0); // אחוז מהיעד שהושג
 
   // שליפת נתוני תרומות מה-API
-  const fetchDonationData = async () => {
-    try {
-      const response = await paymentService.fetchDonationData();
+const fetchDonationData = async () => {
+  try {
+    const donations = await getAllDonations(); // קבלת כל התרומות מהשרת
 
-      const { TotalYear } = response;
+    const currentYear = new Date().getFullYear();
 
-      if (TotalYear) {
-        const totalRaised = parseFloat(TotalYear); // המרה למספר
-        setRaised(totalRaised); // עדכון הסטייט עם הסכום מה-API
-      } else {
-        console.error('TotalYear לא נמצא בתגובה');
-      }
+    const totalRaised = donations.reduce((sum, donation) => {
+      const createdAt = donation.createdAt ? new Date(donation.createdAt) : null;
+      const year = createdAt?.getFullYear();
 
-    } catch (error) {
-      console.error('שגיאה בעת שליפת הנתונים מה-API:', error);
-    }
-  };
+      return year === currentYear ? sum + donation.Amount : sum;
+    }, 0);
+
+    setRaised(totalRaised); // עדכון הסטייט
+  } catch (error) {
+    console.error('שגיאה בעת שליפת הנתונים מה-API:', error);
+  }
+};
+
 
   useEffect(() => {
     fetchDonationData(); // קריאה ל-API בעת טעינת הקומפוננטה
