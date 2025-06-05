@@ -22,7 +22,7 @@ const DonationList: FC = () => {
                     // אין לנו futureTotal אמיתי, אז נשים 0
                     const futureTotal = 0;
                     const combinedTotal = pastTotal + futureTotal;
-                    const lizchut = ''; // אם יש לך שדה כזה, הוסף אותו
+                    const lizchut = item.lizchut || ""; // אם יש לך שדה כזה, הוסף אותו
 
                     return { name, pastTotal, futureTotal, combinedTotal, lizchut };
                 });
