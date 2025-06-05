@@ -1,9 +1,7 @@
-import React, { FC, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import axios from 'axios';
-import './DonationProgressMinimal.scss';
-import { paymentService } from '../../services/payment-service';
+import { FC, useEffect, useState } from 'react';
 import { getAllDonations } from '../../services/donation-service';
+import './DonationProgressMinimal.scss';
 
 const DonationProgressMinimal: FC = () => {
   const goal = 770000; // יעד התרומות
