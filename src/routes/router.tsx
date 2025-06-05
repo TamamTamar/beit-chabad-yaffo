@@ -71,9 +71,9 @@ export const router = createBrowserRouter([
             {
                 path: "admin",
                 element: (
-                    <ProtectedRouteAdmin>
+         
                         <ChabadDashboard />
-                    </ProtectedRouteAdmin>
+                  
                 ),
             },
             {
