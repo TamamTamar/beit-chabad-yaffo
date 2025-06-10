@@ -1,10 +1,9 @@
-
-@import './variables';
+// אין צורך ב-@import './variables';
 
 body {
-  font-family: $font-stack;
-  color: $color-dark;
-  background-color: $color-light;
+  font-family: 'Heebo', sans-serif;
+  color: #333;
+  background-color: #fff;
 }
 
 section {
@@ -13,8 +12,8 @@ section {
 }
 
 .services-strip {
-  background-color: $color-primary;
-  color: $color-light;
+  background-color: #f58b28;
+  color: #fff;
   text-align: center;
 
   ul {
@@ -31,14 +30,14 @@ section {
 .donation-section,
 .gallery-section,
 .community-banner {
-  background-color: $color-light;
-  border: 1px solid $color-primary;
+  background-color: #fff;
+  border: 1px solid #f58b28;
   border-radius: 8px;
 }
 
 button {
-  background-color: $color-secondary;
-  color: $color-light;
+  background-color: #68001f;
+  color: #fff;
   padding: 0.5rem 1.25rem;
   border: none;
   border-radius: 4px;
@@ -46,20 +45,20 @@ button {
   cursor: pointer;
 
   &:hover {
-    background-color: darken($color-secondary, 10%);
+    background-color: #4d0117;
   }
 }
 
 .footer {
-  background-color: $color-secondary;
-  color: $color-light;
+  background-color: #68001f;
+  color: #fff;
   text-align: center;
   padding: 1rem;
 }
 
 .whatsapp-button {
-  background-color: $color-primary;
-  color: $color-light;
+  background-color: #f58b28;
+  color: #fff;
   font-size: 1.5rem;
   text-align: center;
   border-radius: 50%;
