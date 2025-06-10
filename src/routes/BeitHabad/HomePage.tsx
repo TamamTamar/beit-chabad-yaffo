@@ -22,10 +22,10 @@ const HomePage = () => {
   return (
     <div>
       <MainBanner />
-      <section id="zmanim-section">
+      <section className=" zmanim-section" id="zmanim-section">
         <CandleLightingTimes />
       </section>
-      <section id="shabbat-section">
+      <section id="shabbat-section" className="shabbat-section">
         <ShabbatSection />
       </section>
       {/* המשך עמוד... */}
