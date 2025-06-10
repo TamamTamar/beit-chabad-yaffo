@@ -20,8 +20,8 @@ const Error = () => {
                     className="error-gif"
                 />
                 <FaExclamationCircle className="error-icon" />
-                <h1>אופס!</h1>
-                <h2>משהו השתבש, אבל אנחנו כבר מטפלים בזה 😊</h2>
+                <h1 className="error-title">אופס!</h1>
+                <h2 className="error-subtitle">משהו השתבש, אבל אנחנו כבר מטפלים בזה 😊</h2>
                 <p className="error-caption">גם אנחנו לא יודעים איך הגענו לפה 😅</p>
                 <p className="error-status">
                     <strong>שגיאה {status}:</strong> {statusText}

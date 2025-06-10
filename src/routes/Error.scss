@@ -44,12 +44,12 @@ $error-accent: #f1bb89;
     margin-bottom: 1rem;
 }
 
-h1 {
+.error-title {
     font-size: 2rem;
     margin-bottom: 0.5rem;
 }
 
-h2 {
+.error-subtitle {
     font-size: 1.2rem;
     margin-bottom: 1rem;
     color: darken($error-text, 10%);
