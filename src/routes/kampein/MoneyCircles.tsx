@@ -18,7 +18,7 @@ const MoneyCircles = () => {
     const renderButton = (amount: number) => (
         <button className="circle" onClick={() => handleButtonClick(amount)}>
             <div className="amount-wrapper">
-                <p className="amount">₪{amount}</p>
+                <p className="amount">₪ {amount}</p>
                 <div className="to-month">לחודש</div>
             </div>
         </button>
