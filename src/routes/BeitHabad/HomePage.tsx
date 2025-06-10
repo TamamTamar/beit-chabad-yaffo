@@ -16,15 +16,7 @@ const HomePage = () => {
     <div>
       <MainBanner />
       <CandleLightingTimes />
-      <ChabadAboutSection />
-      <KosherServicesStrip />
-      <BranchesSection />
-      <ShabatForm />
-      <GallerySection />
-      <DonationPreviewSection />
-      <JoinCommunityBanner />
-      <ContactFooter />
-      <WhatsAppFloatingButton />
+
     </div>
   )
 }

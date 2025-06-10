@@ -10,7 +10,7 @@ const Root = () => {
             <NavBarChabad />
 
             <main className="flex-1">
-                
+
                 <Outlet />
             </main>
             <Footer />
