@@ -1,9 +1,14 @@
-import ChabadAboutSection from '../../components/aboutchabad/AboutChabad'
-import CandleLightingTimes from '../../components/CandleLightingTimes/CandleLightingTimes'
-import MainBanner from '../../components/mainBanner/MainBanner'
-
-
-
+import ChabadAboutSection from "../../components/aboutchabad/AboutChabad"
+import CandleLightingTimes from "../../components/CandleLightingTimes/CandleLightingTimes"
+import MainBanner from "../../components/mainBanner/MainBanner"
+import BranchesSection from "../BranchesSectio"
+import KosherServicesStrip from "../KosherServicesStrip"
+import ContactFooter from "./ContactFooter"
+import DonationPreviewSection from "./DonationPreviewSection"
+import GallerySection from "./GallerySection"
+import JoinCommunityBanner from "./JoinCommunityBanner"
+import ShabatForm from "./ShabatForm"
+import WhatsAppFloatingButton from "./WhatsAppFloatingButton"
 
 const HomePage = () => {
   return (
@@ -11,13 +16,15 @@ const HomePage = () => {
       <MainBanner />
       <CandleLightingTimes />
       <ChabadAboutSection />
-
-
-
-
-
+      <KosherServicesStrip />
+      <BranchesSection />
+      <ShabatForm />
+      <GallerySection />
+      <DonationPreviewSection />
+      <JoinCommunityBanner />
+      <ContactFooter />
+      <WhatsAppFloatingButton />
     </div>
   )
 }
-
 export default HomePage

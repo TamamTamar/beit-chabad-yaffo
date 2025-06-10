@@ -4,7 +4,7 @@ import AdminShabbat from "./admin/AdminShabbat";
 
 import CreateNewParasha from "./createParasha/createNewParasha";
 import EditParasha from "./editParasha/EditParasha";
-import HomePage from "./BeitHabad/HomePage";
+
 import ParashaDetail from "./BeitHabad/ParashaDetail";
 import ParashaList from "./BeitHabad/ParashaList";
 import ShabatForm from "./BeitHabad/ShabatForm";
@@ -12,10 +12,11 @@ import ShabatForm from "./BeitHabad/ShabatForm";
 import Error from "./Error";
 import Aboutkampein from "./kampein/AboutKampein";
 import KampeinPage from "./kampein/KampeinPage";
-import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
 import ChabadDashboard from "./admin/ChabadDashboard";
 import AskRabbiPage from "./AskRabbiPage";
 import AdminDonation from "./admin/AdminDonation";
+import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
+import HomePage from "./BeitHabad/HomePage";
 
 
 
@@ -77,19 +78,14 @@ export const router = createBrowserRouter([
                 ),
             },
             {
-            path: "/ask-rabbi",
+            path: "ask-rabbi",
             element:  <AskRabbiPage />
             },
             {
-                path: "/about",
+                path: "about",
                 element: <Aboutkampein />,
             },
-            {
-                path: "/admin/rishum",
-                element: <AdminShabbat />,
-            }
-
-
+         
         ],
     },
 ]);
