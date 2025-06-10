@@ -1,23 +1,36 @@
-import ChabadAboutSection from "../../components/aboutchabad/AboutChabad"
-import CandleLightingTimes from "../../components/CandleLightingTimes/CandleLightingTimes"
-import MainBanner from "../../components/mainBanner/MainBanner"
-import BranchesSection from "./BranchesSection"
-import ContactFooter from "./ContactFooter"
-import DonationPreviewSection from "./DonationPreviewSection"
-import GallerySection from "./GallerySection"
-import JoinCommunityBanner from "./JoinCommunityBanner"
-import KosherServicesStrip from "./KosherServicesStrip"
-import ShabatForm from "./ShabatForm"
-import WhatsAppFloatingButton from "./WhatsAppFloatingButton"
-
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import MainBanner from '../../components/mainBanner/MainBanner';
+import CandleLightingTimes from '../../components/CandleLightingTimes/CandleLightingTimes';
+import ShabbatSection from './ShabbatSection';
 
 const HomePage = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const anchor = location.hash.replace('#', '');
+      const el = document.getElementById(anchor);
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }, 100); // זמן המתנה קצר אחרי טעינה
+      }
+    }
+  }, [location]);
+
   return (
     <div>
       <MainBanner />
-      <CandleLightingTimes />
-
+      <section id="zmanim-section">
+        <CandleLightingTimes />
+      </section>
+      <section id="shabbat-section">
+        <ShabbatSection />
+      </section>
+      {/* המשך עמוד... */}
     </div>
-  )
-}
-export default HomePage
+  );
+};
+
+export default HomePage;

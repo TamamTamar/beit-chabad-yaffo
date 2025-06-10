@@ -21,11 +21,8 @@ const NavBarChabad = () => {
     return (
         <header className="navbar">
             <div className="navbar__container">
-                <NavLink to="/" className="navbar__logo">
-                    <img src="img/logo-nav.png" alt="בית חב״ד יפו" />
-                </NavLink>
 
-                <nav className="navbar__menu">
+                 <nav className="navbar__menu">
                     <NavLink to="/">דף ראשי</NavLink>
                     <NavLink to="/beit-chabad">בית חב״ד</NavLink>
                     <NavLink to="/branches">סניפים</NavLink>
@@ -34,6 +31,12 @@ const NavBarChabad = () => {
                     <NavLink to="/#zmanim-section">זמני היום</NavLink>
                     <NavLink to="/donation" className="donation-link">תרומה</NavLink>
                 </nav>
+                
+                <NavLink to="/" className="navbar__logo">
+                    <img src="img/logo-nav.png" alt="בית חב״ד יפו" />
+                </NavLink>
+
+               
             </div>
         </header>
     );
