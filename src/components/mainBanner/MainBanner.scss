@@ -1,74 +1,57 @@
-.banner-container {
-  position: relative;
-  width: 100%;
-  min-height: 400px;
-  overflow: hidden;
+
+
+.main-banner {
+  background-image: url('/img/homePage-banner.png'); // עדכני לפי הנתיב בפועל
   background-size: cover;
   background-position: center;
+  height: 80vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: #fff;
+  justify-content: flex-end;
   padding: 2rem;
+  direction: rtl;
+  color: white;
+  position: relative;
 
   .banner-content {
-    background-color: rgba(104, 0, 31, 0.8); // שכבת כהות על התמונה בצבע #68001f
+    background-color: rgba(0, 0, 0, 0.5);
     padding: 2rem;
-    border-radius: 12px;
-    max-width: 800px;
+    border-radius: 8px;
+    text-align: right;
+    max-width: 400px;
 
-    .banner-title {
+    h1 {
       font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
       margin-bottom: 1rem;
-      color: #f58b28; // צבע כותרת בצבע #f58b28
     }
 
-    .banner-subtitle {
-      font-size: 1.2rem;
-      margin-bottom: 1.5rem;
-      color: #f58b28; // צבע תת-כותרת בצבע #f58b28
-    }
+    .banner-buttons {
+      display: flex;
+      gap: 1rem;
 
-    .banner-button {
-      background-color: #68001f; // צבע רקע הכפתור בצבע #68001f
-      color: white;
-      border: none;
-      padding: 0.6rem 1.4rem;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s;
-
-      &:hover {
-        background-color: #f58b28; // צבע רקע הכפתור במעבר עכבר בצבע #f58b28
-      }
-    }
-  }
-
-  .dots {
-    display: flex;
-    justify-content: center;
-    margin-top: 1.5rem;
-    gap: 0.5rem;
-
-    .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background-color: #f58b28; // צבע נקודות בצבע #f58b28
-      cursor: pointer;
-      transition: all 0.3s ease;
-
-      &.active {
-        background-color: #68001f; // צבע נקודה פעילה בצבע #68001f
-        box-shadow: 0 0 0 3px #68001f33;
-        transform: scale(1.2);
+      .info-btn {
+        background-color: #f58b28;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
       }
 
-      &:hover {
-        background-color: #68001f; // צבע נקודה במעבר עכבר בצבע #68001f
+      .shabbat-btn {
+        background-color: #68001f;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
       }
     }
   }
