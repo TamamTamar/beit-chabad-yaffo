@@ -37,7 +37,7 @@ const NavBarChabad = () => {
 
         {/* חלק 3: כפתורים */}
         <div className="navbar__buttons">
-          <NavLink to="/donation" className="button donate">תרומה</NavLink>
+          <NavLink to="/kampein" className="button donate">תרומה</NavLink>
           <NavLink to="/shabbat" className="button shabbat">שבת וחג</NavLink>
         </div>
       </div>
