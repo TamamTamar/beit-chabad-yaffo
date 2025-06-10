@@ -1,14 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@100..900&family=Solitreo&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Suez+One&display=swap');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Playfair+Display:wght@400;500;700&display=swap');
-
-body {
-    font-family: 'Montserrat', sans-serif;
-} */
 
 html {
     scroll-behavior: smooth;
@@ -20,6 +12,6 @@ html {
 
 
 body {
-   font-family: 'Heebo', sans-serif;
-    direction: rtl;
+  font-family: "Suez One", serif;
+  direction: rtl;
 }
