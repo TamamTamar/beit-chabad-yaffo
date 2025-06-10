@@ -26,8 +26,8 @@
 
         a {
             text-decoration: none;
-            color: #333;
-            font-weight: 500;
+            color: #000;
+            font-weight: 700;
 
             &:hover {
                 color: #68001f;
@@ -55,7 +55,7 @@
             }
 
             &:hover {
-                opacity: 0.9;
+                opacity: 0.7;
             }
         }
     }
