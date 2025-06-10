@@ -47,7 +47,7 @@ const LastParasha = () => {
           </div>
         </Link>
       ) : (
-        <p>No last Parasha available at the moment.</p>
+        <p className="error">No last Parasha available at the moment.</p>
       )}
     </div>
   );

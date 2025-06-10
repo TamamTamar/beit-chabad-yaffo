@@ -7,19 +7,20 @@
   align-items: center;
   padding: 2rem;
   direction: rtl;
-  color: white;
+  color: #68001f;
   position: relative;
 
   .banner-content {
     padding: 3rem;
 
     .banner-title {
-      font-size: 2.5rem;
+      font-size: 3rem;
       margin-bottom: 0.5rem;
+      font-weight: bold;
     }
 
     .banner-subtitle {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       margin-bottom: 1rem;
     }
 
