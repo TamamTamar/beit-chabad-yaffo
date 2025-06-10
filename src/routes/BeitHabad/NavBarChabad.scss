@@ -1,60 +1,62 @@
-@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap');
-
 .navbar {
- 
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    direction: rtl;
 
-  &__container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
 
-  &__logo img {
-    height: 50px;
-  }
-
-  &__menu {
-    display: flex;
-    gap: 1.5rem;
-
-    a {
-      text-decoration: none;
-      color: #333;
-      font-weight: 500;
-
-      &:hover {
-        color: #68001f;
-      }
+    &__container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
-  }
 
-  &__buttons {
-    display: flex;
-    gap: 1rem;
-
-    .button {
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      font-weight: 600;
-      text-decoration: none;
-      color: white;
-
-      &.donate {
-        background-color: #f58b28;
-      }
-
-      &.shabbat {
-        background-color: #68001f;
-      }
-
-      &:hover {
-        opacity: 0.9;
-      }
+    &__logo img {
+        height: 50px;
     }
-  }
+
+    &__menu {
+        display: flex;
+        gap: 1.5rem;
+
+        a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+
+            &:hover {
+                color: #68001f;
+            }
+        }
+    }
+
+    &__buttons {
+        display: flex;
+        gap: 1rem;
+
+        .button {
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-weight: 600;
+            text-decoration: none;
+            color: white;
+
+            &.donate {
+                background-color: #f58b28;
+            }
+
+            &.shabbat {
+                background-color: #68001f;
+            }
+
+            &:hover {
+                opacity: 0.9;
+            }
+        }
+    }
 }
