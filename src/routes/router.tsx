@@ -17,6 +17,8 @@ import AskRabbiPage from "./AskRabbiPage";
 import AdminDonation from "./admin/AdminDonation";
 import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
 import HomePage from "./BeitHabad/HomePage";
+import BranchesSection from "./BeitHabad/BranchesSection";
+import BeitChabadPage from "./BeitHabad/BeitChabadPage";
 
 
 
@@ -84,6 +86,17 @@ export const router = createBrowserRouter([
             {
                 path: "about",
                 element: <Aboutkampein />,
+            },
+            
+            {
+                path: "branches",
+                element: <BranchesSection />,
+              
+            },
+            
+            {
+                path: "beit-chabad",
+                element: <BeitChabadPage />,
             },
          
         ],

@@ -1,0 +1,84 @@
+.beit-chabad-page {
+    color: #222;
+    padding: 2rem;
+    direction: rtl;
+    text-align: center;
+
+
+    .banner {
+        background-image: url('/img/homePage-banner.png');
+        background-size: cover;
+        background-position: center;
+        height: 50vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+
+
+        .banner-title {
+            color: #68001f;
+            padding: 2rem;
+            border-radius: 8px;
+            font-size: 3rem;
+        }
+    }
+
+    .carousel-track {
+        display: flex;
+        gap: 30px; // רווח בין התמונות
+    }
+
+    .location {
+        .waze-link {
+            color: #68001f;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5em;
+
+            font-size: 1.2rem;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+        .waze-icon {
+            font-size: 2rem;
+            vertical-align: middle;
+            font-weight: 900;
+        }
+    }
+
+    .info,
+    .location,
+    .hours,
+    .contact {
+        margin-bottom: 2rem;
+
+        .section-title {
+            color: #68001f;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .paragraph {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        a {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #f58b28;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+
+}
