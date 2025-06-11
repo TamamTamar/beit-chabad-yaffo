@@ -24,7 +24,7 @@ const NavBarChabad = () => {
         {/* חלק 1: לוגו */}
         <div className="navbar__logo">
           <NavLink to="/">
-            <img src="img/logo-nav.png" alt="בית חב״ד יפו" />
+            <img src="img/logo-nav.webp" alt="בית חב״ד יפו" />
           </NavLink>
         </div>
 

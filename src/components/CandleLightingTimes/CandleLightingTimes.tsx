@@ -27,7 +27,7 @@ const CandleLightingTimes: FC = () => {
       ) : shabbatData ? (
         <div className="cl-content-wrapper">
           <div className="cl-image">
-            <img src="/img/light2.png" alt="שבת שלום" />
+            <img src="/img/light2.webp" alt="שבת שלום" />
           </div>
           <div className="cl-details">
             <h2 className="cl-heading-bold">זמני הדלקת נרות</h2>
