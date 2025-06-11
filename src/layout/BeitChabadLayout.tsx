@@ -3,6 +3,7 @@ import Footer from "../components/footer/Footer";
 import ChabadHeader from "../components/header/ChabadHeader";
 import NavChabad from "../routes/BeitHabad/NavBarChabad";
 import NavBarChabad from "../routes/BeitHabad/NavBarChabad";
+import WhatsAppFloatingButton from "../routes/BeitHabad/WhatsAppButton";
 
 const Root = () => {
     return (

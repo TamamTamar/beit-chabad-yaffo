@@ -2,7 +2,7 @@
   background-image: url('/img/homePage-banner.png'); // עדכני לפי הנתיב בפועל
   background-size: cover;
   background-position: center;
-  height: 40vh;
+  height: 50vh;
   display: flex;
   align-items: center;
   padding: 2rem;
@@ -11,7 +11,7 @@
   position: relative;
 
   .banner-content {
-    padding: 3rem;
+    padding: 8rem;
 
     .banner-title {
       font-size: 3rem;

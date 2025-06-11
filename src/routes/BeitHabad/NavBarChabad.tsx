@@ -1,6 +1,7 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import './NavBarChabad.scss';
+import WhatsAppButton from './WhatsAppButton';
 
 const scrollToSection = (id: string) => {
   const el = document.getElementById(id);
@@ -32,7 +33,7 @@ const NavBarChabad = () => {
           <NavLink to="/">דף ראשי</NavLink>
           <NavLink to="/beit-chabad">בית חב״ד</NavLink>
           <NavLink to="/branches">סניפים</NavLink>
-          <NavLink to="/#zmanim-section">זמני היום</NavLink>
+          <NavLink to="/#zmanim-section">זמני שבת</NavLink>
         </nav>
 
         {/* חלק 3: כפתורים */}
@@ -40,7 +41,11 @@ const NavBarChabad = () => {
           <NavLink to="/kampein" className="button donate">תרומה</NavLink>
           <NavLink to="/shabbat" className="button shabbat">שבת וחג</NavLink>
         </div>
+              <WhatsAppButton />
       </div>
+
+
+      {/* חלק 4: קישורים נוספים */}
     </header>
   );
 };

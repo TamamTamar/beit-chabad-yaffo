@@ -1,0 +1,26 @@
+.whatsapp-button {
+    position: fixed;
+    top: 2vh; /* מרחק מהתחתית */
+    left: 10px; /* מרחק מהצד הימני */
+    z-index: 1000; /* מבטיח שהכפתור יופיע מעל אלמנטים אחרים */
+    background-color: #25D366; /* צבע הרקע של WhatsApp */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: scale(1.1); /* אפקט הקטנה והגדלה */
+    }
+
+    img{
+        width: 35px;
+        height: 35px;
+    }
+ 
+}
