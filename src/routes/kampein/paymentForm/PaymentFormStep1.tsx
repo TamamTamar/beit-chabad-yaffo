@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
-import patterns from "../../validations/patterns";
+import patterns from "../../../validations/patterns";
+
 
 const PaymentFormStep1 = ({
     register,

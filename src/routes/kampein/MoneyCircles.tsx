@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './MoneyCircles.scss';
-import PaymentForm from './PaymentForm';
+import PaymentForm from './paymentForm/PaymentForm';
 
 const MoneyCircles = () => {
     const [showPaymentForm, setShowPaymentForm] = useState(false);

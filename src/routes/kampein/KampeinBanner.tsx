@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './KampeinBanner.scss';
 import Aboutkampein from './AboutKampein';
-import PaymentForm from './PaymentForm';
+import PaymentForm from './paymentForm/PaymentForm';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
@@ -36,7 +36,7 @@ const KampeinBanner = () => {
     <div className="kampein-banner">
       <h1 className="kampein-banner-title">יחד ממשיכים את השליחות ביפו</h1>
       <p className="kampein-banner-description">הבית של כל יהודי – בזכותכם.
-תרמו והיו שותפים</p>
+        תרמו והיו שותפים</p>
       <div className="kampein-buttons">
         <button
           className="donate-button"
@@ -65,16 +65,16 @@ const KampeinBanner = () => {
         </div>
       )}
 
-            {showPaymentForm && (
-                <div className="overlay">
-                    <div className="payment-form-wrapper">
-                        <button className="close-button" onClick={closePaymentForm}>
-                            <img src="/img/kampein/x.svg" alt="Close" />
-                        </button>
-                        <PaymentForm monthlyAmount={0} />
-                    </div>
-                </div>
-            )}
+      {showPaymentForm && (
+        <div className="overlay">
+          <div className="payment-form-wrapper">
+            <button className="close-button" onClick={closePaymentForm}>
+              <img src="/img/kampein/x.svg" alt="Close" />
+            </button>
+            <PaymentForm monthlyAmount={0} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

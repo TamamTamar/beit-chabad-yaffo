@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import NedarimDonation from '../kampein/NedarimDonation';
+import NedarimDonation from '../kampein/paymentForm/NedarimDonation';
 import ShabbatFormStep1 from './ShabbatFormStep1';
 import ShabbatFormStep2 from './ShabbatFormStep2';
 import { paymentService } from '../../services/payment-service';

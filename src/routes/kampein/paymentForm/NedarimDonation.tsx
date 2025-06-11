@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { paymentService } from '../../services/payment-service';
+import { paymentService } from '../../../services/payment-service';
 
 const NedarimDonation = ({ paymentData, handleBack, iframeRef, onPaymentSuccess }) => {
   const navigate = useNavigate();
@@ -96,7 +96,7 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef, onPaymentSuccess 
   return (
     <div className="iframe-container">
       <div id="WaitNedarimFrame">טוען...</div>
-    
+
       <iframe
         ref={iframeRef}
         id="NedarimFrame"

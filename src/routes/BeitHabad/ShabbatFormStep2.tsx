@@ -136,18 +136,18 @@ const ShabbatFormStep2 = ({ selectedShabbat, setStep, setPaymentData }) => {
                 <div className="counter-row">
                     <label>מס' ילדים ({CHILD_PRICE} ₪ לילד):</label>
                     <div className="counter-controls">
-                        <button type="button" onClick={() => setChildren(Math.max(0, children - 1))}>-</button>
+                        <button type="button" onClick={() => setChildren(Math.max(0, children - 1))}> - </button>
                         <span>{children}</span>
-                        <button type="button" onClick={() => setChildren(children + 1)}>+</button>
+                        <button type="button" onClick={() => setChildren(children + 1)}> + </button>
                     </div>
                 </div>
 
                 <div className="counter-row">
                     <label>מס' זוגות ({COUPLE_PRICE} ₪ לזוג):</label>
                     <div className="counter-controls">
-                        <button type="button" onClick={() => setCouples(Math.max(0, couples - 1))}>-</button>
+                        <button type="button" onClick={() => setCouples(Math.max(0, couples - 1))}> - </button>
                         <span>{couples}</span>
-                        <button type="button" onClick={() => setCouples(couples + 1)}>+</button>
+                        <button type="button" onClick={() => setCouples(couples + 1)}> + </button>
                     </div>
                 </div>
 
