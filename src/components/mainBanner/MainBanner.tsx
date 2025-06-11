@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import './MainBanner.scss';
 import AboutKampein from '../../routes/kampein/AboutKampein';
+import { useNavigate } from 'react-router-dom';
 
 const MainBanner = () => {
+  const navigete = useNavigate();
   const [showAbout, setShowAbout] = useState(false);
 
   return (
@@ -12,7 +14,7 @@ const MainBanner = () => {
         <h2 className='banner-subtitle'>ברוכים הבאים ליפו</h2>
         <div className="banner-buttons">
           <button className="info-btn" onClick={() => setShowAbout(true)}>מידע</button>
-          <button className="shabbat-btn">שבת וחג</button>
+          <button onClick={() => navigete('/shabbat')} className="shabbat-btn">שבת וחג</button>
         </div>
       </div>
 
