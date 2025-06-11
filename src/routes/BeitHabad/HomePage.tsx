@@ -26,9 +26,8 @@ const HomePage = () => {
         <CandleLightingTimes />
       </section>
       <section id="shabbat-section" className="shabbat-section">
-        <ShabbatSection />
       </section>
-      {/* המשך עמוד... */}
+
     </div>
   );
 };

@@ -108,7 +108,7 @@ const PaymentForm = ({ monthlyAmount }) => {
                     <button onClick={() => setStep(1)}>חזור להתחלה</button>
                 </div>
             )}
-            
+
         </div>
     );
 };

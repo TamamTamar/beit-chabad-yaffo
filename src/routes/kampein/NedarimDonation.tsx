@@ -37,9 +37,6 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef, onPaymentSuccess 
             if (waitPay) waitPay.style.display = 'none';
             if (okDiv) okDiv.style.display = 'block';
 
-            // שמירת הנתונים בשרת במקרה של הצלחה
-            paymentService.saveTransactionToServer(paymentData);
-
             // קריאה ל-onPaymentSuccess במקרה של הצלחה
             if (onPaymentSuccess) {
               onPaymentSuccess();

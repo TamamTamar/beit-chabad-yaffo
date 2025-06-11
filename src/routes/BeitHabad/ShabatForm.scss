@@ -1,130 +1,212 @@
-// סגנון לקרוסלה
-.carousel-container {
-  margin: 20px auto;
-  display: flex;
-  flex-direction: column; // מסדר את התוכן בעמודה
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-    .carousel-title {
-        font-size: 16px;
-        color: #333;
-      
-       
-    }
-}
-
-// סגנון לשורה של הכפתורים ורשימת הפרשות
-.carousel-row {
-  display: flex;
-  align-items: center; // ממרכז את הכפתורים והפרשות אנכית
-  justify-content: center; // ממקם את התוכן במרכז
-  gap: 15px; // רווח בין הכפתורים לרשימת הפרשות
-}
-
-// סגנון לתיבות הפרשות
-.parasha-boxes {
-  display: flex;
-  gap: 10px; // רווח בין התיבות
-}
-
-.parasha-box {
+.shabat-form {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  margin: 10px;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 200px;
-  height: 150px; // גובה קבוע לכל התיבות
+  padding: 30px;
+  width: 800px;
+  margin: 0 auto;
+  max-height: 80vh;
+  overflow-y: auto;
 
-  .parasha-title {
+  @media (max-width: 768px) {
+    padding: 30px 20px 20px 20px;
+    width: 100%;
+  }
+
+  .steps {
+    margin-bottom: 20px;
+    font-size: 18px;
     font-weight: bold;
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 10px;
+    color: #ebaabd;
+
+    .step {
+      margin: 0 5px;
+
+      &.active {
+        color: #68001f;
+      }
+    }
+
+    .sep {
+      margin: 0 3px;
+    }
   }
 
-  .parasha-date {
-    font-size: 14px;
-    color: #666;
-    margin: 5px 0;
-  }
-}
-
-// סגנון לכפתורי הקרוסלה
-.carousel-button {
-  background-color: #6b4b9a;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #563d7c;
+  .step-content {
+    width: 100%;
+    margin-bottom: 2rem;
   }
 
-  &:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+  .confirmation {
+    text-align: center;
+    padding: 2rem;
+
+    .thankyou-title {
+      font-size: 2rem;
+      color: #68001f;
+      margin-bottom: 1rem;
+    }
+
+    .thankyou-text {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .restart-button {
+      background: #f58b28;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #e67a1e;
+      }
+    }
   }
-}
 
-// סגנון לחלון בחירת כמות נרשמים
-.registrants-container {
-  margin-top: 20px;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 300px;
-
-  .registrants-title {
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 10px;
-  }
-
-  .registrants-inputs {
+  .shabbat-selection {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-bottom: 10px;
+    align-items: center;
+    width: 100%;
 
-    label {
-      font-size: 14px;
-      color: #333;
-      margin-right: 10px;
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #68001f;
     }
 
-    input {
-      width: 60px;
-      padding: 5px;
-      font-size: 16px;
-      text-align: center;
+    .select-shabbat {
+      width: 100%;
+      max-width: 400px;
+      padding: 10px;
+      font-size: 1rem;
       border: 1px solid #ccc;
       border-radius: 5px;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      background-color: #f58b28;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+
+      &:hover:enabled {
+        background-color: #e67a1e;
+      }
     }
   }
 
-  .registrants-total {
-    font-size: 16px;
-    color: #333;
-    font-weight: bold;
+  .shabbat-form {
+    width: 100%;
+
+    h2 {
+      color: #68001f;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+
+        label {
+          font-weight: bold;
+          margin-bottom: 0.5rem;
+        }
+
+        input {
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          font-size: 1rem;
+        }
+
+        .error {
+          color: red;
+          font-size: 0.9rem;
+        }
+      }
+
+      .counter-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-radius: 5px;
+
+        label {
+          flex: 1;
+        }
+
+        .counter-controls {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          button {
+            width: 30px;
+            height: 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 4px;
+            background-color: #f58b28;
+            color: white;
+            cursor: pointer;
+
+            &:hover {
+              background-color: #e67a1e;
+            }
+          }
+
+          span {
+            min-width: 20px;
+            text-align: center;
+          }
+        }
+      }
+
+      .total-display {
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-top: 1rem;
+        color: #68001f;
+      }
+
+      button[type="submit"],
+      button[type="button"] {
+        background-color: #68001f;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        margin-top: 1rem;
+
+        &:hover {
+          background-color: #aa0436;
+        }
+      }
+    }
   }
 }

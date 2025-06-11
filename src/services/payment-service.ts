@@ -34,20 +34,4 @@ export const paymentService = {
             throw new Error('Failed to save transaction: ' + error.message);
         }
     },
-
-    fetchDonationData: async () => {
-        try {
-            const response = await axios.get('https://matara.pro/nedarimplus/Reports/Manage3.aspx', {
-                params: {
-                    Action: 'GetKevaNew',
-                    MosadNumber: '7013920',
-                    ApiPassword: 'fp203',
-                },
-            });
-            return response.data;
-        } catch (error) {
-            console.error('Error fetching donation data:', error);
-            throw new Error('Failed to fetch donation data: ' + error.message);
-        }
-    },
 };
