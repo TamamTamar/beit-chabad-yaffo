@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { RishumShabbatInput } from "../../@Types/chabadType";
 
 const ADULT_PRICE = 1;
@@ -55,22 +55,21 @@ const ShabbatFormStep2 = ({ selectedShabbat, setStep, setPaymentData }) => {
             CallBackMailError: "lchabadyaffo@gmail.com",
         };
 
-        console.log("Selected Shabbat:", selectedShabbat);
-        console.log("Form Data:", data);
-        console.log("Total Payment:", total);
-
         setPaymentData(newPaymentData);
         setStep(3);
     };
 
     return (
         <div className="shabbat-form">
-            <h2>רישום לשבת - {selectedShabbat?.parasha} ({selectedShabbat?.date})</h2>
+            <h2 className="shabbat-form-title">
+                רישום לשבת - {selectedShabbat?.parasha} ({selectedShabbat?.date})
+            </h2>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form className="shabbat-form-fields" onSubmit={handleSubmit(onSubmit)}>
                 <div className="form-group">
-                    <label htmlFor="firstname">שם פרטי:</label>
+                    <label className="form-label" htmlFor="firstname">שם פרטי:</label>
                     <input
+                        className="form-input"
                         id="firstname"
                         type="text"
                         {...register("firstname", { required: "נא להזין שם פרטי" })}
@@ -80,8 +79,9 @@ const ShabbatFormStep2 = ({ selectedShabbat, setStep, setPaymentData }) => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="lastname">שם משפחה:</label>
+                    <label className="form-label" htmlFor="lastname">שם משפחה:</label>
                     <input
+                        className="form-input"
                         id="lastname"
                         type="text"
                         {...register("lastname", { required: "נא להזין שם משפחה" })}
@@ -91,8 +91,9 @@ const ShabbatFormStep2 = ({ selectedShabbat, setStep, setPaymentData }) => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="phone">טלפון:</label>
+                    <label className="form-label" htmlFor="phone">טלפון:</label>
                     <input
+                        className="form-input"
                         id="phone"
                         type="text"
                         {...register("phone", {
@@ -108,8 +109,9 @@ const ShabbatFormStep2 = ({ selectedShabbat, setStep, setPaymentData }) => {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="mail">אימייל:</label>
+                    <label className="form-label" htmlFor="mail">אימייל:</label>
                     <input
+                        className="form-input"
                         id="mail"
                         type="email"
                         {...register("mail", {
@@ -125,37 +127,39 @@ const ShabbatFormStep2 = ({ selectedShabbat, setStep, setPaymentData }) => {
                 </div>
 
                 <div className="counter-row">
-                    <label>מס' מבוגרים ({ADULT_PRICE} ₪ לאדם):</label>
+                    <label className="form-label">מס' מבוגרים ({ADULT_PRICE} ₪ לאדם):</label>
                     <div className="counter-controls">
-                        <button type="button" onClick={() => setAdults(Math.max(0, adults - 1))}>-</button>
-                        <span>{adults}</span>
-                        <button type="button" onClick={() => setAdults(adults + 1)}>+</button>
+                        <button className="counter-btn" type="button" onClick={() => setAdults(Math.max(0, adults - 1))}>-</button>
+                        <span className="counter-value">{adults}</span>
+                        <button className="counter-btn" type="button" onClick={() => setAdults(adults + 1)}>+</button>
                     </div>
                 </div>
 
                 <div className="counter-row">
-                    <label>מס' ילדים ({CHILD_PRICE} ₪ לילד):</label>
+                    <label className="form-label">מס' ילדים ({CHILD_PRICE} ₪ לילד):</label>
                     <div className="counter-controls">
-                        <button type="button" onClick={() => setChildren(Math.max(0, children - 1))}> - </button>
-                        <span>{children}</span>
-                        <button type="button" onClick={() => setChildren(children + 1)}> + </button>
+                        <button className="counter-btn" type="button" onClick={() => setChildren(Math.max(0, children - 1))}>-</button>
+                        <span className="counter-value">{children}</span>
+                        <button className="counter-btn" type="button" onClick={() => setChildren(children + 1)}>+</button>
                     </div>
                 </div>
 
                 <div className="counter-row">
-                    <label>מס' זוגות ({COUPLE_PRICE} ₪ לזוג):</label>
+                    <label className="form-label">מס' זוגות ({COUPLE_PRICE} ₪ לזוג):</label>
                     <div className="counter-controls">
-                        <button type="button" onClick={() => setCouples(Math.max(0, couples - 1))}> - </button>
-                        <span>{couples}</span>
-                        <button type="button" onClick={() => setCouples(couples + 1)}> + </button>
+                        <button className="counter-btn" type="button" onClick={() => setCouples(Math.max(0, couples - 1))}>-</button>
+                        <span className="counter-value">{couples}</span>
+                        <button className="counter-btn" type="button" onClick={() => setCouples(couples + 1)}>+</button>
                     </div>
                 </div>
 
                 <div className="total-display">
                     <strong>סה"כ לתשלום: {total.toLocaleString()} ₪</strong>
                 </div>
-                <button type="button" onClick={() => setStep(1)}>חזור</button>
-                <button type="submit">המשך</button>
+                <div className="form-actions">
+                    <button className="back-btn" type="button" onClick={() => setStep(1)}>חזור</button>
+                    <button className="next-btn" type="submit">המשך</button>
+                </div>
             </form>
         </div>
     );

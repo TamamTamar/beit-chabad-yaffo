@@ -8,17 +8,18 @@ const ShabbatFormStep1 = ({ setStep, setSelectedShabbat }) => {
     useEffect(() => {
         fetchParashot().then(setParashot);
     }, []);
-const handleParashaSelection = () => {
-    if (selectedParasha) {
-        console.log("Selected Parasha:", selectedParasha); // בדיקת הפרשה שנבחרה
-        setSelectedShabbat(selectedParasha); // עדכון הפרשה שנבחרה בקומפוננטת האב
-        setStep(2); // מעבר לשלב 2
-    }
-};
+
+    const handleParashaSelection = () => {
+        if (selectedParasha) {
+            console.log("Selected Parasha:", selectedParasha);
+            setSelectedShabbat(selectedParasha);
+            setStep(2);
+        }
+    };
 
     return (
         <div className="shabbat-selection">
-            <h2>בחר פרשה</h2>
+            <h2 className="shabbat-selection-title">בחר פרשה</h2>
             <select
                 className="select-shabbat"
                 onChange={(e) => {
@@ -26,16 +27,24 @@ const handleParashaSelection = () => {
                     setSelectedParasha(selected || null);
                 }}
             >
-                <option value="">בחר שבת</option>
+                <option className="select-shabbat-option" value="">בחר שבת</option>
                 {parashot
                     .filter(parasha => parasha.parasha !== "פסח ז׳" && parasha.parasha !== "Pesach VII")
                     .map((parasha) => (
-                        <option key={parasha.rawDate} value={parasha.rawDate}>
+                        <option
+                            key={parasha.rawDate}
+                            value={parasha.rawDate}
+                            className="select-shabbat-option"
+                        >
                             {getCustomParashaName(parasha.parasha)} - {parasha.date}
                         </option>
                     ))}
             </select>
-            <button onClick={handleParashaSelection} disabled={!selectedParasha}>
+            <button
+                className="shabbat-selection-button"
+                onClick={handleParashaSelection}
+                disabled={!selectedParasha}
+            >
                 המשך
             </button>
         </div>
