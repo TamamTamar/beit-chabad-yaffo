@@ -14,7 +14,7 @@ const MainBanner = () => {
         <h2 className='banner-subtitle'>ברוכים הבאים ליפו</h2>
         <div className="banner-buttons">
           <button className="info-btn" onClick={() => setShowAbout(true)}>מידע</button>
-          <button onClick={() => navigete('/shabbat')} className="shabbat-btn">שבת וחג</button>
+          <button onClick={() => navigete('/shabbaty')} className="shabbat-btn">שבת וחג</button>
         </div>
       </div>
 
