@@ -97,17 +97,7 @@ const PaymentForm = ({ monthlyAmount }) => {
                     paymentData={paymentData}
                     handleBack={handleBack}
                     iframeRef={iframeRef}
-                    onPaymentSuccess={async () => {
-                        try {
-                            await paymentService.saveTransactionToServer(paymentData);
-                            setStep(3);
-                        } catch (err) {
-                            // אפשר להציג הודעת שגיאה או לוג
-                            console.error("שגיאה בשמירת העסקה לשרת:", err);
-                          
-                            
-                        }
-                    }}
+                    onPaymentSuccess={setStep(3)}
                 />
             )}
             {step === 3 && (
