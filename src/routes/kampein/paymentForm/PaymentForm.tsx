@@ -104,7 +104,7 @@ const PaymentForm = ({ monthlyAmount }) => {
                         } catch (err) {
                             // אפשר להציג הודעת שגיאה או לוג
                             console.error("שגיאה בשמירת העסקה לשרת:", err);
-                            alert("שגיאה בשמירת העסקה. אנא נסה שוב מאוחר יותר.");
+                          
                             
                         }
                     }}

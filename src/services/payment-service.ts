@@ -21,7 +21,7 @@ export const paymentService = {
     saveTransactionToServer: async (data) => {
         try {
             const response = await axios.post(
-                `${baseUrl}/save`,
+                `${baseUrl}nedarim//save`,
                 data,
                 {
                     headers: { "Content-Type": "application/json" },
