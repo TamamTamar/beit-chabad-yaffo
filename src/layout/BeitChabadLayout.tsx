@@ -8,7 +8,7 @@ import WhatsAppFloatingButton from "../routes/BeitHabad/WhatsAppButton";
 const Root = () => {
     return (
         <div className="flex flex-col min-h-screen">
-            <NavBarChabad />
+           
 
             <main className="flex-1">
 

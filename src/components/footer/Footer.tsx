@@ -1,4 +1,5 @@
 import { FiAlertCircle, FiHome, FiMail } from 'react-icons/fi';
+import { FaWhatsapp } from 'react-icons/fa';
 import { Tooltip } from 'flowbite-react';
 import './Footer.scss';
 
@@ -29,7 +30,18 @@ function Footer() {
                             <a href="mailto:lchabadyaffo@gmail.com" className="icon-link">
                                 <FiMail size={20} />
                             </a>
-
+                        </Tooltip>
+                    </li>
+                    <li className="icon-item">
+                        <Tooltip content="WhatsApp" placement="top" className="tooltip">
+                            <a
+                                href="https://wa.me/972537700339"
+                                className="icon-link"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <FaWhatsapp size={20} />
+                            </a>
                         </Tooltip>
                     </li>
                 </ul>

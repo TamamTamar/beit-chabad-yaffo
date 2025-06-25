@@ -1,0 +1,29 @@
+.under-construction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+  background: #fffbe6;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(245, 139, 40, 0.07);
+  padding: 2rem;
+  margin: 2rem 0;
+
+  .under-construction-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  .under-construction-title {
+    color: #f58b28;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .under-construction-text {
+    color: #68001f;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+}

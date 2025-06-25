@@ -19,6 +19,7 @@ import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
 import HomePage from "./BeitHabad/HomePage";
 import BranchesSection from "./BeitHabad/BranchesSection";
 import BeitChabadPage from "./BeitHabad/BeitChabadPage";
+import UnderConstruction from "./UnderConstruction";
 
 
 
@@ -29,7 +30,7 @@ export const router = createBrowserRouter([
         element: <Root />,
         errorElement: <Error />,
         children: [
-            { index: true, element: <HomePage /> },
+            { index: true, element: <UnderConstruction /> },
             {
                 path: "kampein",
                 element: <KampeinPage />,
