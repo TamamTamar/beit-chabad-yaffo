@@ -59,6 +59,8 @@ const AdminDonation = () => {
                             <Table.HeadCell>מספר תשלומים</Table.HeadCell>
                             <Table.HeadCell>תאריך יצירה</Table.HeadCell>
                             <Table.HeadCell>לזכות</Table.HeadCell>
+                            <Table.HeadCell>הערות</Table.HeadCell>
+
                         </Table.Head>
                         <Table.Body className="divide-y">
                             {filteredDonations.map((donation) => (
@@ -76,6 +78,7 @@ const AdminDonation = () => {
                                             '-'
                                         )}
                                     </Table.Cell>
+                                     <Table.Cell>{donation.comment}</Table.Cell>
                                 </Table.Row>
                             ))}
                         </Table.Body>

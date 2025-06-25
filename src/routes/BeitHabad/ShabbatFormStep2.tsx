@@ -50,7 +50,7 @@ const ShabbatFormStep2 = ({ selectedShabbat, setStep, setPaymentData }) => {
             Tashlumim: 1,
             Currency: 1,
             Groupe: "",
-            Comment: "",
+            Comment: "רישום לשבת",
             CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/payment/payment-callback",
             CallBackMailError: "lchabadyaffo@gmail.com",
         };

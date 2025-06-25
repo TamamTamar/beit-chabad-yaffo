@@ -39,13 +39,10 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef, onPaymentSuccess 
 
             // קריאה ל-onPaymentSuccess במקרה של הצלחה
             if (onPaymentSuccess) {
-              onPaymentSuccess();
+              setTimeout(() => {
+                onPaymentSuccess();
+              }, 2000); // המתנה של 2 שניות לפני המעבר לשלב הבא
             }
-
-            // ניווט לדף אחר לאחר הצלחת התשלום
-            setTimeout(() => {
-              navigate('/confirmation'); // נווט לדף האישור
-            }, 2000); // המתנה של 2 שניות לפני הניווט
           }
           break;
       }

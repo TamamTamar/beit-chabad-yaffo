@@ -4,6 +4,7 @@ import "./PaymentForm.scss";
 
 import NedarimDonation from "./NedarimDonation";
 import PaymentFormStep1 from "./PaymentFormStep1";
+import { paymentService } from "../../../services/payment-service";
 
 
 const PaymentForm = ({ monthlyAmount }) => {
@@ -59,7 +60,7 @@ const PaymentForm = ({ monthlyAmount }) => {
             Tashlumim: data.Is12Months ? 12 : data.Tashlumim,
             Currency: 1,
             Groupe: data.Groupe,
-            Comment: data.Comment,
+            Comment: "תרומה",
             CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/payment/payment-callback",
             CallBackMailError: "lchabadyaffo@gmail.com",
         };
@@ -96,16 +97,23 @@ const PaymentForm = ({ monthlyAmount }) => {
                     paymentData={paymentData}
                     handleBack={handleBack}
                     iframeRef={iframeRef}
-                    onPaymentSuccess={() => {
-                        setStep(3);
-                    }
-                    }
+                    onPaymentSuccess={async () => {
+                        try {
+                            await paymentService.saveTransactionToServer(paymentData);
+                            setStep(3);
+                        } catch (err) {
+                            // אפשר להציג הודעת שגיאה או לוג
+                            console.error("שגיאה בשמירת העסקה לשרת:", err);
+                            alert("שגיאה בשמירת העסקה. אנא נסה שוב מאוחר יותר.");
+                            
+                        }
+                    }}
                 />
             )}
             {step === 3 && (
                 <div className="confirmation-step">
                     <h2>תודה רבה!</h2>
-                    <p>התשלום בוצע בהצלחה והרישום הושלם.</p>
+                    <p>התשלום בוצע בהצלחה.</p>
                     <button onClick={() => setStep(1)}>חזור להתחלה</button>
                 </div>
             )}
