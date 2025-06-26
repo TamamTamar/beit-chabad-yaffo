@@ -1,6 +1,4 @@
 import axios from "axios";
-import { IParashaInput } from "../@Types/productType";
-import { ParashaInput } from "../@Types/chabadType";
 
 // כתובת הבסיס לאסוף את כל הנתונים
 const parashaBaseUrl = "https://node-tandt-shop.onrender.com/api/v1/parasha";

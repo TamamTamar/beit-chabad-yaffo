@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useRef, useState } from 'react';
+import { newRishum } from '../../services/shabbatService';
 import NedarimDonation from '../kampein/paymentForm/NedarimDonation';
+import './ShabatForm.scss';
 import ShabbatFormStep1 from './ShabbatFormStep1';
 import ShabbatFormStep2 from './ShabbatFormStep2';
-import { paymentService } from '../../services/payment-service';
-import './ShabatForm.scss';
 
 const ShabatForm = ({ }) => {
     const [step, setStep] = useState(1);
@@ -13,18 +12,22 @@ const ShabatForm = ({ }) => {
 
     const iframeRef = useRef(null);
 
-    const handlePaymentCompletion = () => {
-        paymentService.saveTransactionToServer(paymentData)
-            .then(() => {
-                console.log('Transaction saved successfully');
-            })
-            .catch((error) => {
-                console.error('Error saving transaction:', error);
-            })
-            .finally(() => {
-                setStep(4);
-            });
+    
+    const handlePaymentCompletion = async () => {
+      try {
+        // שליחה לשרת שלך (רישום שבת)
+        await newRishum(paymentData.extraData);
+    
+
+        setStep(4); // מעבר לשלב הבא
+      } catch (err) {
+        // טיפול בשגיאה
+        console.error('שגיאה בשליחה:', err);
+        // אפשר להציג הודעת שגיאה למשתמש
+      }
     };
+    
+
 
     const handleBack = () => {
         setStep(step === 3 ? 2 : 1);
@@ -67,7 +70,7 @@ const ShabatForm = ({ }) => {
             {step === 3 && (
                 <div className="step-content">
                     <NedarimDonation
-                        paymentData={paymentData}
+                        paymentData={paymentData.apiData}
                         handleBack={handleBack}
                         iframeRef={iframeRef}
                         onPaymentSuccess={handlePaymentCompletion}

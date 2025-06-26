@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useState } from 'react';
-import './DonationList.scss';
-import { getAllDonations } from '../../services/donation-service';
+import { FC, useEffect, useState } from 'react';
 import { AggregatedDonation, Donation } from '../../@Types/chabadType';
+import { getAllDonations } from '../../services/donation-service';
+import './DonationList.scss';
 
 const DonationList: FC = () => {
     const [donations, setDonations] = useState<AggregatedDonation[]>([]);

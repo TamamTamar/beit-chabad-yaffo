@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchParashot, getCustomParashaName } from '../../services/shabbatService';
 
 const ShabbatFormStep1 = ({ setStep, setSelectedShabbat }) => {

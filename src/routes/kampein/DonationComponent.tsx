@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import axios from 'axios';
 
 // Comprehensive donation interface
@@ -10,7 +10,7 @@ interface DonationData {
   description: string;
 }
 
-const DonationComponent: React.FC = () => {
+const DonationComponent: FC = () => {
   const [donationData, setDonationData] = useState<DonationData | null>(null);
   const [error, setError] = useState<string | null>(null);
 

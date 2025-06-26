@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import MainBanner from '../../components/mainBanner/MainBanner';
 import CandleLightingTimes from '../../components/CandleLightingTimes/CandleLightingTimes';
-import ShabbatSection from './ShabbatSection';
+import MainBanner from '../../components/mainBanner/MainBanner';
 
 const HomePage = () => {
   const location = useLocation();

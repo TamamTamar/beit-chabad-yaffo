@@ -4,7 +4,6 @@ import "./PaymentForm.scss";
 
 import NedarimDonation from "./NedarimDonation";
 import PaymentFormStep1 from "./PaymentFormStep1";
-import { paymentService } from "../../../services/payment-service";
 
 
 const PaymentForm = ({ monthlyAmount }) => {
@@ -94,7 +93,7 @@ const PaymentForm = ({ monthlyAmount }) => {
 
             {step === 2 && (
                 <NedarimDonation
-                    paymentData={paymentData}
+                    paymentData={paymentData.apiData}
                     handleBack={handleBack}
                     iframeRef={iframeRef}
                     onPaymentSuccess={setStep(3)}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { shabbat } from '../../@Types/chabadType';
 import { fetchParashot, getCustomParashaName } from '../../services/shabbatService'; // ייבוא הפונקציה

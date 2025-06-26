@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 
-const CountdownTimer: React.FC = () => {
+const CountdownTimer: FC = () => {
   const targetDate = new Date('2025-03-05T00:00:00'); // הגדר את תאריך היעד כאן
   const [timeLeft, setTimeLeft] = useState<number>(calculateTimeLeft());
 

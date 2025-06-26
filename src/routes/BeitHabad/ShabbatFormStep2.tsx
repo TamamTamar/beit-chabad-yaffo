@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { RishumShabbatInput } from "../../@Types/chabadType";
 
-const ADULT_PRICE = 1;
-const CHILD_PRICE = 25;
-const COUPLE_PRICE = 90;
+const CHILD_PRICE = 65;
+const ADULT_PRICE = 80;
+const COUPLE_PRICE = 150;
 
 const ShabbatFormStep2 = ({ selectedShabbat, setStep, setPaymentData }) => {
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -25,7 +25,7 @@ const ShabbatFormStep2 = ({ selectedShabbat, setStep, setPaymentData }) => {
         children * CHILD_PRICE +
         couples * COUPLE_PRICE;
 
-    const onSubmit = (data: RishumShabbatInput) => {
+       const onSubmit = (data: RishumShabbatInput) => {
         const PaymentData = {
             ...data,
             selectedShabbat,
@@ -34,7 +34,7 @@ const ShabbatFormStep2 = ({ selectedShabbat, setStep, setPaymentData }) => {
             children,
             couples,
         };
-
+    
         const newPaymentData = {
             Mosad: "7013920",
             ApiValid: "zidFYCLaNi",
@@ -54,8 +54,12 @@ const ShabbatFormStep2 = ({ selectedShabbat, setStep, setPaymentData }) => {
             CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/payment/payment-callback",
             CallBackMailError: "lchabadyaffo@gmail.com",
         };
-
-        setPaymentData(newPaymentData);
+    
+        // שמור ב-state גם את נתוני התשלום וגם את כל הנתונים שלך
+        setPaymentData({
+          apiData: newPaymentData,   // ל-API של התשלום
+          extraData: PaymentData     // לשרת שלך
+        });
         setStep(3);
     };
 

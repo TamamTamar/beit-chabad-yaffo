@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { paymentService } from '../../../services/payment-service';
 
 const NedarimDonation = ({ paymentData, handleBack, iframeRef, onPaymentSuccess }) => {
   const navigate = useNavigate();
@@ -36,13 +35,9 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef, onPaymentSuccess 
           } else {
             if (waitPay) waitPay.style.display = 'none';
             if (okDiv) okDiv.style.display = 'block';
-
-            // קריאה ל-onPaymentSuccess במקרה של הצלחה
-            if (onPaymentSuccess) {
-              setTimeout(() => {
-                onPaymentSuccess();
-              }, 2000); // המתנה של 2 שניות לפני המעבר לשלב הבא
-            }
+            setTimeout(() => {
+              onPaymentSuccess();
+            }, 2000); // 2 שניות אחרי הצגת okDiv
           }
           break;
       }

@@ -63,7 +63,7 @@ export const getCustomParashaName = (parasha: string): string => {
 };
 
 export const newRishum = async (data: RishumShabbatType) => {
- return axios.post(`${baseUrl}/register`, data,);
+ return axios.post(`${baseUrl}/new`, data,);
 }
 
 //get all registrations

@@ -1,4 +1,3 @@
-import React from 'react';
 import './WhatsAppButton.scss'; // Ensure you have the appropriate styles for the button
 
 const WhatsAppButton = ({
