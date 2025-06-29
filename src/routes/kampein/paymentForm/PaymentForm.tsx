@@ -95,7 +95,7 @@ const PaymentForm = ({ monthlyAmount }) => {
 
             {step === 2 && (
                 <NedarimDonation
-                    paymentData={paymentData.apiData}
+                    paymentData={paymentData}
                     handleBack={handleBack}
                     iframeRef={iframeRef}
                     onPaymentSuccess={() => setStep(3)}
