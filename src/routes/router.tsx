@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
         element: <Root />,
         errorElement: <Error />,
         children: [
-            { index: true, element: <UnderConstruction /> },
+            { index: true, element: <KampeinPage /> },
             {
                 path: "kampein",
                 element: <KampeinPage />,
