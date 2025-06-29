@@ -77,6 +77,8 @@ const PaymentForm = ({ monthlyAmount }) => {
                 <span className={step === 1 ? "active-step" : "inactive-step"}>1</span>
                 <span> - </span>
                 <span className={step === 2 ? "active-step" : "inactive-step"}>2</span>
+                <span> - </span>
+                <span className={step === 3 ? "active-step" : "inactive-step"}>3</span>
             </div>
 
             {step === 1 && (
