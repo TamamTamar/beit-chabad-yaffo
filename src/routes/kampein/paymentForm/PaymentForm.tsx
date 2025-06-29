@@ -96,7 +96,7 @@ const PaymentForm = ({ monthlyAmount }) => {
                     paymentData={paymentData.apiData}
                     handleBack={handleBack}
                     iframeRef={iframeRef}
-                    onPaymentSuccess={setStep(3)}
+                    onPaymentSuccess={() => setStep(3)}
                 />
             )}
             {step === 3 && (
