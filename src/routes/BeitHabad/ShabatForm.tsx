@@ -4,11 +4,13 @@ import NedarimDonation from '../kampein/paymentForm/NedarimDonation';
 import './ShabatForm.scss';
 import ShabbatFormStep1 from './ShabbatFormStep1';
 import ShabbatFormStep2 from './ShabbatFormStep2';
+import ShabbatFormStep3 from './ShabbatFormStep3';
 
 const ShabatForm = ({ }) => {
     const [step, setStep] = useState(1);
     const [paymentData, setPaymentData] = useState(null);
     const [selectedShabbat, setSelectedShabbat] = useState(null);
+    const [personalData, setPersonalData] = useState(null);
 
     const iframeRef = useRef(null);
 
@@ -54,20 +56,30 @@ const ShabatForm = ({ }) => {
                 </div>
             )}
 
+            
             {step === 2 && (
                 <div className="step-content">
                     <ShabbatFormStep2
-                        setPaymentData={(data) => {
-                            console.log("Payment Data from Step 2:", data);
-                            setPaymentData(data);
-                        }}
                         selectedShabbat={selectedShabbat}
                         setStep={setStep}
+                        setPersonalData={setPersonalData}
+                    />
+                </div>
+            )}
+            
+            {step === 3 && (
+                <div className="step-content">
+                    <ShabbatFormStep3
+                        selectedShabbat={selectedShabbat}
+                        setStep={setStep}
+                        personalData={personalData}
+                        setPaymentData={setPaymentData}
                     />
                 </div>
             )}
 
-            {step === 3 && (
+
+            {step === 4 && (
                 <div className="step-content">
                     <NedarimDonation
                         paymentData={paymentData.apiData}
@@ -78,13 +90,15 @@ const ShabatForm = ({ }) => {
                 </div>
             )}
 
-            {step === 4 && (
+            {step === 5 && (
                 <div className="confirmation">
                     <h2 className="thankyou-title">תודה רבה!</h2>
                     <p className="thankyou-text">התשלום בוצע בהצלחה והרישום הושלם.</p>
                     <button className="restart-button" onClick={() => setStep(1)}>חזור להתחלה</button>
                 </div>
             )}
+
+     
         </div>
     );
 };

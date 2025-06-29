@@ -15,10 +15,25 @@
     max-width: 400px;
     padding: 10px;
     font-size: 1rem;
-    border: 1px solid #ccc;
+    border: 1px solid #68001f;
     border-radius: 5px;
     margin-bottom: 1rem;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: white url('data:image/svg+xml;utf8,<svg fill="%2368001f" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat left 10px center;
+    background-size: 1rem;
+    padding-left: 2rem;
+
+    &:focus {
+      outline: none;
+      //border: 1px solid #68001f;
+      box-shadow: none;
+
+
+    }
   }
+
 
   .select-shabbat-option {
     font-size: 1rem;
