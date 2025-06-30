@@ -5,7 +5,9 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef, onPaymentSuccess 
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 📩 קריאת הודעות מה-iframe
+    let timeoutId: NodeJS.Timeout;
+
+    // קריאת הודעות מה-iframe
     function ReadPostMessage(event: MessageEvent) {
       const iframe = iframeRef.current;
       const waitFrame = document.getElementById('WaitNedarimFrame');
@@ -14,6 +16,8 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef, onPaymentSuccess 
       const payBtDiv = document.getElementById('PayBtDiv');
       const okDiv = document.getElementById('OkDiv');
       const waitPay = document.getElementById('WaitPay');
+
+      console.log('קיבלתי הודעה מה-iframe:', event.data);
 
       switch (event.data.Name) {
         case 'Height':
@@ -24,6 +28,7 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef, onPaymentSuccess 
           break;
 
         case 'TransactionResponse':
+          clearTimeout(timeoutId);
           if (resultDiv) {
             resultDiv.innerHTML = `סטטוס: ${event.data.Value.Status}`;
           }
@@ -37,13 +42,13 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef, onPaymentSuccess 
             if (okDiv) okDiv.style.display = 'block';
             setTimeout(() => {
               onPaymentSuccess();
-            }, 2000); // 2 שניות אחרי הצגת okDiv
+            }, 2000);
           }
           break;
       }
     }
 
-    // 🚀 שליחת הודעות ל-iframe
+    // שליחת הודעות ל-iframe
     function PostNedarim(Data: object) {
       if (iframeRef.current && iframeRef.current.contentWindow) {
         iframeRef.current.contentWindow.postMessage(Data, '*');
@@ -52,8 +57,23 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef, onPaymentSuccess 
       }
     }
 
-    // 🖱️ לחיצה על כפתור תשלום
+    // לחיצה על כפתור תשלום
     (window as any).PayBtClick = function () {
+      console.log('payBtClick called with paymentData:', paymentData);
+
+      // בדיקת תקינות נתונים
+      if (
+        !paymentData ||
+        !paymentData.Amount ||
+        !paymentData.Phone ||
+        !paymentData.Mail ||
+        !paymentData.FirstName ||
+        !paymentData.LastName
+      ) {
+        alert('אנא מלא את כל הפרטים החיוניים לפני תשלום');
+        return;
+      }
+
       const waitPay = document.getElementById('WaitPay');
       const payBtDiv = document.getElementById('PayBtDiv');
       const okDiv = document.getElementById('OkDiv');
@@ -68,20 +88,26 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef, onPaymentSuccess 
         Name: 'FinishTransaction2',
         Value: paymentData,
       });
+
+      // טיימאאוט אם אין תגובה מהשרת
+      timeoutId = setTimeout(() => {
+        if (waitPay) waitPay.style.display = 'none';
+        if (payBtDiv) payBtDiv.style.display = 'block';
+        if (errorDiv) errorDiv.innerHTML = 'לא התקבלה תשובה מהשרת. נסה שוב או פנה לתמיכה.';
+      }, 20000); // 20 שניות
     };
 
-    // 🖥️ חיבור מאזין להודעות
     window.addEventListener('message', ReadPostMessage);
 
-    // 📥 טעינת ה-iframe ושליחת בקשת גובה
+    // טעינת ה-iframe ושליחת בקשת גובה
     iframeRef.current?.addEventListener('load', () => {
       PostNedarim({ Name: 'GetHeight' });
     });
 
-    // 🧹 ניקוי מאזינים כשעוזבים את הדף
     return () => {
       window.removeEventListener('message', ReadPostMessage);
       delete (window as any).PayBtClick;
+      clearTimeout(timeoutId);
     };
   }, [paymentData, iframeRef, navigate, onPaymentSuccess]);
 
