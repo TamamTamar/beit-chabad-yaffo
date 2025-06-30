@@ -1,21 +1,22 @@
-import { useNavigate } from 'react-router-dom';
 import './Confirmation.scss';
 
-const Confirmation = () => {
-    const navigate = useNavigate();
+interface ConfirmationProps {
+    title: string;
+    message: string;
+
+}
+
+const Confirmation = ({
+    title,
+    message,
+
+}: ConfirmationProps) => {
+
 
     return (
         <div className="confirmation-container">
-            <h1 className="confirmation-title">תודה רבה!</h1>
-            <p className="confirmation-message">
-                תרומתך התקבלה בהצלחה. אנו מודים לך על תרומתך לבית חב"ד יפו.
-            </p>
-            <button
-                className="confirmation-button"
-                onClick={() => navigate('/')}
-            >
-                חזור לדף הבית
-            </button>
+            <h1 className="confirmation-title">{title}</h1>
+            <p className="confirmation-message">{message}</p>
         </div>
     );
 };

@@ -4,14 +4,13 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #f9f9f9;
     text-align: center;
-    padding: 20px;
+    padding: 40px;
 }
 
 .confirmation-title {
     font-size: 2.5rem;
-    color: #4caf50;
+    color: #68001f; // בורדו כהה
     margin-bottom: 20px;
 }
 
@@ -21,17 +20,3 @@
     margin-bottom: 30px;
 }
 
-.confirmation-button {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.confirmation-button:hover {
-    background-color: #45a049;
-}

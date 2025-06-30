@@ -20,6 +20,7 @@ import HomePage from "./BeitHabad/HomePage";
 import BranchesSection from "./BeitHabad/BranchesSection";
 import BeitChabadPage from "./BeitHabad/BeitChabadPage";
 import UnderConstruction from "./UnderConstruction";
+import Confirmation from "./kampein/Confirmation";
 
 
 
@@ -99,6 +100,7 @@ export const router = createBrowserRouter([
                 path: "beit-chabad",
                 element: <BeitChabadPage />,
             },
+   
          
         ],
     },

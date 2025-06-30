@@ -4,6 +4,7 @@ import "./PaymentForm.scss";
 
 import NedarimDonation from "./NedarimDonation";
 import PaymentFormStep1 from "./PaymentFormStep1";
+import Confirmation from "../Confirmation";
 
 
 const PaymentForm = ({ monthlyAmount }) => {
@@ -100,13 +101,12 @@ const PaymentForm = ({ monthlyAmount }) => {
                     iframeRef={iframeRef}
                     onPaymentSuccess={() => setStep(3)}
                 />
-            )}
-            {step === 3 && (
-                <div className="confirmation-step">
-                    <h2>תודה רבה!</h2>
-                    <p>התשלום בוצע בהצלחה.</p>
-                    <button onClick={() => setStep(1)}>חזור להתחלה</button>
-                </div>
+            )} 
+            {step === 2 && (
+                <Confirmation
+                    title="תודה רבה על תרומתך לבית חב״ד יפו!"
+                    message="הנדיבות שלך מחזקת את פעילותנו למען הקהילה ומאפשרת לנו להמשיך להפיץ אור וטוב ביפו. תבורך/י!"
+                />
             )}
 
         </div>
