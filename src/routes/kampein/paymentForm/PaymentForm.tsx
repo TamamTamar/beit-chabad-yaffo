@@ -102,7 +102,7 @@ const PaymentForm = ({ monthlyAmount }) => {
                     onPaymentSuccess={() => setStep(3)}
                 />
             )} 
-            {step === 2 && (
+            {step === 3 && (
                 <Confirmation
                     title="תודה רבה על תרומתך לבית חב״ד יפו!"
                     message="הנדיבות שלך מחזקת את פעילותנו למען הקהילה ומאפשרת לנו להמשיך להפיץ אור וטוב ביפו. תבורך/י!"
