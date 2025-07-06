@@ -8,6 +8,7 @@ const DonationList: FC = () => {
     const [originalDonations, setOriginalDonations] = useState<AggregatedDonation[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [isSorted, setIsSorted] = useState(false);
+    const [visibleCount, setVisibleCount] = useState(10);
 
     useEffect(() => {
         const fetchDonations = async () => {
@@ -19,10 +20,9 @@ const DonationList: FC = () => {
                     const monthly = item.Amount || 0;
                     const monthsPaid = item.Tashlumim || 1;
                     const pastTotal = monthly * monthsPaid;
-                    // אין לנו futureTotal אמיתי, אז נשים 0
                     const futureTotal = 0;
                     const combinedTotal = pastTotal + futureTotal;
-                    const lizchut = item.lizchut || ""; // אם יש לך שדה כזה, הוסף אותו
+                    const lizchut = item.lizchut || "";
 
                     return { name, pastTotal, futureTotal, combinedTotal, lizchut };
                 });
@@ -48,6 +48,9 @@ const DonationList: FC = () => {
         setIsSorted(!isSorted);
     };
 
+    // הצג רק visibleCount ראשונים
+    const visibleDonations = donations.slice(0, visibleCount);
+
     return (
         <div className="donation-list-cards">
             {/* <button className="sort-button" onClick={handleSortClick}>
@@ -63,7 +66,7 @@ const DonationList: FC = () => {
                         <div className="donation-list-title-container">
                             <h2 className="donation-list-title">השותפים שלנו</h2>
                         </div>
-                        {donations.map((d, idx) => (
+                        {visibleDonations.map((d, idx) => (
                             <div className="donation-card" key={idx}>
                                 <div className="donation-card-content">
                                     <div className="donor-row">
@@ -76,6 +79,22 @@ const DonationList: FC = () => {
                                 </div>
                             </div>
                         ))}
+                        {visibleCount < donations.length && (
+                            <button
+                                className="show-more-btn"
+                                onClick={() => setVisibleCount(Math.min(visibleCount + 4, donations.length))}
+                            >
+                                הצג עוד
+                            </button>
+                        )}
+                        {visibleCount > 10 && (
+                            <button
+                                className="show-more-btn"
+                                onClick={() => setVisibleCount(10)}
+                            >
+                                הצג פחות
+                            </button>
+                        )}
                     </div>
                 </div>
             )}

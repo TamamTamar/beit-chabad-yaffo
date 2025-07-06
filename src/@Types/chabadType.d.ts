@@ -40,27 +40,7 @@ export type Parasha = ParashaInput & {
     updatedAt: string;
     __v: number;
 };
-interface PaymentFormProps {
-    institutionId: string;
-    apiValid: string;
-    zeout: string;
-    firstName: string;
-    lastName: string;
-    street: string;
-    city: string;
-    phone: string;
-    email: string;
-    paymentType: string;
-    amount: number;  // הוספת סכום כאן
-    tashlumim: number;
-    currency: number;
-    groupe: string;
-    comment: string;
-    param1: string;
-    param2: string;
-    callBack: string;
-    callBackMailError: string;
-}
+
 interface shabbat {
     date: string;
     rawDate: string;
@@ -112,7 +92,13 @@ export type PaymentData = {
     Comment: string; // הערה
     CallBack: string; // כתובת קריאה חוזרת
     CallBackMailError: string; // כתובת דוא"ל לשגיאות
+
+    
 };
+type PaymentFormProps = {
+  monthlyAmount?: number;
+};
+
 export type BannerItem = {
     title: string;
     subtitle: string;
@@ -143,4 +129,9 @@ export interface Donation {
     createdAt?: Date;
     lizchut?: string;
     comment?: string;
+};
+export type RefSummary = {
+  ref: string;
+  totalAmount: number;
+  donationCount: number;
 };

@@ -1,7 +1,8 @@
 import { Tabs } from "flowbite-react";
-import { FiBox } from "react-icons/fi";
+import { FiBox, FiUsers } from "react-icons/fi";
 import AdminParashot from "../admin/AdminParashot";
 import AdminDonation from "./AdminDonation";
+import AdminRefSummary from "./AdminRefSummary"; // ודא שהנתיב נכון
 
 const ChabadDashboard = () => {
     return (
@@ -10,7 +11,10 @@ const ChabadDashboard = () => {
                 <AdminParashot />
             </Tabs.Item>
             <Tabs.Item title="תרומות" icon={FiBox}>
-             <AdminDonation />
+                <AdminDonation />
+            </Tabs.Item>
+            <Tabs.Item title="מתרימים" icon={FiUsers}>
+                <AdminRefSummary />
             </Tabs.Item>
         </Tabs>
     );

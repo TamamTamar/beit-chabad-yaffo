@@ -1,62 +1,73 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { useNavigate } from 'react-router-dom';
 import Aboutkampein from './AboutKampein';
-import './KampeinBanner.scss';
 import PaymentForm from './paymentForm/PaymentForm';
-
-<Helmet>
-  <title>קמפיין חב"ד יפו - תנו יד לשליחות</title>
-  <meta name="description" content="הצטרפו למען המשך פעילות חב״ד ביפו - הבית של כל יהודי. תרמו עכשיו והיו שותפים לשליחות." />
-  <meta name="keywords" content="חבד יפו, תרומות, קמפיין, שליחות, צדקה, יהדות, תרומה לחבד" />
-  <meta property="og:title" content="קמפיין חב״ד יפו" />
-  <meta property="og:description" content="תמכו בשליחות חב״ד ביפו – תרמו עכשיו והפיצו אור יהדות." />
-  <meta property="og:image" content="https://beit-chabad-yaffo.onrender.com/img/kampein/banner-u.png" />
-</Helmet>
-
+import './KampeinBanner.scss';
 
 const KampeinBanner = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
-  const navigate = useNavigate();
-
-  const handleButtonClick = () => {
-    setShowInfo(true);
-  };
-
-  const closeInfo = () => {
-    setShowInfo(false);
-  };
-
-  const closePaymentForm = () => {
-    setShowPaymentForm(false);
-  };
 
   return (
     <div className="kampein-banner">
-      <h1 className="kampein-banner-title">יחד ממשיכים את השליחות ביפו</h1>
-      <p className="kampein-banner-description">הבית של כל יהודי – בזכותכם.
-        תרמו והיו שותפים</p>
+      <Helmet>
+        <title>פותחים בית חב״ד חדש ביפו – הצטרפו לשליחות</title>
+        <meta
+          name="description"
+          content="בונים בית חב״ד בלב שוק הפשפשים. תרמו היום והביאו אור יהודי לכל עובר ושב."
+        />
+        <meta
+          name="keywords"
+          content="בית חב״ד יפו, קמפיין תרומה, שוק הפשפשים, שליחות חב״ד, תרומה צדקה"
+        />
+        <meta property="og:title" content="בית חב״ד יפו – לב פתוח בלב השוק" />
+        <meta
+          property="og:description"
+          content="הצטרפו לבניית נקודת אור יהודית ראשונה בשוק הפשפשים. כל תרומה מקרבת אותנו לפתיחה."
+        />
+        <meta
+          property="og:image"
+          content="https://beit-chabad-yaffo.onrender.com/img/kampein/banner-u.png"
+        />
+      </Helmet>
+
+      <h1 className="kampein-banner-title">
+        בונים את הלב היהודי של יפו – יחד איתכם
+      </h1>
+
+      <p className="kampein-banner-description">
+        בלב שוק הפשפשים קם בית חם לכל יהודי. לחצו ותרמו כדי לפתוח את הדלת.
+      </p>
+
+
       <div className="kampein-buttons">
         <button
           className="donate-button"
           onClick={() => setShowPaymentForm(true)}
         >
-          תרום עכשיו
+          תורמים ופותחים דלתות
         </button>
+
         <button
           className="info-button"
-          onClick={handleButtonClick}
+          onClick={() => setShowInfo(true)}
         >
-          אודות הקמפיין
+          לפרטים על הקמפיין
         </button>
       </div>
 
       {showInfo && (
-        <div className="overlay">
-          <div className="info-wrapper">
-            <button className="close-button" onClick={closeInfo}>
-              <img src="/img/kampein/x.svg" alt="Close" />
+        <div className="overlay" onClick={() => setShowInfo(false)}>
+          <div
+            className="info-wrapper"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="close-button"
+              onClick={() => setShowInfo(false)}
+              aria-label="סגור מידע"
+            >
+              <img src="/img/kampein/x.svg" alt="סגור חלון" />
             </button>
             <div className="info-content">
               <Aboutkampein />
@@ -66,10 +77,17 @@ const KampeinBanner = () => {
       )}
 
       {showPaymentForm && (
-        <div className="overlay">
-          <div className="payment-form-wrapper">
-            <button className="close-button" onClick={closePaymentForm}>
-              <img src="/img/kampein/x.svg" alt="Close" />
+        <div className="overlay" onClick={() => setShowPaymentForm(false)}>
+          <div
+            className="payment-form-wrapper"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="close-button"
+              onClick={() => setShowPaymentForm(false)}
+              aria-label="סגור טופס תרומה"
+            >
+              <img src="/img/kampein/x.svg" alt="סגור חלון" />
             </button>
             <PaymentForm monthlyAmount={0} />
           </div>
