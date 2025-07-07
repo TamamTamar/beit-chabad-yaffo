@@ -1,6 +1,5 @@
-import { Table, Tooltip } from 'flowbite-react';
+import { Table } from 'flowbite-react';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useSearch } from '../../hooks/useSearch';
 
 import { Donation } from '../../@Types/chabadType';
@@ -57,7 +56,6 @@ const AdminDonation = () => {
                             <Table.HeadCell>טלפון</Table.HeadCell>
                             <Table.HeadCell>סכום</Table.HeadCell>
                             <Table.HeadCell>מספר תשלומים</Table.HeadCell>
-                            <Table.HeadCell>תאריך יצירה</Table.HeadCell>
                             <Table.HeadCell>לזכות</Table.HeadCell>
                             <Table.HeadCell>הערות</Table.HeadCell>
 
@@ -70,7 +68,7 @@ const AdminDonation = () => {
                                     <Table.Cell>{donation.Phone ?? '-'}</Table.Cell>
                                     <Table.Cell>{donation.Amount.toFixed(2)}</Table.Cell>
                                     <Table.Cell>{donation.Tashlumim}</Table.Cell>
-                                    <Table.Cell>{donation.createdAt ? new Date(donation.createdAt).toLocaleDateString() : '-'}</Table.Cell>
+                        
                                     <Table.Cell>
                                         {donation.lizchut ? (
                                           donation.lizchut
@@ -78,7 +76,7 @@ const AdminDonation = () => {
                                             '-'
                                         )}
                                     </Table.Cell>
-                                     <Table.Cell>{donation.comment}</Table.Cell>
+                                     <Table.Cell>{donation.Comments}</Table.Cell>
                                 </Table.Row>
                             ))}
                         </Table.Body>
