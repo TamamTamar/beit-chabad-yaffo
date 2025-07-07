@@ -26,6 +26,7 @@ useEffect(() => {
                 const comment = item.Comments || ""; // ← הוסף שדה להערות אם צריך
 
                 return { name, pastTotal, futureTotal, combinedTotal, lizchut, comment };
+                
             });
 
             setDonations(aggregated);
