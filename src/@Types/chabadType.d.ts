@@ -118,6 +118,7 @@ export type AggregatedDonation = {
     futureTotal: number;
     combinedTotal: number;
     lizchut: string;
+    
 };
 
 export interface Donation {
@@ -126,9 +127,8 @@ export interface Donation {
     Phone?: string;
     Amount: number;
     Tashlumim: number;
-    createdAt?: Date;
     lizchut?: string;
-    comment?: string;
+    Comments?: string;
 };
 export type RefSummary = {
   ref: string;
