@@ -5,8 +5,7 @@
   background-size: cover; // גורם לתמונה לכסות את כל השטח, גם במחיר של חיתוך
   background-position: center;
   background-repeat: no-repeat;
-  margin: 0; // לוודא שאין רווח חיצוני
-  padding: 0;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,6 +42,9 @@
     line-height: 20px;
     text-transform: uppercase;
     margin-bottom: 25px;
+    text-align: center;
+    max-width: 800px; // מגביל את הרוחב של הטקסט
+    padding: 0 20px; // מוסיף ריווח בצדדים כדי שהטקסט לא ייגע בקצוות
 
     @media (max-width: 768px) {
       font-size: 14px;
