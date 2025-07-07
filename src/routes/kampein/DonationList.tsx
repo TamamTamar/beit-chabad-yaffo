@@ -89,14 +89,7 @@ useEffect(() => {
                                 הצג עוד
                             </button>
                         )}
-                        {visibleCount > 10 && (
-                            <button
-                                className="show-more-btn"
-                                onClick={() => setVisibleCount(10)}
-                            >
-                                הצג פחות
-                            </button>
-                        )}
+                 
                     </div>
                 </div>
             )}
