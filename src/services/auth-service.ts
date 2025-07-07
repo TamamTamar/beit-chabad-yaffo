@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ILogin, IUser, updateUserType } from "../@Types/types";
 
-export const baseUrl = "https://node-tandt-shop.onrender.com/api/v1";
+export const baseUrl = "https://node-beit-chabad-yaffo-production.up.railway.app/api/v1";
 export const usersUrl = `${baseUrl}/users`;
 export const loginUrl = `${baseUrl}/users/login`;
 

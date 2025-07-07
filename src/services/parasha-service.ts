@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // כתובת הבסיס לאסוף את כל הנתונים
-const parashaBaseUrl = "https://node-tandt-shop.onrender.com/api/v1/parasha";
+const parashaBaseUrl = "https://node-beit-chabad-yaffo-production.up.railway.app/api/v1/parasha";
 
 // פונקציה לקבלת כל הפרשות
 export const getAllParashot = async () => {

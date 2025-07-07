@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './LatestVideo.scss';
 
-const API_URL = 'https://node-tandt-shop.onrender.com/api/v1/videos/latest-video';
+const API_URL = 'https://node-beit-chabad-yaffo-production.up.railway.app/api/v1/videos/latest-video';
 
 function LatestVideo() {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
