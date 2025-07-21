@@ -98,11 +98,12 @@
                     }
 
                     .donor-amount {
-                        color: #f58b28;
+                        color: #b34e00; // כתום כהה יותר שעובר בדיקת ניגודיות
                         font-weight: bold;
                         font-size: 1.5rem;
                         margin-right: 10px;
                     }
+
                 }
 
                 .donor-message {
@@ -135,17 +136,20 @@
                     .donor-amount {
                         font-size: 1.1rem;
                     }
+
                     .donor-message {
                         font-size: 1rem;
                     }
                 }
             }
+
             .show-more-btn {
                 width: 90%;
                 margin: 20px auto;
                 font-size: 1rem;
                 display: block;
             }
+
             .donation-list-title {
                 font-size: 1.3rem;
             }
