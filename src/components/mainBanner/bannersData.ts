@@ -13,7 +13,7 @@ export const bannersData: BannerItem[] = [
     title: "תמכו בפעילות בית חב״ד",
     subtitle: "עזרו לנו להמשיך להפיץ יהדות ולסייע.",
     buttonText: "תרום עכשיו",
-    navigateTo: "/kampein",
+    navigateTo: "/Campein",
     className: "banner-2",
     image: "/images/donation-banner.jpg",
   },

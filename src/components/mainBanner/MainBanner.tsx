@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './MainBanner.scss';
-import AboutKampein from '../../routes/kampein/AboutKampein';
+import AboutCampein from '../../routes/Campein/AboutCampein';
 import { useNavigate } from 'react-router-dom';
 
 const MainBanner = () => {
@@ -22,7 +22,7 @@ const MainBanner = () => {
         <div className="about-modal-overlay" onClick={() => setShowAbout(false)}>
           <div className="about-modal" onClick={e => e.stopPropagation()}>
             <button className="close-modal" onClick={() => setShowAbout(false)}>✕</button>
-            <AboutKampein />
+            <AboutCampein />
           </div>
         </div>
       )}

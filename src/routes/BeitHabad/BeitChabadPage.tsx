@@ -1,6 +1,6 @@
 import { FaWaze } from 'react-icons/fa';
 import './BeitChabadPage.scss';
-import CaruselaImage from '../kampein/CaruselaImage';
+import CaruselaImage from '../Campein/CaruselaImage';
 
 const BeitChabadPage = () => {
   return (

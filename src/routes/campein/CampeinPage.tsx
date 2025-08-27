@@ -2,13 +2,13 @@
 import CaruselaImage from "./CaruselaImage"
 import DonationList from "./DonationList"
 import DonationProgressMinimal from "./DonationProgressMinimal"
-import KampeinBanner from "./KampeinBanner"
+import CampeinBanner from "./CampeinBanner"
 import MoneyCircles from "./MoneyCircles"
 
-const KampeinPage = () => {
+const CampeinPage = () => {
   return (
     <div>
-      <KampeinBanner />
+      <CampeinBanner />
       <CaruselaImage />
       <MoneyCircles />
       <DonationProgressMinimal />
@@ -21,4 +21,4 @@ const KampeinPage = () => {
   )
 }
 
-export default KampeinPage
+export default CampeinPage

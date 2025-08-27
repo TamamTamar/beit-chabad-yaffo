@@ -1,15 +1,13 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import Aboutkampein from './AboutKampein';
-import PaymentForm from './paymentForm/PaymentForm';
-import './KampeinBanner.scss';
+import './CampeinBanner.scss';
 
-const KampeinBanner = () => {
+const CampeinBanner = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
 
   return (
-    <div className="kampein-banner">
+    <div className="Campein-banner">
       <Helmet>
         <title>פותחים בית חב״ד חדש ביפו – הצטרפו לשליחות</title>
         <meta
@@ -27,20 +25,20 @@ const KampeinBanner = () => {
         />
         <meta
           property="og:image"
-          content="https://beit-chabad-yaffo.onrender.com/img/kampein/banner-u.png"
+          content="https://beit-chabad-yaffo.onrender.com/img/Campein/banner-u.png"
         />
       </Helmet>
 
-      <h1 className="kampein-banner-title">
+      <h1 className="Campein-banner-title">
         בונים את הלב היהודי של יפו – יחד איתכם
       </h1>
 
-      <p className="kampein-banner-description">
+      <p className="Campein-banner-description">
         בלב שוק הפשפשים קם בית חם לכל יהודי. לחצו ותרמו כדי לפתוח את הדלת.
       </p>
 
 
-      <div className="kampein-buttons">
+      <div className="Campein-buttons">
         <button
           className="donate-button"
           onClick={() => setShowPaymentForm(true)}
@@ -67,10 +65,10 @@ const KampeinBanner = () => {
               onClick={() => setShowInfo(false)}
               aria-label="סגור מידע"
             >
-              <img src="/img/kampein/x.svg" alt="סגור חלון" />
+              <img src="/img/Campein/x.svg" alt="סגור חלון" />
             </button>
             <div className="info-content">
-              <Aboutkampein />
+              <AboutCampein />
             </div>
           </div>
         </div>
@@ -87,7 +85,7 @@ const KampeinBanner = () => {
               onClick={() => setShowPaymentForm(false)}
               aria-label="סגור טופס תרומה"
             >
-              <img src="/img/kampein/x.svg" alt="סגור חלון" />
+              <img src="/img/Campein/x.svg" alt="סגור חלון" />
             </button>
             <PaymentForm monthlyAmount={0} />
           </div>
@@ -97,4 +95,4 @@ const KampeinBanner = () => {
   );
 };
 
-export default KampeinBanner;
+export default CampeinBanner;

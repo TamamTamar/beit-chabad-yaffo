@@ -1,7 +1,7 @@
-.kampein-banner {
+.Campein-banner {
   width: 100vw; // תופס את כל הרוחב של המסך
   height: 300px; // גובה הבאנר (לפי מה שכתבת)
-  background-image: url('/img/kampein/banner.jpg');
+  background-image: url('/img/Campein/banner.jpg');
   background-size: cover; // גורם לתמונה לכסות את כל השטח, גם במחיר של חיתוך
   background-position: center;
   background-repeat: no-repeat;
@@ -14,11 +14,11 @@
 
   @media (max-width: 768px) {
     height: 320px;
-   // background-image: url('/img/kampein/banner m.png');
+   // background-image: url('/img/Campein/banner m.png');
     background-position: top center;
   }
 
-  .kampein-banner-title {
+  .Campein-banner-title {
     margin-top: 100px;
     color: #f58b28;
     font-size: 40px;
@@ -34,7 +34,7 @@
     }
   }
 
-  .kampein-banner-description {
+  .Campein-banner-description {
     color: #68001f;
     font-size: 22px;
     font-style: normal;
@@ -52,7 +52,7 @@
     }
   }
 
-  .kampein-buttons {
+  .Campein-buttons {
     display: flex;
     gap: 16px;
     margin-bottom: 5px;

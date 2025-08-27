@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { newRishum } from '../../services/shabbatService';
-import NedarimDonation from '../kampein/paymentForm/NedarimDonation';
+import NedarimDonation from '../Campein/paymentForm/NedarimDonation';
 import './ShabatForm.scss';
 import ShabbatFormStep1 from './ShabbatFormStep1';
 import ShabbatFormStep2 from './ShabbatFormStep2';

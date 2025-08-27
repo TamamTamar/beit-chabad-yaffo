@@ -10,8 +10,8 @@ import ParashaList from "./BeitHabad/ParashaList";
 import ShabatForm from "./BeitHabad/ShabatForm";
 
 import Error from "./Error";
-import Aboutkampein from "./kampein/AboutKampein";
-import KampeinPage from "./kampein/KampeinPage";
+import AboutCampein from "./Campein/AboutCampein";
+import CampeinPage from "./Campein/CampeinPage";
 import ChabadDashboard from "./admin/ChabadDashboard";
 import AskRabbiPage from "./AskRabbiPage";
 import AdminDonation from "./admin/AdminDonation";
@@ -20,7 +20,7 @@ import HomePage from "./BeitHabad/HomePage";
 import BranchesSection from "./BeitHabad/BranchesSection";
 import BeitChabadPage from "./BeitHabad/BeitChabadPage";
 import UnderConstruction from "./UnderConstruction";
-import Confirmation from "./kampein/Confirmation";
+import Confirmation from "./Campein/Confirmation";
 
 
 
@@ -31,10 +31,10 @@ export const router = createBrowserRouter([
         element: <Root />,
         errorElement: <Error />,
         children: [
-            { index: true, element: <KampeinPage /> },
+            { index: true, element: <CampeinPage /> },
             {
-                path: "kampein",
-                element: <KampeinPage />,
+                path: "Campein",
+                element: <CampeinPage />,
             },
             {
                 path: "shabbat",
@@ -87,7 +87,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "about",
-                element: <Aboutkampein />,
+                element: <AboutCampein />,
             },
             
             {

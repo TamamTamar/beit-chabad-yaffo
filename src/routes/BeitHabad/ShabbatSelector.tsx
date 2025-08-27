@@ -5,7 +5,7 @@ import { newRishum } from '../../services/shabbatService';
 import './ShabbatSelector.scss';
 import { RishumShabbatInput, RishumShabbatType } from '../../@Types/chabadType';
 import { showErrorDialog, showSuccessDialog } from '../../ui/dialogs';
-import PaymentFormStep2 from '../kampein/PaymentFormStep2';
+import PaymentFormStep2 from '../Campein/PaymentFormStep2';
 
 const ShabbatSelector = () => {
     const navigate = useNavigate();

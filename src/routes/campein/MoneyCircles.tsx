@@ -40,7 +40,7 @@ const MoneyCircles = () => {
                 <div className="overlay">
                     <div className="payment-form-wrapper">
                         <button className="close-button" onClick={closePaymentForm}>
-                            <img src="/img/kampein/x.svg" alt="Close" />
+                            <img src="/img/Campein/x.svg" alt="Close" />
                         </button>
                         <PaymentForm monthlyAmount={amount} />
                     </div>
