@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import './CampeinBanner.scss';
+import AboutCampein from './AboutCampein';
+import PaymentForm from './paymentForm/PaymentForm';
 
 const CampeinBanner = () => {
   const [showInfo, setShowInfo] = useState(false);
