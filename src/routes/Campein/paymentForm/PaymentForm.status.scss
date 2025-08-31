@@ -1,0 +1,21 @@
+.payment-form-container {
+    .ok-div {
+        display: none;
+        color: green;
+        font-size: 16px;
+        margin-top: 20px;
+    }
+
+    .wait-pay {
+        display: none;
+        color: #68001f;
+        font-size: 16px;
+        margin-top: 20px;
+    }
+
+    .error-div {
+        color: red;
+        font-size: 16px;
+        margin-top: 20px;
+    }
+}
