@@ -1,77 +1,68 @@
-import axios from "axios";
+import axios, { AxiosRequestHeaders } from "axios";
 
-// כתובת הבסיס לאסוף את כל הנתונים
-const parashaBaseUrl = "https://node-beit-chabad-yaffo-production.up.railway.app/api/parasha";
+// כתובת בסיס ל־API
+const BASE_URL = "https://node-beit-chabad-yaffo-production.up.railway.app/api";
 
-// פונקציה לקבלת כל הפרשות
+// מופע Axios עם baseURL והזרקת Authorization אוטומטית
+const api = axios.create({ baseURL: BASE_URL });
+
+api.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        const headers: AxiosRequestHeaders = (config.headers ?? {}) as AxiosRequestHeaders;
+        headers.Authorization = `Bearer ${token}`;
+        config.headers = headers;
+    }
+    return config;
+});
+
+// ---- Parasha endpoints ----
+const PARASHA_PATH = "/parasha";
+
+// קבלת כל הפרשות
 export const getAllParashot = async () => {
     try {
-        const response = await axios.get(parashaBaseUrl);
-        const data = response.data;
+        const { data } = await api.get(PARASHA_PATH);
         if (!Array.isArray(data) || data.length === 0) {
             console.warn("No parashot found");
-            return []; // מחזיר מערך ריק במקרה שאין פרשות
+            return [];
         }
-        return data; // מחזיר את הנתונים
+        return data;
     } catch (error) {
         console.error("Error fetching all parashot:", error);
-        throw error; // שגיאה במקרה של כשלון
+        throw error;
     }
 };
 
+// קבלת הפרשה האחרונה (?last=true)
 export const getLastParasha = async () => {
     try {
-        const response = await axios.get(parashaBaseUrl, {
-            params: { last: "true" },
-        });
-        const data = response.data;
+        const { data } = await api.get(PARASHA_PATH, { params: { last: "true" } });
         if (!data || typeof data !== "object" || Object.keys(data).length === 0) {
             console.warn("No last parasha found");
-            return null; // מחזיר null במקרה שאין פרשה
+            return null;
         }
-        return data; // מחזיר את הנתונים
+        return data;
     } catch (error) {
         console.error("Error fetching last parasha:", error);
-        throw error; // שגיאה במקרה של כשלון
+        throw error;
     }
 };
 
+// קבלת פרשה לפי מזהה
+export const getParashaById = (id: string) => api.get(`${PARASHA_PATH}/${id}`);
 
-// פונקציה לקבלת הפרשה לפי מזהה
-export const getParashaById = (id: string) => axios.get(`${parashaBaseUrl}/${id}`);
-
-// פונקציה לקבלת הפרשה האחרונה
-
-
-// יצירת פרשה חדשה
-export const createNewParasha = (data: FormData) => {
-    return axios.post(parashaBaseUrl, data, {
-        headers: {
-            "x-auth-token": localStorage.getItem("token"),
-        },
-    });
+// יצירת פרשה חדשה (FormData עם תמונה/קבצים)
+export const createNewParasha = (form: FormData) => {
+    // אל תגדירי Content-Type ידנית; Axios יקבע boundary לבד
+    return api.post(PARASHA_PATH, form);
 };
 
-// עדכון פרשה
-export const updateParasha = (id: string, data: FormData) => {
-    return axios.put(`${parashaBaseUrl}/${id}`, data, {
-        headers: {
-            "x-auth-token": localStorage.getItem("token"),
-            "Content-Type": "multipart/form-data", // צריך לשנות ל-multipart/form-data כשיש תמונה
-        },
-    });
+// עדכון פרשה קיימת
+export const updateParasha = (id: string, form: FormData) => {
+    // גם כאן לא צריך לציין Content-Type ידנית
+    return api.put(`${PARASHA_PATH}/${id}`, form);
 };
 
 // מחיקת פרשה לפי מזהה
-export const deleteParashaById = (id: string) => {
-    return axios.delete(`${parashaBaseUrl}/${id}`, {
-        headers: {
-            "x-auth-token": localStorage.getItem("token"),
-        },
-    });
-};
-
-// בקשה לקבלת הפרשה האחרונה (עם מיון)
-/* export const getLatestParasha = () => {
-    return axios.get(`${parashaBaseUrl}?sort=-createdAt&limit=1`);
-}; */
+export const deleteParashaById = (id: string) => api.delete(`${PARASHA_PATH}/${id}`);

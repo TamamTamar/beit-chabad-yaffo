@@ -3,72 +3,33 @@ import { ILogin, IUser, updateUserType } from "../@Types/types";
 
 export const baseUrl = "https://node-beit-chabad-yaffo-production.up.railway.app/api";
 export const usersUrl = `${baseUrl}/users`;
-export const loginUrl = `${baseUrl}/users/login`;
+export const loginUrl = `${usersUrl}/login`;
 
-export const register = (data: IUser) => axios.post(usersUrl, data);
-export const login = (data: ILogin) => axios.post(loginUrl, data);
-
-
-export const userDetails = (id: string) => {
-    const url = `${usersUrl}/${id}`;
-    return axios.get(url,
-        {
-            headers: {
-                "x-auth-token": localStorage.getItem("token"),
-            },
-        }
-    );
-
-};
-
-export const businessUser = (id: string) => {
-    const url = `${usersUrl}/${id}`;
-    return axios.patch(url, {
-        isBusiness: true,
-    }, {
-        headers: {
-            "x-auth-token": localStorage.getItem("token"),
-        },
-    });
-}
-//login user
-//get all users
-export const getAllUsers = () => {
-    const url = `${usersUrl}/`;
-    return axios.get(url, {
-        headers: {
-            "x-auth-token": localStorage.getItem("token"),
-        },
-    });
-}
-//get user by id
-export const getUserById = (id: string) => axios.get(`${usersUrl}/${id}`, {
-    headers: {
-        "x-auth-token": localStorage.getItem("token"),
-    },
+// ── Axios instance עם baseURL והזרקת Authorization אוטומטית ──
+const api = axios.create({
+    baseURL: baseUrl,
 });
 
-//update user
-export const updateUser = (id: string, user: updateUserType) => {
-    return axios.put(`${usersUrl}/${id}`, user,
-        {
-            headers: {
-                "x-auth-token": localStorage.getItem("token"),
-            },
-        }
-    );
-};
-
-export const deleteUserById = (id: string) => {
-    const url = `${usersUrl}/${id}`;
-    return axios.delete(url, {
-        headers: {
-            "x-auth-token": localStorage.getItem("token"),
-        },
-    });
-};
+// כל בקשה תצרף Bearer token אם קיים בלוקל סטורג'
+api.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        (config.headers ??= {} as any).Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
 
 
+// ── Endpoints ──
+export const register = (data: IUser) => api.post("/users", data);
+export const login = (data: ILogin) => api.post("/users/login", data);
+
+export const userDetails = (id: string) => api.get(`/users/${id}`);
+export const getAllUsers = () => api.get("/users");
+export const getUserById = (id: string) => api.get(`/users/${id}`);
+export const updateUser = (id: string, user: updateUserType) => api.put(`/users/${id}`, user);
+export const deleteUserById = (id: string) => api.delete(`/users/${id}`);
+export const businessUser = (id: string) => api.patch(`/users/${id}`, { isBusiness: true });
 
 export const auth = {
     register,
@@ -76,8 +37,9 @@ export const auth = {
     userDetails,
     getAllUsers,
     getUserById,
+    updateUser,
+    deleteUserById,
     businessUser,
-    deleteUserById
 };
 
 export default auth;

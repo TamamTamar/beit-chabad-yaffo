@@ -61,7 +61,7 @@ export const AuthContextProvider: FC<ContextProviderProps> = ({ children }) => {
             localStorage.setItem("token", token);
             setUser(user);
 
-            axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+         //   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
             dialogs.success("Login", "Logged in");
         } catch (error) {
             console.error("Login error:", error);
@@ -78,7 +78,7 @@ export const AuthContextProvider: FC<ContextProviderProps> = ({ children }) => {
         setToken(null);
         setUser(undefined);
         localStorage.removeItem("token");
-        delete axios.defaults.headers.common.Authorization;
+      //  delete axios.defaults.headers.common.Authorization;
         dialogs.success("Logout Successful", "You have been logged out successfully.");
     };
 
