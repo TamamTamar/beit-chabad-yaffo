@@ -1,0 +1,115 @@
+.create-card-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0 2px 15px #0000001a;
+    border-radius: 10px;
+}
+
+.create-card-container h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.create-card-container section {
+    margin-bottom: 15px;
+}
+
+
+.create-card-container input,
+.create-card-container select,
+.create-card-container textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+    color: #333;
+}
+
+
+.create-card-container input:focus,
+.create-card-container select:focus,
+.create-card-container textarea:focus {
+    border-color: #0056b3;
+    outline: none;
+}
+
+.create-card-container .text-red-500 {
+    color: #e53e3e;
+    font-size: 0.875em;
+    /* Slightly smaller font size for error messages */
+    margin-top: 4px;
+}
+
+/* Styling for the submit button */
+.create-card-container button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #cbb39d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+//dark mode
+.dark .create-card-container button[type="submit"] {
+    background-color: black;
+}
+
+/* Hover and focus styles for the button */
+.create-card-container button[type="submit"]:hover,
+.create-card-container button[type="submit"]:focus {
+    background-color: #967d68;
+}
+.dark .create-card-container button[type="submit"]:hover,
+.create-card-container button[type="submit"]:focus {
+    background-color: #c7c7c7;
+    color: #333;
+}
+
+
+/* Styling for password visibility toggle button */
+.create-card-container .password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.create-card-container .password-container button {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    font-size: 1.2em;
+}
+
+.create-card-container .password-container button:focus {
+    outline: none;
+}
+
+/* Ensure icons are aligned properly and not affecting the text input focus */
+.create-card-container .password-container svg {
+    pointer-events: none;
+}
+
+.checkbox-container {
+    position: relative;
+
+    .check {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+}

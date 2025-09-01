@@ -14,6 +14,7 @@ import AboutCampein from "./Campein/AboutCampein";
 import CampeinPage from "./Campein/CampeinPage";
 import Error from "./Error";
 import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
+import Login from "./Login";
 
 
 
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
             {
                 path: "Campein",
                 element: <CampeinPage />,
+            },
+            {
+                path: "Login",
+                element: <Login />,
             },
             {
                 path: "shabbat",
