@@ -10,20 +10,24 @@ import { ILogin } from "../@Types/types";
 const Login: FC = () => {
     const navigate = useNavigate();
     const { login } = useAuth();
-
-    const onLogin: SubmitHandler<ILogin> = (data) => {
-        login(data.email, data.password)
-            .then(() => {
-                dialogs.success("Login", "Logged in")
-                    .then(() => {
-                        // send the user to home page
-                        navigate("/");
-                    });
-            })
-            .catch((e) => {
-                dialogs.error("Login Error", e.response?.data?.message || e.message || "Unknown error");
-            });
-    };
+// ...existing code...
+const onLogin: SubmitHandler<ILogin> = (data) => {
+    console.log("Login submitted with:", data); // ← בדוק שהפונקציה נשלחת
+    login(data.email, data.password)
+        .then(() => {
+            console.log("Login success"); // ← הצלחה
+            dialogs.success("Login", "Logged in")
+                .then(() => {
+                    console.log("Navigating to home"); // ← ניווט
+                    navigate("/");
+                });
+        })
+        .catch((e) => {
+            console.error("Login error:", e); // ← שגיאה
+            dialogs.error("Login Error", e.response?.data?.message || e.message || "Unknown error");
+        });
+};
+// ...existing
     const {
         register,
         handleSubmit,
