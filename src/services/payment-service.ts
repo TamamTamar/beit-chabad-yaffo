@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = "https://node-beit-chabad-yaffo.onrender.com/api/payment";
+const baseUrl = "https://node-beit-chabad-yaffo-production.up.railway.app/api/payment";
 
 export const paymentService = {
     sendPaymentDataToServer: async (paymentData) => {

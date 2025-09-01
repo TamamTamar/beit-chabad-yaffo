@@ -42,7 +42,7 @@ const ShabbatFormStep3 = ({ selectedShabbat, setStep, personalData, setPaymentDa
             Currency: 1,
             Groupe: "",
             Comment: "רישום לשבת",
-            CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/payment/payment-callback",
+            CallBack: "https://node-beit-chabad-yaffo-production.up.railway.app/api/payment/payment-callback",
             CallBackMailError: "lchabadyaffo@gmail.com",
         };
 
@@ -59,7 +59,7 @@ const ShabbatFormStep3 = ({ selectedShabbat, setStep, personalData, setPaymentDa
                 רישום לשבת - {selectedShabbat?.parasha} ({selectedShabbat?.date})
             </h2>
 
-                 <div className="counter-row">
+            <div className="counter-row">
                 <label className="form-label">מס' ילדים ({CHILD_PRICE} ₪ לילד):</label>
                 <div className="counter-controls">
                     <button className="counter-btn" type="button" onClick={() => setChildren(Math.max(0, children - 1))}>-</button>
@@ -77,7 +77,7 @@ const ShabbatFormStep3 = ({ selectedShabbat, setStep, personalData, setPaymentDa
                 </div>
             </div>
 
-       
+
 
             <div className="counter-row">
                 <label className="form-label">מס' זוגות ({COUPLE_PRICE} ₪ לזוג):</label>

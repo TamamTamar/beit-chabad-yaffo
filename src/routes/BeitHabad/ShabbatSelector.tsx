@@ -57,7 +57,7 @@ const ShabbatSelector = () => {
             Currency: 1, // מטבע (1 = שקלים)
             Groupe: "", // קבוצה (לדוגמה: שבת)
             Comment: ``, // הערה
-            CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/payment/nedarim",
+            CallBack: "https://node-beit-chabad-yaffo-production.up.railway.app/api/payment/nedarim",
             CallBackMailError: "lchabadyaffo@gmail.com",
         };
 

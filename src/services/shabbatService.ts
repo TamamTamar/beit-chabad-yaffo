@@ -1,7 +1,7 @@
 import axios from "axios";
 import { RishumShabbatType, shabbat } from "../@Types/chabadType";
 
-const baseUrl = "https://node-beit-chabad-yaffo.onrender.com/api/rishum";
+const baseUrl = "https://node-beit-chabad-yaffo-production.up.railway.app/api/rishum";
 
 export const fetchParashot = async (): Promise<shabbat[]> => {
     try {
@@ -63,7 +63,7 @@ export const getCustomParashaName = (parasha: string): string => {
 };
 
 export const newRishum = async (data: RishumShabbatType) => {
- return axios.post(`${baseUrl}/new`, data,);
+    return axios.post(`${baseUrl}/new`, data,);
 }
 
 //get all registrations

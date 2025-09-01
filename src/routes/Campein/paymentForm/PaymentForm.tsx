@@ -73,7 +73,7 @@ const PaymentForm = ({ monthlyAmount }: PaymentFormProps) => {
       Currency: 1,
       Groupe: data.Groupe,
       Comment: `תרומה מאת ${data.FirstName} ${data.LastName}, טלפון: ${data.Phone}${ref ? `, ref: ${ref}` : ""}`,
-      CallBack: "https://node-beit-chabad-yaffo.onrender.com/api/payment/payment-callback",
+      CallBack: "https://node-beit-chabad-yaffo-production.up.railway.app/api/payment/payment-callback",
       CallBackMailError: "lchabadyaffo@gmail.com",
     };
 
