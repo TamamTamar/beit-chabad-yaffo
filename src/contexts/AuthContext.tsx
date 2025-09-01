@@ -1,8 +1,8 @@
 import { jwtDecode } from "jwt-decode";
 import { createContext, FC, useEffect, useMemo, useState } from "react";
-import { ContextProviderProps, AuthContextType, IUser, DecodedToken } from "../@Types/types";
 import dialogs from "../ui/dialogs";
-import auth from "../services/auth-service";
+import { auth } from "../services/auth-service";
+import { AuthContextType, ContextProviderProps, DecodedToken, IUser } from "../@Types/types";
 
 
 export const AuthContext = createContext<AuthContextType | null>(null);
