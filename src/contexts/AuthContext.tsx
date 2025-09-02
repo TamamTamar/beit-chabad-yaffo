@@ -1,3 +1,4 @@
+// AuthContext.tsx
 import { jwtDecode } from "jwt-decode";
 import { createContext, FC, useEffect, useMemo, useState } from "react";
 import dialogs from "../ui/dialogs";
@@ -5,25 +6,43 @@ import { auth } from "../services/auth-service";
 import { AuthContextType, ContextProviderProps, DecodedToken, IUser } from "../@Types/types";
 import axios from "axios";
 
+// ---- Helpers ----
+const coerceToken = (raw: string | null): string | null => {
+    if (!raw) return null;
+    // אם נשמר "Bearer xxx" – נקלף
+    if (raw.startsWith("Bearer ")) raw = raw.slice(7).trim();
+    // אם נשמר כאובייקט JSON – ננסה לחלץ שדה token
+    if (raw.startsWith("{")) {
+        try {
+            const parsed = JSON.parse(raw);
+            if (typeof parsed?.token === "string") return parsed.token;
+            return null;
+        } catch {
+            return null;
+        }
+    }
+    // JWT בדרך כלל מכיל נקודות
+    if (!raw.includes(".")) return null;
+    return raw;
+};
+
+const setGlobalAuthHeader = (token: string | null) => {
+    if (token) axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+    else delete axios.defaults.headers.common.Authorization;
+};
+
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthContextProvider: FC<ContextProviderProps> = ({ children }) => {
-    // ודאי שמתקבל מחרוזת ולא [object Object]
-    const initialToken = (() => {
-        const raw = localStorage.getItem("token");
-        return raw && raw.startsWith("ey") ? raw : null;
-    })();
-
-    const [token, setToken] = useState<string | null>(initialToken);
+    const [token, setToken] = useState<string | null>(() => coerceToken(localStorage.getItem("token")));
     const [user, setUser] = useState<IUser | undefined>();
     const [loading, setLoading] = useState<boolean>(true);
 
     const isLoggedIn = useMemo(() => !!user, [user]);
 
-    // להצמיד Authorization לכל הבקשות
+    // הצמדה גלובלית של Authorization לכל הבקשות
     useEffect(() => {
-        if (token) axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-        else delete axios.defaults.headers.common.Authorization;
+        setGlobalAuthHeader(token);
     }, [token]);
 
     useEffect(() => {
@@ -34,12 +53,15 @@ export const AuthContextProvider: FC<ContextProviderProps> = ({ children }) => {
                     setUser(undefined);
                     return;
                 }
-                // jwtDecode חייב לקבל רק את המחרוזת (ללא "Bearer ")
+                // מפענחים רק מה שצריך לפי DecodedToken: {_id, isAdmin}
                 const decoded = jwtDecode<DecodedToken>(token);
+
+                // אם צריך לבדוק פגות טוקן – תני לשרת להחזיר 401 ב-validateToken.
+                // (הסרנו את בדיקת exp כי היא לא קיימת ב-DecodedToken שלך)
+
                 const userRes = await auth.userDetails(decoded._id);
                 setUser(userRes.data);
             } catch (e) {
-                // אם יש טוקן לא תקין – ניקוי
                 console.error("Auth bootstrap failed:", e);
                 localStorage.removeItem("token");
                 setToken(null);
@@ -53,15 +75,14 @@ export const AuthContextProvider: FC<ContextProviderProps> = ({ children }) => {
     const login = async (email: string, password: string) => {
         try {
             const res = await auth.login({ email, password });
-            // 🔴 קודם היה: const token = res.data;
-            const { token, user } = res.data; // ה־API שלך מחזיר { token, user }
-            if (!token || typeof token !== "string") throw new Error("Bad login response");
+            const t: unknown = res.data?.token;
+            const u: unknown = res.data?.user;
+            if (typeof t !== "string") throw new Error("Bad login response: token missing");
 
-            setToken(token);
-            localStorage.setItem("token", token);
-            setUser(user);
+            localStorage.setItem("token", t); // שומרות רק את המחרוזת!
+            setToken(t);
+            setUser(u as IUser);
 
-         //   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
             dialogs.success("Login", "Logged in");
         } catch (error) {
             console.error("Login error:", error);
@@ -75,10 +96,10 @@ export const AuthContextProvider: FC<ContextProviderProps> = ({ children }) => {
     };
 
     const logout = () => {
+        localStorage.removeItem("token");
         setToken(null);
         setUser(undefined);
-        localStorage.removeItem("token");
-      //  delete axios.defaults.headers.common.Authorization;
+        setGlobalAuthHeader(null);
         dialogs.success("Logout Successful", "You have been logged out successfully.");
     };
 

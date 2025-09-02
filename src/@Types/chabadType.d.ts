@@ -129,6 +129,7 @@ export interface Donation {
     Tashlumim: number;
     lizchut?: string;
     Comments?: string;
+    createdAt?: string;
 };
 export type RefSummary = {
   ref: string;

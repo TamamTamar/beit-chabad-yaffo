@@ -15,6 +15,8 @@ import CampeinPage from "./Campein/CampeinPage";
 import Error from "./Error";
 import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
 import Login from "./Login";
+import SetDateOfBeginning from "./Campein/SetDateOfBeginning";
+
 
 
 
@@ -34,6 +36,15 @@ export const router = createBrowserRouter([
                 path: "Login",
                 element: <Login />,
             },
+            {
+                path: "dates",
+                element:(
+                    <ProtectedRouteAdmin>
+                        <SetDateOfBeginning />
+                    </ProtectedRouteAdmin>
+                ) 
+            },
+       
             {
                 path: "shabbat",
                 element: <ShabatForm />,
@@ -74,32 +85,32 @@ export const router = createBrowserRouter([
             {
                 path: "admin",
                 element: (
-         
-                        <ChabadDashboard />
-                  
+
+                    <ChabadDashboard />
+
                 ),
             },
             {
-            path: "ask-rabbi",
-            element:  <AskRabbiPage />
+                path: "ask-rabbi",
+                element: <AskRabbiPage />
             },
             {
                 path: "about",
                 element: <AboutCampein />,
             },
-            
+
             {
                 path: "branches",
                 element: <BranchesSection />,
-              
+
             },
-            
+
             {
                 path: "beit-chabad",
                 element: <BeitChabadPage />,
             },
-   
-         
+
+
         ],
     },
 ]);

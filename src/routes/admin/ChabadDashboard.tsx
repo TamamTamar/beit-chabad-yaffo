@@ -3,6 +3,7 @@ import { FiBox, FiUsers } from "react-icons/fi";
 import AdminParashot from "../admin/AdminParashot";
 import AdminDonation from "./AdminDonation";
 import AdminRefSummary from "./AdminRefSummary"; // ודא שהנתיב נכון
+import AdminSetting from "./AdminSetting";
 
 const ChabadDashboard = () => {
     return (
@@ -15,6 +16,9 @@ const ChabadDashboard = () => {
             </Tabs.Item>
             <Tabs.Item title="מתרימים" icon={FiUsers}>
                 <AdminRefSummary />
+            </Tabs.Item>
+            <Tabs.Item title="הגדרות" icon={FiUsers}>
+                <AdminSetting />
             </Tabs.Item>
         </Tabs>
     );
