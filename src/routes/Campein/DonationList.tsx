@@ -1,70 +1,90 @@
-// DonationList.tsx
 import { FC, useEffect, useMemo, useState } from 'react';
 import { AggregatedDonation, Donation } from '../../@Types/chabadType';
 import { getAllDonations } from '../../services/donation-service';
-import './DonationList.scss';
 import { settingsService } from '../../services/setting-service';
-
-
+import './DonationList.scss';
 
 const DonationList: FC = () => {
     const [dateOfBeggining, setDateOfBeggining] = useState<string>('');
-    const [raw, setRaw] = useState<Donation[]>([]);
     const [donations, setDonations] = useState<AggregatedDonation[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
     const [visibleCount, setVisibleCount] = useState(10);
 
+    // פורמט כספי עקבי: he-IL + ILS (₪)
+    const ils = useMemo(
+        () =>
+            new Intl.NumberFormat('he-IL', {
+                style: 'currency',
+                currency: 'ILS',
+                maximumFractionDigits: 0,
+            }),
+        []
+    );
+
     useEffect(() => {
+        let mounted = true;
+
         (async () => {
             try {
-                const dateOfBegginingDate = await settingsService.getSettings();
-                const dateOfBegginingStr = dateOfBegginingDate instanceof Date
-                    ? dateOfBegginingDate.toISOString().slice(0, 10)
-                    : String(dateOfBegginingDate);
-                setDateOfBeggining(dateOfBegginingStr);
+                setLoading(true);
+
+                const [dateOfBegginingDate, rawData] = await Promise.all([
+                    settingsService.getSettings(),
+                    getAllDonations(),
+                ]);
+
+                const dateStr =
+                    dateOfBegginingDate instanceof Date
+                        ? dateOfBegginingDate.toISOString().slice(0, 10)
+                        : String(dateOfBegginingDate || '').slice(0, 10);
+
+                const fromTimestamp = dateStr
+                    ? new Date(`${dateStr}T00:00:00Z`).getTime()
+                    : 0;
+
+                const filtered = (rawData || []).filter((d: Donation) => {
+                    const ts = d?.createdAt ? new Date(d.createdAt).getTime() : 0;
+                    return Number.isFinite(ts) && ts >= fromTimestamp;
+                });
+
+                const aggregated: AggregatedDonation[] = filtered
+                    // אופציונלי: סידור מהגבוה לנמוך
+                    // .sort((a, b) => (b.Amount ?? 0) - (a.Amount ?? 0))
+                    .map((item) => {
+                        const name =
+                            [item.FirstName, item.LastName].filter(Boolean).join(' ') || '—';
+                        const monthly = item.Amount ?? 0;
+                        const monthsPaid = item.Tashlumim ?? 1;
+                        const pastTotal = monthly * monthsPaid;
+
+                        return {
+                            name,
+                            pastTotal,
+                            futureTotal: 0,
+                            combinedTotal: pastTotal,
+                            lizchut: (item.lizchut || '').toString().trim(),
+                            comment: (item.Comments || '').toString().trim(),
+                        };
+                    });
+
+                if (!mounted) return;
+                setDateOfBeggining(dateStr);
+                setDonations(aggregated);
+                setError(null);
             } catch (err) {
-                console.error('שגיאה בטעינת תאריך ההתחלה:', err);
-                setError('נכשלה טעינת תאריך ההתחלה');
+                console.error('שגיאה בטעינת תרומות או תאריך התחלה:', err);
+                if (!mounted) return;
+                setError('נכשלה טעינת התרומות או תאריך ההתחלה');
+            } finally {
+                if (mounted) setLoading(false);
             }
         })();
+
+        return () => {
+            mounted = false;
+        };
     }, []);
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const rawData: Donation[] = await getAllDonations();
-                setRaw(rawData);
-            } catch (err) {
-                console.error('שגיאה בטעינת הנתונים:', err);
-                setError('נכשלה טעינת התרומות');
-            }
-        })();
-    }, []);
-
-    useEffect(() => {
-        // השתמש ב-dateOfBeggining במקום SHOW_FROM
-        const fromTimestamp = dateOfBeggining
-            ? new Date(`${dateOfBeggining}T00:00:00Z`).getTime()
-            : 0;
-
-        const filtered = raw.filter((d) => {
-            const ts = d.createdAt ? new Date(d.createdAt).getTime() : 0;
-            return ts >= fromTimestamp;
-        });
-
-        const aggregated: AggregatedDonation[] = filtered.map((item) => {
-            const name = [item.FirstName, item.LastName].filter(Boolean).join(' ') || '—';
-            const monthly = item.Amount ?? 0;
-            const monthsPaid = item.Tashlumim ?? 1;
-            const pastTotal = monthly * monthsPaid;
-            const combinedTotal = pastTotal;
-            const lizchut = item.lizchut || '';
-            const comment = item.Comments || '';
-            return { name, pastTotal, futureTotal: 0, combinedTotal, lizchut, comment };
-        });
-
-        setDonations(aggregated);
-    }, [raw, dateOfBeggining]);
 
     const visibleDonations = useMemo(
         () => donations.slice(0, visibleCount),
@@ -73,26 +93,35 @@ const DonationList: FC = () => {
 
     return (
         <div className="donation-list-cards">
-            {error ? (
+            {loading ? (
+                <p className="donor-message">טוען…</p>
+            ) : error ? (
                 <p className="error">{error}</p>
             ) : donations.length === 0 ? (
-                <p className='donor-message '>בואו תהיו הראשונים</p>
+                <p className="donor-message">בואו תהיו הראשונים</p>
             ) : (
                 <div className="donation-list-container">
                     <div className="cards-container">
                         <div className="donation-list-title-container">
                             <h2 className="donation-list-title">השותפים שלנו</h2>
-
+                        
                         </div>
 
                         {visibleDonations.map((d, idx) => (
-                            <div className="donation-card" key={idx}>
+                            <div
+                                className="donation-card"
+                                key={`${d.name}-${d.combinedTotal}-${idx}`}
+                            >
                                 <div className="donation-card-content">
                                     <div className="donor-row">
                                         <span className="donor-name">{d.name}</span>
-                                        <span className="donor-amount">{d.combinedTotal.toLocaleString()} ₪</span>
+                                        <span className="donor-amount">
+                                            {ils.format(d.combinedTotal)}
+                                        </span>
                                     </div>
-                                    {d.lizchut && <div className="donor-message">לזכות: {d.lizchut}</div>}
+                                    {d.lizchut && (
+                                        <div className="donor-message">לזכות: {d.lizchut}</div>
+                                    )}
                                 </div>
                             </div>
                         ))}
@@ -100,7 +129,10 @@ const DonationList: FC = () => {
                         {visibleCount < donations.length && (
                             <button
                                 className="show-more-btn"
-                                onClick={() => setVisibleCount(Math.min(visibleCount + 4, donations.length))}
+                                onClick={() =>
+                                    setVisibleCount((v) => Math.min(v + 4, donations.length))
+                                }
+                                aria-label="הצג עוד תרומות"
                             >
                                 הצג עוד
                             </button>
