@@ -1,7 +1,7 @@
 import { Table } from 'flowbite-react';
 import { useEffect, useState } from 'react';
-import { getDonationsByRef } from '../../services/donation-service';
 import { RefSummary } from '../../@Types/chabadType';
+import { getAllDonationsByRef } from '../../services/donation-service';
 
 const AdminRefSummary = () => {
   const [summaries, setSummaries] = useState<RefSummary[]>([]);
@@ -9,7 +9,7 @@ const AdminRefSummary = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getDonationsByRef()
+    getAllDonationsByRef()
       .then(data => setSummaries(data))
       .catch(setError)
       .finally(() => setLoading(false));
