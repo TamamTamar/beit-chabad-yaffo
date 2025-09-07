@@ -1,0 +1,56 @@
+// צבעים עיקריים
+$main-bg: #fffdf9;
+$main-text: #68001f;
+$accent: #f58b28;
+$accent-light: #f1bb89;
+$accent-dark: #a33d00;
+$border: #f7a046;
+
+// צבעי שגיאה
+$error-bg: #f5f0fa;
+$error-text: #68001f;
+$error-accent: #f1bb89;
+
+// צבעי כפתורים
+$button-bg: linear-gradient(135deg, #f58b28, #68001f);
+$button-hover-bg: linear-gradient(135deg, #68001f, #f58b28);
+$button-text: #fff;
+
+// צבעי כרטיסים
+$card-bg: linear-gradient(180deg, #fffdf9 0%, #fff7ef 100%);
+$card-border: #f7a046;
+
+// צבעי מעגלים
+$circle-bg: #e5e5e5;
+$circle-text: #68001f;
+
+// צבעי באנר
+$banner-bg: #68001f;
+$banner-title: #f58b28;
+$banner-desc: #68001f;
+
+// צבעי overlay
+$overlay-bg: rgba(0, 0, 0, 0.5);
+
+// צבעי skeleton/loading
+$skeleton-bg: #e5e5e5;
+
+// צבעי קישורים
+$link: #68001f;
+$link-hover: #a32d4e;
+
+// צבעי אינפוטים
+$input-bg: #fff;
+$input-border: #ccc;
+$input-focus: #f58b28;
+
+// צבעי meta
+$meta-text: #666;
+
+// צבעי אדמין
+$admin-border: #ddd;
+$admin-bg: #fff;
+
+// צבעי כסף
+$money-bg: #68001f;
+$money-text: #e5e5e5;

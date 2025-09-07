@@ -1,7 +1,11 @@
+@import "./_variables.scss";
+
 .about-Campein {
     padding: 48px;
     text-align: center;
     font-size: 14px;
+    background: $main-bg;
+    color: $main-text;
 
     @media (max-width: 768px) {
         padding: 20px;
@@ -9,7 +13,7 @@
 
     .about-Campein-title {
         width: 100%;
-        color: #68001f;
+        color: $main-text;
         font-size: 20px;
         font-style: normal;
         font-weight: 800;
@@ -20,11 +24,13 @@
 
     .about-Campein-description {
         margin-bottom: 20px;
+        color: $main-text;
     }
 
     .about-Campein-subtitle {
         font-weight: 900;
         margin-bottom: 10px;
+        color: $accent;
     }
 
     .about-Campein-list {
@@ -32,18 +38,14 @@
         margin: 0 auto;
         max-width: 600px;
         padding: 0 20px;
-        list-style: disc; // מסירים את הנקודות הרגילות
+        list-style: disc;
         padding-right: 0;
 
         .list-item {
             position: relative;
             padding-right: 20px;
             margin-bottom: 10px;
-
-
+            color: $main-text;
         }
-
-
-        // מרחיק את הטקסט מהנקודה
     }
 }

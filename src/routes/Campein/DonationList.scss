@@ -1,27 +1,47 @@
+/* --- DonationList.scss | Modern Grid Cards --- */
 .donation-list-cards {
     direction: rtl;
     padding: 1rem;
 
+    /* אופציונלי */
+
     .donation-list-container {
-        display: flex;
+        /* עוטף כללי */
+        max-width: 1100px;
+        margin: 0 auto;
+        display: block;
+        /* לא צריך flex ברמה הזו */
 
-        .show-more-btn {
-            background-color: #68001f; // בורדו כהה
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.2s ease;
-            margin: 20px auto 0 auto;
-            display: block;
-            font-size: 1.1rem;
+.show-more-btn {
+        background: none;
+        border: none;
+        color: #68001f;
+        font-size: 1.05rem;
+        font-weight: 700;
+        cursor: pointer;
+        margin: 20px auto 0;
+        display: inline-block;
+        position: relative;
+        padding: 0.25rem 0;
 
-            &:hover {
-                background-color: #a32d4e; // בורדו בהיר יותר
-            }
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #68001f, #f7a046);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.25s ease;
         }
+
+        &:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+    }
 
         .donation-list-header {
             display: flex;
@@ -30,129 +50,185 @@
             flex-direction: column;
 
             .sort-button {
-                margin: 1rem 0;
-                padding: 0.25rem 0.5rem;
+                margin: 1rem 0 0;
+                padding: 0.3rem 0.6rem;
                 background-color: #68001f;
-                color: white;
-                border: #68001f solid 2px;
-                border-radius: 14px;
+                color: #fff;
+                border: 2px solid #68001f;
+                border-radius: 12px;
                 cursor: pointer;
-                font-weight: bold;
-                transition: background-color 0.2s ease;
+                font-weight: 800;
+                transition: filter .15s ease, transform .12s ease;
 
                 &:hover {
-                    background-color: #c74c6c; // ורוד-בורדו עדין
+                    filter: brightness(1.05);
+                }
+
+                &:active {
+                    transform: translateY(1px);
                 }
             }
         }
 
+        /* === GRID מודרני במקום flex-wrapping === */
         .cards-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px 18px;
+            align-items: stretch;
+            justify-items: stretch;
 
+            /* הכותרת – נראית כבלוק נפרד מעל הגריד */
             .donation-list-title-container {
-                width: 100%;
+                grid-column: 1 / -1;
+                /* תופסת רוחב מלא של הגריד */
                 display: flex;
                 justify-content: center;
-                margin-bottom: 1rem;
+                margin-bottom: 6px;
 
                 .donation-list-title {
                     color: #68001f;
-                    font-size: 1.8rem;
-                    font-weight: bold;
+                    font-size: clamp(1.35rem, 2.2vw, 1.9rem);
+                    font-weight: 800;
+                    position: relative;
+                    display: inline-block;
+                    padding-bottom: 6px;
+                    text-align: center;
+
+                    /* קו דקורטיבי דק מתחת – נותן תחושה של כותרת אזורית נפרדת */
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        inset-inline: 15%;
+                        bottom: 0;
+                        height: 3px;
+                        border-radius: 999px;
+                        background: linear-gradient(90deg, #68001f, #f7a046);
+                        opacity: .65;
+                    }
                 }
             }
 
+            /* === כרטיס מודרני === */
             .donation-card {
-                background: linear-gradient(180deg, #fffdf9 0%, #fff7ef 100%);
-                border: 2px solid #f7a046;
+                background: #fffefc;
+                border: 1px solid #f4c08b;
+                /* זהב רך במקום כתום חזק */
                 border-radius: 16px;
-                box-shadow: 0 2px 8px rgba(104, 0, 31, 0.07);
-                padding: 18px 20px;
-                width: 48%;
-                min-width: 220px;
-                margin-bottom: 16px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
+                box-shadow: 0 8px 22px rgba(0, 0, 0, .05);
+                padding: 16px 16px 14px;
+                display: grid;
+                align-content: start;
+                transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
 
+                &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 12px 26px rgba(0, 0, 0, .08);
+                    border-color: #f0b06b;
+                }
 
                 .donation-card-content {
-                    display: flex;
-                    flex-direction: column;
+                    display: grid;
+                    gap: 10px;
                     width: 100%;
                 }
 
+                /* שם + סכום – מאוזן ונקי */
                 .donor-row {
-                    display: flex;
-                    justify-content: space-between;
+                    display: grid;
+                    grid-template-columns: 1fr auto;
                     align-items: center;
-                    width: 100%;
-                    margin-bottom: 8px;
+                    gap: 10px;
+                    min-height: 36px;
 
                     .donor-name {
-                        font-weight: bold;
+                        font-weight: 800;
                         color: #68001f;
-                        font-size: 1.5rem;
+                        font-size: clamp(1.05rem, 1.7vw, 1.3rem);
+                        line-height: 1.2;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                     }
 
                     .donor-amount {
-                        color: #a33d00; // כתום כהה עם קונטרסט טוב
-                        font-weight: bold;
-                        font-size: 1.5rem;
-                        margin-right: 10px;
+                        font-weight: 800;
+                        font-size: 1rem;
+                        padding: 6px 10px;
+                        border-radius: 999px;
+                        background: linear-gradient(180deg, #fff6ea, #ffefe1);
+                        border: 1px solid #f3c79a;
+                        color: #8f3a00;
+                        min-width: 6ch;
+                        text-align: center;
+                        box-shadow: inset 0 1px 0 #ffffff, 0 1px 0 rgba(0, 0, 0, 0.03);
                     }
                 }
 
+                /* "לזכות" – קופסה דקה, מוגבלת לשתי שורות */
                 .donor-message {
                     color: #68001f;
-                    font-size: 1.2rem;
-                    margin-top: 4px;
+                    font-size: .98rem;
+                    background: #ffffff;
+                    border: 1px solid #efc8a4;
+                    border-radius: 12px;
+                    padding: 8px 10px;
+                    line-height: 1.35;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 2;
+                    /* תמיכה רחבה */
+                    line-clamp: 2;
+                    /* התקני – מעלים אזהרת לינט */
                 }
             }
         }
     }
 }
 
-// התאמות מובייל
+/* --- מובייל --- */
 @media (max-width: 900px) {
     .donation-list-cards {
-        padding: 0.5rem;
+        padding: .5rem;
 
         .donation-list-container {
-            flex-direction: column;
-
             .cards-container {
                 gap: 12px;
 
-                .donation-card {
-                    width: 100%;
-                    min-width: unset;
-                    padding: 12px 8px;
+                .donation-list-title {
+                    font-size: 1.35rem;
+                }
 
-                    .donor-name,
-                    .donor-amount {
-                        font-size: 1.1rem;
+                .donation-card {
+                    padding: 12px 10px;
+
+                    .donor-row .donor-name,
+                    .donor-row .donor-amount {
+                        font-size: 1rem;
                     }
 
                     .donor-message {
-                        font-size: 1rem;
+                        font-size: .95rem;
                     }
                 }
             }
 
             .show-more-btn {
-                width: 90%;
-                margin: 20px auto;
-                font-size: 1rem;
-                display: block;
-            }
-
-            .donation-list-title {
-                font-size: 1.3rem;
+                width: min(92%, 420px);
+                margin: 18px auto 0;
+                font-size: .98rem;
             }
         }
+    }
+}
+
+/* הפחתת תנועה – נגישות */
+@media (prefers-reduced-motion: reduce) {
+
+    .donation-list-cards .donation-card,
+    .donation-list-cards .show-more-btn {
+        transition: none !important;
     }
 }
