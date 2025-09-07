@@ -1,7 +1,7 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { AggregatedDonation, Donation } from "../../@Types/chabadType";
-import { settingsService } from "../../services/setting-service";
+import { settingsService } from "../../services/setting-service"; // רק אם את באמת צריכה getSettings לתאריך
 import "./DonationList.scss";
 import { getDonationsByRef } from "../../services/donation-service";
 
@@ -10,6 +10,7 @@ const DonationsByRefPage: FC = () => {
     const ref = (searchParams.get("ref") || "").trim();
 
     const [dateOfBeggining, setDateOfBeggining] = useState<string>("");
+    const [goal, setGoal] = useState<number>(0); // ← חדש
     const [donations, setDonations] = useState<AggregatedDonation[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -38,9 +39,11 @@ const DonationsByRefPage: FC = () => {
             try {
                 setLoading(true);
 
-                const [dateOfBegginingDate, rawData] = await Promise.all([
-                    settingsService.getSettings(),
+                // אם את צריכה את תאריך ההתחלה מהשרת — השאירי getSettings
+                const [dateOfBegginingDate, rawData, goalVal] = await Promise.all([
+                    settingsService.getSettings(),   // אם אין לך פונקציה כזו, תוכלי להחליף בתאריך קבוע
                     getDonationsByRef(ref),
+                    settingsService.getRefGoal(ref),                 // ← מביא את היעד ל-ref
                 ]);
 
                 const dateStr =
@@ -77,11 +80,12 @@ const DonationsByRefPage: FC = () => {
                 if (!mounted) return;
                 setDateOfBeggining(dateStr);
                 setDonations(aggregated);
+                setGoal(goalVal || 0);           // ← שמירה של היעד
                 setError(null);
             } catch (err) {
-                console.error("שגיאה בטעינת תרומות לפי ref:", err);
+                console.error("שגיאה בטעינת תרומות/יעד לפי ref:", err);
                 if (!mounted) return;
-                setError("נכשלה טעינת תרומות לפי ref");
+                setError("נכשלה טעינת תרומות או היעד לפי ref");
             } finally {
                 if (mounted) setLoading(false);
             }
@@ -92,14 +96,13 @@ const DonationsByRefPage: FC = () => {
         };
     }, [ref]);
 
-    // 🔢 סה״כ נתרם + מונה תורמים
-    const totals = useMemo(
-        () => ({
-            amount: donations.reduce((s, d) => s + (d.combinedTotal || 0), 0),
-            count: donations.length,
-        }),
-        [donations]
-    );
+    // סכום נתרם, חסר, אחוז התקדמות, מונה תורמים
+    const totals = useMemo(() => {
+        const amount = donations.reduce((s, d) => s + (d.combinedTotal || 0), 0);
+        const remaining = Math.max((goal || 0) - amount, 0);
+        const percent = goal > 0 ? Math.min((amount / goal) * 100, 100) : 0;
+        return { amount, count: donations.length, goal, remaining, percent };
+    }, [donations, goal]);
 
     const visibleDonations = useMemo(
         () => donations.slice(0, visibleCount),
@@ -120,9 +123,20 @@ const DonationsByRefPage: FC = () => {
                         <div className="donation-list-title-container">
                             <h2 className="donation-list-title">השותפים שלנו</h2>
 
-                            {/* 🧮 סה״כ נתרם */}
+                            {/* סיכום: נתרם/מתוך יעד/חסר/אחוז/מונה */}
                             <div className="donation-total">
-                                            <p className="donation-total-title">סה״כ נתרם:</p> {ils.format(totals.amount)}{" "}
+                                <span className="donation-total-title">סה״כ נתרם:</span>{" "}
+                                <strong>{ils.format(totals.amount)}</strong>{" "}
+                                {goal > 0 && (
+                                    <>
+                                        <span className="donation-total-sep">מתוך</span>{" "}
+                                        <strong>{ils.format(goal)}</strong>{" "}
+                                        <span className="donation-total-sep">•</span>{" "}
+                                        <span>חסר {ils.format(totals.remaining)}</span>{" "}
+                                        <span className="donation-total-sep">•</span>{" "}
+                                        <span>{totals.percent.toFixed(1)}%</span>{" "}
+                                    </>
+                                )}
                                 <span className="donation-total-sep">•</span>{" "}
                                 <span className="don">{totals.count} תורמים</span>
                             </div>

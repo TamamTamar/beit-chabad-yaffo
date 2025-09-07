@@ -18,4 +18,8 @@ export const settingsService = {
             updatedAt: data.updatedAt ? new Date(data.updatedAt) : undefined,
         };
     },
+getRefGoal: async (ref: string): Promise<number> => {
+        const { data } = await api.get(`/settings/goal/${encodeURIComponent(ref)}`);
+        return Number(data?.goal || 0);
+    },
 };
