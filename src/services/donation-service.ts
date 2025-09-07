@@ -26,7 +26,12 @@ export const getAllDonations = async (): Promise<Donation[]> => {
 };
 
 // תרומות מסוכמות לפי ref
-export const getDonationsByRef = async (): Promise<RefSummary[]> => {
+export const getAllDonationsByRef = async (): Promise<RefSummary[]> => {
   const response = await api.get("/donations-by-ref");
   return response.data as RefSummary[];
+};
+// תרומות לפי ref עם אפשרויות סינון
+export const getDonationsByRef = async (ref: string): Promise<Donation[]> => {
+  const { data } = await axios.get(`${baseUrl}/donations/${ref}`);
+  return data;
 };
