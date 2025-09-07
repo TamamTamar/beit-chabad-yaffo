@@ -6,7 +6,7 @@ type PutRes = { key: string; value: string; updatedBy?: string; updatedAt?: stri
 
 export const settingsService = {
     // 
-    getSettings: async (): Promise<Date> => {
+    getDonationsStart: async (): Promise<Date> => {
         const { data } = await api.get<GetRes>("/settings/donations-start");
         return new Date(data.value);
     },
@@ -30,6 +30,14 @@ export const settingsService = {
         const { data } = await api.put(`/settings/goal/${encodeURIComponent(ref)}`, { goal });
         return data;
     },
+
+    // קבלת כל היעדים לפי ref
+    getAllRefGoals: async (): Promise<Record<string, number>> => {
+        const { data } = await api.get("/settings/goal");
+        return data || {};
+    },
+
+
 
 };
 

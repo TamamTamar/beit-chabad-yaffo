@@ -37,7 +37,7 @@ export default function AdminSetting() {
         const run = async () => {
             setLoadState("loading");
             try {
-                const d = await settingsService.getSettings();
+                const d = await settingsService.getDonationsStart();
                 setServerDate(d);
                 setInputValue(toDatetimeLocalValue(d));
                 setLoadState("loaded");

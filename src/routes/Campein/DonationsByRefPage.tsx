@@ -41,7 +41,7 @@ const DonationsByRefPage: FC = () => {
 
                 // אם את צריכה את תאריך ההתחלה מהשרת — השאירי getSettings
                 const [dateOfBegginingDate, rawData, goalVal] = await Promise.all([
-                    settingsService.getSettings(),   // אם אין לך פונקציה כזו, תוכלי להחליף בתאריך קבוע
+                    settingsService.getDonationsStart(),   // אם אין לך פונקציה כזו, תוכלי להחליף בתאריך קבוע
                     getDonationsByRef(ref),
                     settingsService.getRefGoal(ref),                 // ← מביא את היעד ל-ref
                 ]);

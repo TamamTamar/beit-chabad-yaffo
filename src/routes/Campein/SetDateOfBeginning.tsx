@@ -24,7 +24,7 @@ const SetDateOfBeginning = () => {
         }
         (async () => {
             try {
-                const d = await settingsService.getSettings();
+                const d = await settingsService.getDonationsStart();
                 setDateInput(toDatetimeLocalValue(d));
                 setMessage("");
             } catch (e: any) {

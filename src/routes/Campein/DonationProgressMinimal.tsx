@@ -25,7 +25,7 @@ const DonationProgressMinimal: FC<Props> = ({ goal = 900_000 }) => {
       try {
         setLoading(true);
         const [settingsDate, donations] = await Promise.all([
-          settingsService.getSettings(),
+          settingsService.getDonationsStart(),
           getAllDonations(),
         ]);
 

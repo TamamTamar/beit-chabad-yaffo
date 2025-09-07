@@ -30,7 +30,7 @@ const DonationList: FC = () => {
                 setLoading(true);
 
                 const [dateOfBegginingDate, rawData] = await Promise.all([
-                    settingsService.getSettings(),
+                    settingsService.getDonationsStart(),
                     getAllDonations(),
                 ]);
 
@@ -104,7 +104,7 @@ const DonationList: FC = () => {
                     <div className="cards-container">
                         <div className="donation-list-title-container">
                             <h2 className="donation-list-title">השותפים שלנו</h2>
-                        
+
                         </div>
 
                         {visibleDonations.map((d, idx) => (
