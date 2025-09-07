@@ -85,7 +85,7 @@ const DonationsByRefPage: FC = () => {
             } catch (err) {
                 console.error("שגיאה בטעינת תרומות/יעד לפי ref:", err);
                 if (!mounted) return;
-                setError("נכשלה טעינת תרומות או היעד לפי ref");
+               return 0;
             } finally {
                 if (mounted) setLoading(false);
             }
