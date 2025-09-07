@@ -35,6 +35,7 @@ const MoneyCircles = () => {
                 {renderButton(360)}
                 {renderButton(500)}
                 {renderButton(770)}
+                {renderButton(1000)}
             </div>
             {showPaymentForm && (
                 <div className="overlay">
