@@ -159,12 +159,8 @@
 
                     /* נקודת מפריד */
                     .donation-total-sep {
-                        width: 6px;
-                        height: 6px;
-                        border-radius: 50%;
-                        background: #d7b48f;
-                        opacity: 0.85;
-                        transform: translateY(1px);
+                   color: #d7b48f;
+                     
                     }
 
                     /* מונה תורמים (ה-classname שבחרת: .don) */
@@ -273,10 +269,7 @@
                         gap: 8px;
                         font-size: 0.98rem;
 
-                        .donation-total-sep {
-                            width: 5px;
-                            height: 5px;
-                        }
+                     
                     }
                 }
 
