@@ -13,6 +13,7 @@
         /* לא צריך flex ברמה הזו */
 
 .show-more-btn {
+    
         background: none;
         border: none;
         color: #68001f;
@@ -23,6 +24,8 @@
         display: inline-block;
         position: relative;
         padding: 0.25rem 0;
+        text-align: center;
+        grid-column: 1 / -1;
 
         &::after {
             content: "";

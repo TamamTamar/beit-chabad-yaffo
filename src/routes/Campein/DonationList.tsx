@@ -9,7 +9,7 @@ const DonationList: FC = () => {
     const [donations, setDonations] = useState<AggregatedDonation[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
-    const [visibleCount, setVisibleCount] = useState(10);
+    const [visibleCount, setVisibleCount] = useState(9);
 
     // פורמט כספי עקבי: he-IL + ILS (₪)
     const ils = useMemo(
