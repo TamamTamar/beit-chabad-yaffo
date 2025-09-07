@@ -1,7 +1,6 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { AggregatedDonation, Donation } from "../../@Types/chabadType";
-
 import { settingsService } from "../../services/setting-service";
 import "./DonationList.scss";
 import { getDonationsByRef } from "../../services/donation-service";
@@ -16,7 +15,6 @@ const DonationsByRefPage: FC = () => {
     const [loading, setLoading] = useState(true);
     const [visibleCount, setVisibleCount] = useState(9);
 
-    // פורמט כספי עקבי: he-IL + ILS (₪)
     const ils = useMemo(
         () =>
             new Intl.NumberFormat("he-IL", {
@@ -42,7 +40,7 @@ const DonationsByRefPage: FC = () => {
 
                 const [dateOfBegginingDate, rawData] = await Promise.all([
                     settingsService.getSettings(),
-                    getDonationsByRef(ref), // קריאה לשרת רק עבור ref מסוים
+                    getDonationsByRef(ref),
                 ]);
 
                 const dateStr =
@@ -94,6 +92,15 @@ const DonationsByRefPage: FC = () => {
         };
     }, [ref]);
 
+    // 🔢 סה״כ נתרם + מונה תורמים
+    const totals = useMemo(
+        () => ({
+            amount: donations.reduce((s, d) => s + (d.combinedTotal || 0), 0),
+            count: donations.length,
+        }),
+        [donations]
+    );
+
     const visibleDonations = useMemo(
         () => donations.slice(0, visibleCount),
         [donations, visibleCount]
@@ -111,9 +118,14 @@ const DonationsByRefPage: FC = () => {
                 <div className="donation-list-container">
                     <div className="cards-container">
                         <div className="donation-list-title-container">
-                            <h2 className="donation-list-title">
-                                השותפים שלנו
-                            </h2>
+                            <h2 className="donation-list-title">השותפים שלנו</h2>
+
+                            {/* 🧮 סה״כ נתרם */}
+                            <div className="donation-total">
+                                            <p className="donation-total-title">סה״כ נתרם:</p> {ils.format(totals.amount)}{" "}
+                                <span className="donation-total-sep">•</span>{" "}
+                                <span className="don">{totals.count} תורמים</span>
+                            </div>
                         </div>
 
                         {visibleDonations.map((d, idx) => (
