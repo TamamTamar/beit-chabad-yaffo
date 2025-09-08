@@ -62,7 +62,16 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef, onPaymentSuccess 
       console.log('payBtClick called with paymentData:', paymentData);
 
       // בדיקת תקינות נתונים
-
+      if (
+        !paymentData ||
+        !paymentData.Amount ||
+        !paymentData.Mail ||
+        !paymentData.FirstName ||
+        !paymentData.LastName
+      ) {
+        alert('אנא מלא את כל הפרטים החיוניים לפני תשלום');
+        return;
+      }
 
       const waitPay = document.getElementById('WaitPay');
       const payBtDiv = document.getElementById('PayBtDiv');
