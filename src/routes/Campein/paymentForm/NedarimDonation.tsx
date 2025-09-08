@@ -17,7 +17,6 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef, onPaymentSuccess 
       const okDiv = document.getElementById('OkDiv');
       const waitPay = document.getElementById('WaitPay');
 
-      console.log('קיבלתי הודעה מה-iframe:', event.data);
 
       switch (event.data.Name) {
         case 'Height':
@@ -53,13 +52,11 @@ const NedarimDonation = ({ paymentData, handleBack, iframeRef, onPaymentSuccess 
       if (iframeRef.current && iframeRef.current.contentWindow) {
         iframeRef.current.contentWindow.postMessage(Data, '*');
       } else {
-        console.error("⚠️ לא ניתן לשלוח הודעה ל-iframe.");
-      }
+        console.error('iframeRef.current או contentWindow אינם מוגדרים');}
     }
 
     // לחיצה על כפתור תשלום
     (window as any).PayBtClick = function () {
-      console.log('payBtClick called with paymentData:', paymentData);
 
       // בדיקת תקינות נתונים
       if (

@@ -34,8 +34,6 @@ const DonationsByRefPage: FC = () => {
                 setLoading(true);
                 setError(null);
 
-                console.log("[DonationsByRefPage] loading for ref:", ref);
-
                 // מביאים במקביל: תרומות + יעד + שם (עם fallback אם אחד נופל)
                 const [donRes, goalRes, nameRes] = await Promise.allSettled([
                     getDonationsByRef(ref),
@@ -52,7 +50,6 @@ const DonationsByRefPage: FC = () => {
                 const nameVal: string =
                     nameRes.status === "fulfilled" ? String(nameRes.value || "") : "";
 
-                console.log("[DonationsByRefPage] donations len:", rawDonations.length, "goal:", goalVal, "name:", nameVal);
 
                 // בניית כרטיסים
                 const agg: AggregatedDonation[] = rawDonations.map((item) => {
