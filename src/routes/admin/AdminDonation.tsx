@@ -52,7 +52,6 @@ const AdminDonation = () => {
                         <Table.Head className="text-center">
                             <Table.HeadCell>שם פרטי</Table.HeadCell>
                             <Table.HeadCell>שם משפחה</Table.HeadCell>
-                            <Table.HeadCell>טלפון</Table.HeadCell>
                             <Table.HeadCell>סכום</Table.HeadCell>
                             <Table.HeadCell>מספר תשלומים</Table.HeadCell>
                             <Table.HeadCell>לזכות</Table.HeadCell>
