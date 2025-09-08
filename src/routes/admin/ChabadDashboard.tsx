@@ -5,6 +5,7 @@ import AdminDonation from "./AdminDonation";
 import AdminRefSummary from "./AdminRefGoals"; // ודא שהנתיב נכון
 import AdminSetting from "./AdminSetting";
 import AdminRefGoalForm from "./AdminRefGoalForm";
+import SetDateOfBeginning from "../Campein/SetDateOfBeginning";
 
 const ChabadDashboard = () => {
     return (
@@ -19,7 +20,7 @@ const ChabadDashboard = () => {
                 <AdminRefSummary />
             </Tabs.Item>
             <Tabs.Item title="הגדרות" icon={FiUsers}>
-                <AdminSetting />
+                <SetDateOfBeginning />
             </Tabs.Item>
 
         </Tabs>
