@@ -150,20 +150,22 @@
                     gap: 10px;
                     padding: 8px 14px;
                     border-radius: 12px;
-                    background: #ffffff;
+                    background: #fff;
                     border: 1px solid #e9ded2;
-                    /* קו עדין */
                     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-                    /* צל עדין מאוד */
                     color: #4a2b1a;
                     font-weight: 700;
                     line-height: 1;
+
+                    /* שומר שכל קטע יישאר על מילה אחת (למנוע שבירה בתוך "חסר ₪12,345") */
+                    >* {
+                        white-space: nowrap;
+                    }
 
                     .donation-total-title {
                         font-weight: 900;
                         color: #68001f;
                         margin: 0;
-                        /* כי זה <p> */
                     }
 
                     /* הסכום – ספרות מיושרות */
@@ -172,16 +174,51 @@
                         letter-spacing: 0.2px;
                     }
 
-                    /* נקודת מפריד */
                     .donation-total-sep {
                         color: #d7b48f;
-
                     }
 
-                    /* מונה תורמים (ה-classname שבחרת: .don) */
                     .don {
                         opacity: 0.92;
                         font-weight: 800;
+                    }
+                }
+
+                /* 📱 מובייל */
+                @media (max-width: 600px) {
+                    .donation-total {
+                        display: flex;
+                        flex-wrap: wrap;
+                        /* מאפשר ירידה שורה */
+                        justify-content: center;
+                        gap: 6px 8px;
+                        padding: 8px 10px;
+                        border-radius: 10px;
+                        font-size: clamp(13px, 3.5vw, 16px);
+
+                        .donation-total-title {
+                            font-size: clamp(14px, 3.7vw, 17px);
+                        }
+
+                        /* מספרים קצת גדולים יותר אך רספונסיביים */
+                        strong {
+                            font-size: clamp(14px, 4vw, 18px);
+                            line-height: 1.1;
+                        }
+
+                        /* במובייל אין צורך במפרידים • */
+                        .donation-total-sep {
+                            display: none;
+                        }
+
+                        /* "X תורמים" לשורה נפרדת במרכז */
+                        .don {
+                            order: 5;
+                            /* בוודאות בסוף */
+                            flex-basis: 100%;
+                            text-align: center;
+                            margin-top: 2px;
+                        }
                     }
                 }
             }
