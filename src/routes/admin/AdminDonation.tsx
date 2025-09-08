@@ -34,10 +34,9 @@ const AdminDonation = () => {
         setFilteredDonations(
             donations.filter(donation =>
                 donation.FirstName.toLowerCase().includes(lowercasedSearchTerm) ||
-                donation.LastName.toLowerCase().includes(lowercasedSearchTerm) ||
-                (donation.Phone?.toLowerCase().includes(lowercasedSearchTerm) ?? false)
-            )
-        );
+                donation.LastName.toLowerCase().includes(lowercasedSearchTerm)
+        
+        ));
     }, [searchTerm, donations]);
 
     return (
@@ -65,7 +64,6 @@ const AdminDonation = () => {
                                 <Table.Row key={(donation as any)._id} className="text-right">
                                     <Table.Cell>{donation.FirstName}</Table.Cell>
                                     <Table.Cell>{donation.LastName}</Table.Cell>
-                                    <Table.Cell>{donation.Phone ?? '-'}</Table.Cell>
                                     <Table.Cell>{donation.Amount.toFixed(2)}</Table.Cell>
                                     <Table.Cell>{donation.Tashlumim}</Table.Cell>
                         
