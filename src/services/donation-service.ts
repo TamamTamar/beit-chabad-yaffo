@@ -23,9 +23,10 @@ export const getAllDonations = async (): Promise<Donation[]> => {
 };
 // get all donations by ref
  export const getAllDonationsByRef = async (): Promise<RefSummary[]> => {
-  const response = await api.get("/");
+   const response = await api.get("/donations-by-ref");
   return response.data as RefSummary[];
 };
+// get donations by ref
 export const getDonationsByRef = async (ref: string): Promise<Donation[]> => {
   const { data } = await axios.get(`${baseUrl}/donations/${ref}`);
   return data;
