@@ -21,6 +21,11 @@ const DonationList: FC = () => {
             }),
         []
     );
+    const displayName = (d: Donation) =>
+        (d.PublicName && d.PublicName.trim()) ||
+        [d.FirstName, d.LastName].filter(Boolean).join(" ") ||
+        "—";
+
 
     useEffect(() => {
         let mounted = true;
@@ -52,8 +57,7 @@ const DonationList: FC = () => {
                     // אופציונלי: סידור מהגבוה לנמוך
                     // .sort((a, b) => (b.Amount ?? 0) - (a.Amount ?? 0))
                     .map((item) => {
-                        const name =
-                            [item.FirstName, item.LastName].filter(Boolean).join(' ') || '—';
+                        const name = displayName(item);
                         const monthly = item.Amount ?? 0;
                         const monthsPaid = item.Tashlumim ?? 1;
                         const pastTotal = monthly * monthsPaid;

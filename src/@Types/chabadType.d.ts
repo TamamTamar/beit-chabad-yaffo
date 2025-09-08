@@ -121,16 +121,20 @@ export type AggregatedDonation = {
     
 };
 
-export interface Donation {
-    FirstName: string;
-    LastName: string;
-    Phone?: string;
-    Amount: number;
-    Tashlumim: number;
+// @Types/chabadType.ts
+export type Donation = {
+    FirstName?: string;
+    LastName?: string;
+    Amount?: number;
+    Tashlumim?: number;
     lizchut?: string;
     Comments?: string;
     createdAt?: string;
+    // חדש מהשרת (virtual)
+    PublicName?: string;
+    DisplayAsAnonymous?: boolean;
 };
+
 export type RefSummary = {
   ref: string;
   totalAmount: number;

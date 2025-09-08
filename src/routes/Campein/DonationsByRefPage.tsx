@@ -21,6 +21,11 @@ const DonationsByRefPage: FC = () => {
         () => new Intl.NumberFormat("he-IL", { style: "currency", currency: "ILS", maximumFractionDigits: 0 }),
         []
     );
+    const displayName = (d: Donation) =>
+        (d.PublicName && d.PublicName.trim()) ||
+        [d.FirstName, d.LastName].filter(Boolean).join(" ") ||
+        "—";
+
 
     useEffect(() => {
         let mounted = true;
@@ -56,7 +61,7 @@ const DonationsByRefPage: FC = () => {
 
                 // בניית כרטיסים
                 const agg: AggregatedDonation[] = rawDonations.map((item) => {
-                    const name = [item.FirstName, item.LastName].filter(Boolean).join(" ") || "—";
+                    const name = displayName(item);
                     const pastTotal = (item.Amount ?? 0) * (item.Tashlumim ?? 1);
                     return {
                         name,
