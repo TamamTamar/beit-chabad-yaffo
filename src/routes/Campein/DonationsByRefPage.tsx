@@ -1,6 +1,6 @@
 // src/routes/Campein/DonationsByRefPage.tsx
 import { FC, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { AggregatedDonation, Donation } from "../../@Types/chabadType";
 import "./DonationList.scss";
 import { getDonationsByRef } from "../../services/donation-service";
@@ -11,6 +11,7 @@ const DonationsByRefPage: FC = () => {
     const ref = (searchParams.get("ref") || "").trim();
 
     const [goal, setGoal] = useState<number>(0);
+    const [refName, setRefName] = useState<string>(""); // שם ידידותי ל-ref
     const [donations, setDonations] = useState<AggregatedDonation[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -23,7 +24,6 @@ const DonationsByRefPage: FC = () => {
 
     useEffect(() => {
         let mounted = true;
-
         (async () => {
             if (!ref) {
                 setError("לא נבחר ref");
@@ -34,17 +34,28 @@ const DonationsByRefPage: FC = () => {
                 setLoading(true);
                 setError(null);
 
-                // מביאים במקביל: תרומות לפי ref + יעד לפי ref (בלי תאריך התחלה)
-                const [rawDonations, goalVal] = await Promise.all([
+                console.log("[DonationsByRefPage] loading for ref:", ref);
+
+                // מביאים במקביל: תרומות + יעד + שם (עם fallback אם אחד נופל)
+                const [donRes, goalRes, nameRes] = await Promise.allSettled([
                     getDonationsByRef(ref),
                     settingsService.getRefGoal(ref),
+                    settingsService.getRefName(ref),
                 ]);
 
-                // מוודאים מערך
-                const list: Donation[] = Array.isArray(rawDonations) ? rawDonations : [];
+                const rawDonations: Donation[] =
+                    donRes.status === "fulfilled" && Array.isArray(donRes.value) ? donRes.value : [];
 
-                // בניית אובייקטים לתצוגה (כרטיסים)
-                const agg: AggregatedDonation[] = list.map((item) => {
+                const goalVal: number =
+                    goalRes.status === "fulfilled" ? Number(goalRes.value) || 0 : 0;
+
+                const nameVal: string =
+                    nameRes.status === "fulfilled" ? String(nameRes.value || "") : "";
+
+                console.log("[DonationsByRefPage] donations len:", rawDonations.length, "goal:", goalVal, "name:", nameVal);
+
+                // בניית כרטיסים
+                const agg: AggregatedDonation[] = rawDonations.map((item) => {
                     const name = [item.FirstName, item.LastName].filter(Boolean).join(" ") || "—";
                     const pastTotal = (item.Amount ?? 0) * (item.Tashlumim ?? 1);
                     return {
@@ -59,8 +70,10 @@ const DonationsByRefPage: FC = () => {
 
                 if (!mounted) return;
                 setDonations(agg);
-                setGoal(Number(goalVal) || 0);
-            } catch (e) {
+                setGoal(goalVal);
+                setRefName(nameVal);
+            } catch (e: any) {
+                console.error("[DonationsByRefPage] error:", e?.message || e);
                 if (!mounted) return;
                 setError("נכשלה טעינת תרומות או היעד לפי ref");
             } finally {
@@ -94,7 +107,11 @@ const DonationsByRefPage: FC = () => {
                 <div className="donation-list-container">
                     <div className="cards-container">
                         <div className="donation-list-title-container">
-                            <h2 className="donation-list-title">השותפים שלנו</h2>
+                            <h2 className="donation-list-title">
+                                {refName ? `השותפים של ${refName}` : "השותפים שלנו"}
+                            </h2>
+
+
 
                             <div className="donation-total">
                                 <span className="donation-total-title">סה״כ נתרם:</span>{" "}
@@ -112,7 +129,13 @@ const DonationsByRefPage: FC = () => {
                                 <span className="donation-total-sep">•</span>{" "}
                                 <span className="don">{totals.count} תורמים</span>
                             </div>
+                            {/* ← כפתור חזרה לדף הבית */}
+                            <Link to="/" className="back-home-btn" aria-label="לכל השותפים">
+                                לכל השותפים
+                            </Link>
                         </div>
+
+
 
                         {donations.length === 0 ? (
                             <p className="donor-message">
@@ -141,6 +164,7 @@ const DonationsByRefPage: FC = () => {
                                         הצג עוד
                                     </button>
                                 )}
+
                             </>
                         )}
                     </div>
