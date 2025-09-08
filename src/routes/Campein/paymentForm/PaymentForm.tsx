@@ -55,6 +55,7 @@ const PaymentForm = ({ monthlyAmount }: PaymentFormProps) => {
   }, [watchIs12Months, watchMonthlyAmount, setValue]);
 
   const onSubmit = (data: any) => {
+    const isHK = data.Is12Months;
     const annualAmount = data.Is12Months ? data.MonthlyAmount * 12 : data.MonthlyAmount;
 
     const newPaymentData: PaymentData = {
@@ -68,7 +69,7 @@ const PaymentForm = ({ monthlyAmount }: PaymentFormProps) => {
       Phone: data.Phone,
       Mail: data.Mail,
       PaymentType: data.Is12Months ? "HK" : "Ragil",
-      Amount: annualAmount,
+      Amount: isHK ? data.MonthlyAmount : data.Amount,
       Tashlumim: data.Is12Months ? 12 : data.Tashlumim,
       Currency: 1,
       Groupe: data.Groupe,
