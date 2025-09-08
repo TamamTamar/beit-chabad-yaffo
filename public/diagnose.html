@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>בדיקת חסימות משאבים</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans";
+            margin: 20px;
+            line-height: 1.6
+        }
+
+        h1 {
+            margin: 0 0 12px 0;
+            font-size: 20px
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 1000px
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            font-size: 14px
+        }
+
+        th {
+            background: #f5f5f5
+        }
+
+        .ok {
+            color: #0a7a0a;
+            font-weight: 600
+        }
+
+        .err {
+            color: #b00020;
+            font-weight: 600
+        }
+
+        .pending {
+            color: #6a5acd;
+            font-weight: 600
+        }
+
+        .mono {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace
+        }
+
+        .small {
+            font-size: 12px;
+            color: #666
+        }
+
+        .hint {
+            background: #fff7cc;
+            border: 1px solid #ffe58f;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 12px 0
+        }
+
+        button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f8fafc;
+            cursor: pointer
+        }
+    </style>
+</head>
+
+<body>
+    <h1>בדיקת חסימות משאבים</h1>
+    <div class="small">להריץ מתוך <b>הרשת המסוננת</b> כדי לקבל תוצאות אמיתיות.</div>
+    <div class="hint">
+        <b>איך משתמשים?</b> לחצו "התחל בדיקה", חכו לסטטוסים. כל שורה אדומה = דומיין שכדאי להסיר/לאחסן מקומית או לבקש
+        פתיחה.
+    </div>
+    <button id="startBtn">התחל בדיקה</button>
+    <span id="progress" class="small"></span>
+
+    <table id="tbl">
+        <thead>
+            <tr>
+                <th>דומיין</th>
+                <th>סוג</th>
+                <th>משאב לבדיקה</th>
+                <th>סטטוס</th>
+                <th>פרטים</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        const TIMEOUT_MS = 10000; // 10s
+        const tests = [
+            // SELF
+            { host: 'chabadyafo.org', type: 'img', url: 'https://chabadyafo.org/favicon.ico' },
+            { host: 'www.chabadyafo.org', type: 'img', url: 'https://www.chabadyafo.org/favicon.ico' },
+
+            // COMMON 3P
+            { host: 'fonts.googleapis.com', type: 'link', url: 'https://fonts.googleapis.com/css2?family=Heebo:wght@400&display=swap' },
+            { host: 'fonts.gstatic.com', type: 'img', url: 'https://fonts.gstatic.com/s/materialicons/v126/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2' },
+            { host: 'www.googletagmanager.com', type: 'script', url: 'https://www.googletagmanager.com/gtm.js?id=GTM-XXXX' },
+            { host: 'www.google-analytics.com', type: 'script', url: 'https://www.google-analytics.com/analytics.js' },
+            { host: 'connect.facebook.net', type: 'script', url: 'https://connect.facebook.net/en_US/fbevents.js' },
+            { host: 'cdn.jsdelivr.net', type: 'script', url: 'https://cdn.jsdelivr.net/npm/axios@1.6.2/dist/axios.min.js' },
+            { host: 'unpkg.com', type: 'script', url: 'https://unpkg.com/react@18/umd/react.production.min.js' },
+            { host: 'cdnjs.cloudflare.com', type: 'script', url: 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js' },
+            { host: 'static.cloudflareinsights.com', type: 'script', url: 'https://static.cloudflareinsights.com/beacon.min.js' },
+            { host: 'www.recaptcha.net', type: 'script', url: 'https://www.recaptcha.net/recaptcha/api.js' },
+
+            // VIDEO/MAPS
+            { host: 'i.ytimg.com', type: 'img', url: 'https://i.ytimg.com/vi/aqz-KE-bpKQ/hqdefault.jpg' },
+            { host: 'player.vimeo.com', type: 'script', url: 'https://player.vimeo.com/api/player.js' },
+            { host: 'api.mapbox.com', type: 'script', url: 'https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js' },
+
+            // PAYMENTS (IL)
+            { host: 'www.matara.pro', type: 'img', url: 'https://www.matara.pro/favicon.ico' },
+            { host: 'www.meshulam.org', type: 'img', url: 'https://www.meshulam.org/favicon.ico' },
+            { host: 'secure.cardcom.co.il', type: 'img', url: 'https://secure.cardcom.co.il/favicon.ico' },
+            { host: 'www.paypalobjects.com', type: 'img', url: 'https://www.paypalobjects.com/favicon.ico' }
+        ];
+
+        const tbody = document.querySelector('#tbl tbody');
+        const progress = document.getElementById('progress');
+
+        function addRow(t) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+    <td class="mono">${t.host}</td>
+    <td>${t.type}</td>
+    <td class="mono">${t.url}</td>
+    <td class="pending" data-status>ממתין…</td>
+    <td class="small mono" data-details>—</td>
+  `;
+            tbody.appendChild(tr);
+            t._row = tr;
+        }
+        function setStatus(t, status, details = '') {
+            const s = t._row.querySelector('[data-status]');
+            const d = t._row.querySelector('[data-details]');
+            s.className = status === 'OK' ? 'ok' : status === 'TIMEOUT' ? 'pending' : 'err';
+            s.textContent = status === 'OK' ? 'תקין' : (status === 'TIMEOUT' ? 'תם זמן' : 'חסום/שגיאה');
+            d.textContent = details || '—';
+        }
+        function testOne(t) {
+            return new Promise(resolve => {
+                let done = false;
+                const finish = (status, details) => { if (done) return; done = true; setStatus(t, status, details); resolve(); };
+                const timer = setTimeout(() => finish('TIMEOUT', 'לא התקבלה תגובה תוך ' + (TIMEOUT_MS / 1000) + ' שניות'), TIMEOUT_MS);
+                if (t.type === 'img') {
+                    const img = new Image();
+                    img.onload = () => { clearTimeout(timer); finish('OK', 'onload image'); };
+                    img.onerror = () => { clearTimeout(timer); finish('ERR', 'onerror image'); };
+                    img.referrerPolicy = 'no-referrer';
+                    img.src = t.url + ((t.url.includes('?') ? '&' : '?') + 'r=' + Date.now());
+                } else if (t.type === 'script') {
+                    const s = document.createElement('script');
+                    s.async = true;
+                    s.onload = () => { clearTimeout(timer); finish('OK', 'onload script'); };
+                    s.onerror = () => { clearTimeout(timer); finish('ERR', 'onerror script'); };
+                    s.src = t.url + ((t.url.includes('?') ? '&' : '?') + 'r=' + Date.now());
+                    document.head.appendChild(s);
+                } else if (t.type === 'link') {
+                    const l = document.createElement('link');
+                    l.rel = 'stylesheet';
+                    l.onload = () => { clearTimeout(timer); finish('OK', 'onload stylesheet'); };
+                    l.onerror = () => { clearTimeout(timer); finish('ERR', 'onerror stylesheet'); };
+                    l.href = t.url + ((t.url.includes('?') ? '&' : '?') + 'r=' + Date.now());
+                    document.head.appendChild(l);
+                } else {
+                    clearTimeout(timer); finish('ERR', 'unknown type');
+                }
+            });
+        }
+        async function run() {
+            progress.textContent = 'מריץ בדיקות…';
+            tbody.innerHTML = '';
+            tests.forEach(addRow);
+            const CONCURRENCY = 4;
+            let i = 0, completed = 0;
+            async function worker() {
+                while (i < tests.length) {
+                    await testOne(tests[i++]);
+                    completed++; progress.textContent = `הושלמו ${completed}/${tests.length}`;
+                }
+            }
+            await Promise.all(Array.from({ length: CONCURRENCY }, worker));
+            progress.textContent = 'סיום.';
+        }
+        document.getElementById('startBtn').addEventListener('click', run);
+    </script>
+</body>
+
+</html>
