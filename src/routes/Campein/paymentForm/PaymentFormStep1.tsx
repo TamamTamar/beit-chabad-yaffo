@@ -128,7 +128,7 @@ const PaymentFormStep1 = ({
                 <input
                     type="text"
                     {...register("Phone", {
-                        required: true,
+                        required: false,
                         maxLength: 20,
                         pattern: patterns.phone,
                     })}
