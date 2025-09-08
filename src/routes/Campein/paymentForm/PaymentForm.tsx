@@ -61,7 +61,7 @@ const PaymentForm = ({ monthlyAmount }: PaymentFormProps) => {
     const newPaymentData: PaymentData = {
       Mosad: "7013920",
       ApiValid: "zidFYCLaNi",
-      Zeout: data.Zeout,
+      Zeout: data.Zeout || "",
       FirstName: data.FirstName,
       LastName: data.LastName,
       Street: data.Street,
