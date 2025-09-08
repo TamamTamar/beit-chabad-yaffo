@@ -31,7 +31,6 @@ const AdminRefGoalForm: FC = () => {
         (import.meta as any).env?.VITE_PUBLIC_SITE_URL || "https://www.chabadyafo.org";
 
     const refNorm = useMemo(() => refInput.trim(), [refInput]);
-
     const canFetch = refNorm.length > 0;
 
     const canSaveGoal = useMemo(() => {
@@ -44,7 +43,10 @@ const AdminRefGoalForm: FC = () => {
     }, [nameInput, canFetch, savingName]);
 
     // מחולל קישור – תמיד מוצג (גם כשאין ref עדיין)
-    const linkUrl = `${baseUrl}/?ref=${encodeURIComponent(refNorm)}`;
+    const linkUrl = useMemo(
+        () => `${baseUrl}/?ref=${encodeURIComponent(refNorm)}`,
+        [baseUrl, refNorm]
+    );
 
     const copyToClipboard = async (text: string) => {
         try {
@@ -102,6 +104,7 @@ const AdminRefGoalForm: FC = () => {
             const n = toNumber(goalInput);
             await settingsService.setRefGoal(refNorm, n);
             setCurrentGoal(n);
+            setGoalInput("");              // ← מנקה את שדה היעד אחרי שמירה
             setMsg("היעד נשמר בהצלחה");
         } catch (e: any) {
             setErr(e?.response?.data?.error || e?.message || "שגיאה בשמירת יעד");
@@ -120,6 +123,7 @@ const AdminRefGoalForm: FC = () => {
             setSavingName(true);
             await settingsService.setRefName(refNorm, nameInput.trim());
             setCurrentName(nameInput.trim());
+            setNameInput("");              // ← מנקה את שדה השם אחרי שמירה
             setMsg("השם נשמר בהצלחה");
         } catch (e: any) {
             setErr(e?.response?.data?.error || e?.message || "שגיאה בשמירת שם");
@@ -134,6 +138,13 @@ const AdminRefGoalForm: FC = () => {
         return () => clearTimeout(id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [refNorm]);
+
+    // העלם הודעת הצלחה אחרי 2.5 שניות
+    useEffect(() => {
+        if (!msg) return;
+        const id = setTimeout(() => setMsg(null), 2500);
+        return () => clearTimeout(id);
+    }, [msg]);
 
     return (
         <div className="admin-ref-goal-form">
