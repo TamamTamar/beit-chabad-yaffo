@@ -2,7 +2,7 @@ import { Tabs } from "flowbite-react";
 import { FiBox, FiUsers } from "react-icons/fi";
 import AdminParashot from "../admin/AdminParashot";
 import AdminDonation from "./AdminDonation";
-import AdminRefSummary from "./AdminRefSummary"; // ודא שהנתיב נכון
+import AdminRefSummary from "./AdminRefGoals"; // ודא שהנתיב נכון
 import AdminSetting from "./AdminSetting";
 import AdminRefGoalForm from "./AdminRefGoalForm";
 

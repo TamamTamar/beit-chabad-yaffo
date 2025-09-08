@@ -16,22 +16,18 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
-
-// ── פונקציות ──
-
-// כל התרומות
+ //get all donations
 export const getAllDonations = async (): Promise<Donation[]> => {
   const response = await api.get("/nedarim/payments");
   return response.data as Donation[];
 };
-
-// תרומות מסוכמות לפי ref
-export const getAllDonationsByRef = async (): Promise<RefSummary[]> => {
-  const response = await api.get("/donations-by-ref");
+// get all donations by ref
+ export const getAllDonationsByRef = async (): Promise<RefSummary[]> => {
+  const response = await api.get("/");
   return response.data as RefSummary[];
 };
-// תרומות לפי ref עם אפשרויות סינון
 export const getDonationsByRef = async (ref: string): Promise<Donation[]> => {
   const { data } = await axios.get(`${baseUrl}/donations/${ref}`);
   return data;
 };
+ 

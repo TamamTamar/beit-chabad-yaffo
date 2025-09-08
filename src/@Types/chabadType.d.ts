@@ -136,3 +136,4 @@ export type RefSummary = {
   totalAmount: number;
   donationCount: number;
 };
+export type ByRefResponse = { items?: Donation[] } | Donation[];
