@@ -55,13 +55,12 @@ const PaymentForm = ({ monthlyAmount }: PaymentFormProps) => {
   }, [watchIs12Months, watchMonthlyAmount, setValue]);
 
   const onSubmit = (data: any) => {
-    const isHK = data.Is12Months;
     const annualAmount = data.Is12Months ? data.MonthlyAmount * 12 : data.MonthlyAmount;
 
     const newPaymentData: PaymentData = {
       Mosad: "7013920",
       ApiValid: "zidFYCLaNi",
-      Zeout: data.Zeout || "",
+      Zeout: data.Zeout,
       FirstName: data.FirstName,
       LastName: data.LastName,
       Street: data.Street,
@@ -69,7 +68,7 @@ const PaymentForm = ({ monthlyAmount }: PaymentFormProps) => {
       Phone: data.Phone,
       Mail: data.Mail,
       PaymentType: data.Is12Months ? "HK" : "Ragil",
-      Amount: isHK ? data.MonthlyAmount : data.Amount,
+      Amount: annualAmount,
       Tashlumim: data.Is12Months ? 12 : data.Tashlumim,
       Currency: 1,
       Groupe: data.Groupe,
