@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { getAllDonations } from '../../services/donation-service';
 import { settingsService } from '../../services/setting-service';
@@ -8,66 +8,86 @@ type Props = {
   goal?: number;
 };
 
-const DonationProgressMinimal: FC<Props> = ({ goal = 900_000 }) => {
+const DonationProgressMinimal: FC<Props> = ({ goal = 600_000 }) => {
   const [raised, setRaised] = useState(0);
   const [startDate, setStartDate] = useState<string>(''); // yyyy-mm-dd
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const refreshTimer = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const ils = useMemo(
     () => new Intl.NumberFormat('he-IL', { style: 'currency', currency: 'ILS', maximumFractionDigits: 0 }),
     []
   );
 
+  const fetchData = async (mountedRef: { current: boolean }) => {
+    try {
+      setLoading(true);
+      const [settingsDate, donations] = await Promise.all([
+        settingsService.getDonationsStart(),
+        getAllDonations(),
+      ]);
+
+      const dateStr =
+        settingsDate instanceof Date
+          ? settingsDate.toISOString().slice(0, 10)
+          : String(settingsDate || '').slice(0, 10);
+
+      const fromTs = dateStr ? new Date(`${dateStr}T00:00:00Z`).getTime() : 0;
+
+      const total = (donations || [])
+        .filter((d) => {
+          const ts = d?.createdAt ? new Date(d.createdAt).getTime() : 0;
+          return Number.isFinite(ts) && ts >= fromTs;
+        })
+        .reduce((sum, d) => {
+          const amount = d?.Amount ?? 0;
+          const tashlumim = d?.Tashlumim ?? 0;
+          const capped = tashlumim > 0 ? Math.min(tashlumim, 12) : 12;
+          return sum + amount * capped;
+        }, 0);
+
+      if (!mountedRef.current) return;
+      setStartDate(dateStr);
+      setRaised(total);
+      setError(null);
+    } catch (e) {
+      console.error('שגיאה בעת שליפת הנתונים:', e);
+      if (mountedRef.current) setError('נכשלה טעינת נתוני ההתרמה');
+    } finally {
+      if (mountedRef.current) setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    let mounted = true;
-    (async () => {
-      try {
-        setLoading(true);
-        const [settingsDate, donations] = await Promise.all([
-          settingsService.getDonationsStart(),
-          getAllDonations(),
-        ]);
+    const mounted = { current: true };
 
-        const dateStr =
-          settingsDate instanceof Date
-            ? settingsDate.toISOString().slice(0, 10)
-            : String(settingsDate || '').slice(0, 10);
+    // טעינה ראשונית
+    fetchData(mounted);
 
-        const fromTs = dateStr ? new Date(`${dateStr}T00:00:00Z`).getTime() : 0;
+    // רענון אוטומטי כל חצי שעה (1,800,000 מ״ש)
+    refreshTimer.current = setInterval(() => {
+      fetchData(mounted);
+    }, 1_800_000);
 
-        const total = (donations || [])
-          .filter((d) => {
-            const ts = d?.createdAt ? new Date(d.createdAt).getTime() : 0;
-            return Number.isFinite(ts) && ts >= fromTs;
-          })
-          .reduce((sum, d) => {
-            const amount = d?.Amount ?? 0;
-            const tashlumim = d?.Tashlumim ?? 0;
-            const capped = tashlumim > 0 ? Math.min(tashlumim, 12) : 12;
-            return sum + amount * capped;
-          }, 0);
+    // רענון כשחוזרים לחלון/טאב
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') fetchData(mounted);
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
 
-        if (!mounted) return;
-        setStartDate(dateStr);
-        setRaised(total);
-        setError(null);
-      } catch (e) {
-        console.error('שגיאה בעת שליפת הנתונים:', e);
-        if (mounted) setError('נכשלה טעינת נתוני ההתרמה');
-      } finally {
-        if (mounted) setLoading(false);
-      }
-    })();
     return () => {
-      mounted = false;
+      mounted.current = false;
+      document.removeEventListener('visibilitychange', handleVisibility);
+      if (refreshTimer.current) clearInterval(refreshTimer.current);
     };
   }, []);
 
   const percentage = Math.min(Math.floor((raised / goal) * 100), 100);
 
   // אם לא שינית את ה־SVG, תשאיר 223. אם שינית, מדוד את האורך החדש.
-  const progressPathLength = 223; // אורך הקו ב־SVG (אם שינית SVG, מדוד מחדש)
+  const progressPathLength = 223;
   const dashOffset = progressPathLength * (1 - percentage / 100);
 
   return (
@@ -109,6 +129,7 @@ const DonationProgressMinimal: FC<Props> = ({ goal = 900_000 }) => {
           </div>
           <div className="percentage-text">
             {percentage}% מהיעד {ils.format(goal)}
+          
           </div>
         </>
       )}
