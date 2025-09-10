@@ -21,11 +21,11 @@ const DonationList: FC = () => {
             }),
         []
     );
+
     const displayName = (d: Donation) =>
         (d.PublicName && d.PublicName.trim()) ||
-        [d.FirstName, d.LastName].filter(Boolean).join(" ") ||
-        "—";
-
+        [d.FirstName, d.LastName].filter(Boolean).join(' ') ||
+        '—';
 
     useEffect(() => {
         let mounted = true;
@@ -53,24 +53,21 @@ const DonationList: FC = () => {
                     return Number.isFinite(ts) && ts >= fromTimestamp;
                 });
 
-                const aggregated: AggregatedDonation[] = filtered
-                    // אופציונלי: סידור מהגבוה לנמוך
-                    // .sort((a, b) => (b.Amount ?? 0) - (a.Amount ?? 0))
-                    .map((item) => {
-                        const name = displayName(item);
-                        const monthly = item.Amount ?? 0;
-                        const monthsPaid = item.Tashlumim ?? 1;
-                        const pastTotal = monthly * monthsPaid;
+                const aggregated: AggregatedDonation[] = filtered.map((item) => {
+                    const name = displayName(item);
+                    const monthly = item.Amount ?? 0;
+                    const monthsPaid = item.Tashlumim ?? 1;
+                    const pastTotal = monthly * monthsPaid;
 
-                        return {
-                            name,
-                            pastTotal,
-                            futureTotal: 0,
-                            combinedTotal: pastTotal,
-                            lizchut: (item.lizchut || '').toString().trim(),
-                            comment: (item.Comments || '').toString().trim(),
-                        };
-                    });
+                    return {
+                        name,
+                        pastTotal,
+                        futureTotal: 0,
+                        combinedTotal: pastTotal,
+                        lizchut: (item.lizchut || '').toString().trim(),
+                        comment: (item.Comments || '').toString().trim(),
+                    };
+                });
 
                 if (!mounted) return;
                 setDateOfBeggining(dateStr);
@@ -95,6 +92,11 @@ const DonationList: FC = () => {
         [donations, visibleCount]
     );
 
+    const uniqueDonorsCount = useMemo(() => {
+        const set = new Set(donations.map((d) => d.name));
+        return set.size;
+    }, [donations]);
+
     return (
         <div className="donation-list-cards">
             {loading ? (
@@ -107,8 +109,11 @@ const DonationList: FC = () => {
                 <div className="donation-list-container">
                     <div className="cards-container">
                         <div className="donation-list-title-container">
-                            <h2 className="donation-list-title">השותפים שלנו</h2>
+                            <h2 className="donation-list-title">
+                                {uniqueDonorsCount.toLocaleString('he-IL')} השותפים שלנו
+                            </h2>
 
+        
                         </div>
 
                         {visibleDonations.map((d, idx) => (
