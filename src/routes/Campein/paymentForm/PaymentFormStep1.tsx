@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import patterns from "../../../validations/patterns";
 
 const PaymentFormStep1 = ({
@@ -9,17 +9,14 @@ const PaymentFormStep1 = ({
     watchMonthlyAmount,
     watchIs12Months,
     setValue,
-    watch,
 }) => {
     const monthlyAmountRef = useRef<HTMLInputElement | null>(null);
 
-    // --------- FX state (USD→ILS) ---------
-    const [fxRate, setFxRate] = useState<number | null>(null);
-    const [fxErr, setFxErr] = useState<string | null>(null);
-
     // נועל/משחרר תשלומים לפי מצב HK
     useEffect(() => {
-        if (watchIs12Months) setValue("Tashlumim", 1); // HK תמיד תשלום אחד
+        if (watchIs12Months) {
+            setValue("Tashlumim", 1); // HK תמיד תשלום אחד
+        }
     }, [watchIs12Months, setValue]);
 
     useEffect(() => {
@@ -34,125 +31,58 @@ const PaymentFormStep1 = ({
             if (watchIs12Months) {
                 setValue("MonthlyAmount", num);
             } else {
+                // ב-Ragil זה סכום כל העסקה
                 setValue("Amount", num);
-                setValue("MonthlyAmount", num);
+                setValue("MonthlyAmount", num); // שומר תאימות אם נדרש בתצוגה
             }
         }
     };
 
-    // בחירת מטבע: 1=שקל, 2=דולר
-    const currency = Number(watch("Currency")) || 1;
-    const symbol = currency === 2 ? "$" : "₪";
-
-    const formatCurrency = (amount: number, curr: number) =>
+    const formatCurrency = (amount: number) =>
         (isNaN(amount) ? 0 : amount).toLocaleString("he-IL", {
             style: "currency",
-            currency: curr === 2 ? "USD" : "ILS",
+            currency: "ILS",
             maximumFractionDigits: 2,
         });
 
     const monthly = Number(watchMonthlyAmount) || 0;
 
-    // ---------- טעינת שער המרה כשנבחר דולר ----------
-    useEffect(() => {
-        let cancel = false;
-        async function loadRate() {
-            if (currency !== 2) {
-                if (!cancel) { setFxRate(null); setFxErr(null); }
-                return;
-            }
-            try {
-                setFxErr(null);
-                // מקור 1: ECB (Frankfurter) ללא מפתח
-                const r = await fetch("https://api.frankfurter.app/latest?from=USD&to=ILS");
-                if (!r.ok) throw new Error("rate http " + r.status);
-                const j = await r.json();
-                if (!cancel) setFxRate(Number(j?.rates?.ILS) || null);
-            } catch {
-                try {
-                    // גיבוי: exchangerate.host
-                    const r2 = await fetch("https://api.exchangerate.host/convert?from=USD&to=ILS&amount=1");
-                    if (!r2.ok) throw new Error("rate2 http " + r2.status);
-                    const j2 = await r2.json();
-                    if (!cancel) setFxRate(Number(j2?.result) || null);
-                } catch (err: any) {
-                    if (!cancel) setFxErr(err?.message || "rate error");
-                }
-            }
-        }
-        loadRate();
-        return () => { cancel = true; };
-    }, [currency]);
-
-    // ---------- חישוב התצוגה בצד שמאל ----------
-    // base = הסכום שמוצג כרגע בימין (חודשי×12 אם HK; אחרת סכום חד-פעמי)
-    const base = watchIs12Months ? (monthly * 12) : monthly;
-
-    // אם המטבע דולר ויש שער המרה — נציג בש"ח; אחרת נציג כרגיל (ILS או USD)
-    const leftAmountILS =
-        currency === 2 && fxRate ? Math.round(base * fxRate * 100) / 100 : base;
-
-    const leftDisplay =
-        currency === 2 && fxRate
-            ? leftAmountILS.toLocaleString("he-IL", { style: "currency", currency: "ILS", maximumFractionDigits: 2 })
-            : formatCurrency(base, currency);
-
     return (
         <div className="amount-info">
             <div className="amount-section">
-                {/* צד ימין */}
                 <div className="right-side-amount">
                     <div className="monthly-amount">
                         <p className="amount-text">תרומתך:</p>
 
+                        {/* שדה סכום – מתנהג לפי מצב */}
                         <div className="monthly-amount-wrapper">
-                            {/* input סכום */}
                             <input
                                 type="text"
+                                // כשHK – זה סכום חודשי; כשRagil – סכום כל העסקה
                                 {...register(watchIs12Months ? "MonthlyAmount" : "Amount", {
                                     required: true,
                                     min: 1,
                                     setValueAs: (v) => parseFloat(String(v).replace(",", ".")) || 0,
                                 })}
-                                placeholder={
-                                    watchIs12Months
-                                        ? `סכום חודשי (${symbol})`
-                                        : `סכום כל העסקה (${symbol})`
-                                }
+                                placeholder={watchIs12Months ? "סכום חודשי" : "סכום כל העסקה"}
                                 ref={monthlyAmountRef}
                                 className="monthly-amount-input"
                                 onChange={handleAmountChange}
                                 value={watchIs12Months ? (watchMonthlyAmount ?? "") : (watchMonthlyAmount ?? "")}
                                 maxLength={10}
-                                inputMode="decimal"
                             />
-
-                            {/* בחירת מטבע */}
-                            <div className="currency-row" title="החלפת מטבע">
-                                <label htmlFor="Currency" className="currency-caption">מטבע</label>
-                                <select
-                                    id="Currency"
-                                    className="tashlumim-select"
-                                    aria-label="בחר/י מטבע לתרומה"
-                                    {...register("Currency", {
-                                        required: true,
-                                        setValueAs: (v) => parseInt(v, 10),
-                                    })}
-                                    value={currency}
-                                    onChange={(e) => setValue("Currency", parseInt(e.target.value, 10))}
-                                >
-                                    <option value={1}>₪ ILS</option>
-                                    <option value={2}>$ USD</option>
-                                </select>
-                            </div>
                         </div>
                     </div>
 
                     {/* צ'קבוקס HK */}
                     <label className="checkbox-label">
-                        <input type="checkbox" {...register("Is12Months")} className="checkbox-input" />
-                        מאשר/ת חיוב חודשי של {formatCurrency(monthly, currency)} למשך 12 חודשים
-                        {monthly ? ` (סה״כ ${formatCurrency(monthly * 12, currency)})` : ""}
+                        <input
+                            type="checkbox"
+                            {...register("Is12Months")}
+                            className="checkbox-input"
+                        />
+                        מאשר/ת חיוב חודשי של ₪{monthly || 0} למשך 12 חודשים
+                        {monthly ? ` (סה״כ ${formatCurrency(monthly * 12)})` : ""}
                     </label>
 
                     {/* תשלומים מוצגים רק כשלא HK */}
@@ -167,14 +97,12 @@ const PaymentFormStep1 = ({
                                 {...register("Tashlumim", { required: true })}
                                 defaultValue={1}
                             >
-                                <option value={1}>
-                                    תשלום אחד - {formatCurrency(monthly, currency)}
-                                </option>
+                                <option value={1}>תשלום אחד - {formatCurrency(monthly)}</option>
                                 {[...Array(11).keys()].map((i) => {
                                     const n = i + 2;
                                     return (
                                         <option key={n} value={n}>
-                                            {n} תשלומים - {formatCurrency((monthly / n) || 0, currency)} לחודש
+                                            {n} תשלומים - {formatCurrency((monthly / n) || 0)} לחודש
                                         </option>
                                     );
                                 })}
@@ -183,17 +111,17 @@ const PaymentFormStep1 = ({
                     )}
                 </div>
 
-                {/* צד שמאל */}
                 <div className="left-side-amount">
-                    <p className="amount-text">
-                        בית חב״ד יפו מקבל:
-                    </p>
-                    <div className="for-year">{leftDisplay}</div>
-
+                    <p className="amount-text">בית חב״ד יפו מקבל:</p>
+                    <div className="for-year">
+                        {watchIs12Months
+                            ? formatCurrency(monthly * 12) // תצוגת תחזית שנתית ל-HK
+                            : formatCurrency(monthly)      // ב-Ragil זה סכום העסקה
+                        }
+                    </div>
                 </div>
             </div>
 
-            {/* טופס */}
             <form className="payment-form" onSubmit={handleSubmit(onSubmit)}>
                 <input
                     type="text"
@@ -235,6 +163,8 @@ const PaymentFormStep1 = ({
                 />
                 {errors.Phone && <span className="error">נא להזין טלפון</span>}
 
+        
+
                 {/* שדה הקדשה – לא חובה */}
                 <input
                     type="text"
@@ -245,6 +175,7 @@ const PaymentFormStep1 = ({
 
                 {/* שדות חבויים לשמירה הדוקה */}
                 <input type="hidden" {...register("MonthlyAmount")} value={monthly} />
+                {/* אם צריך לשמור גם Amount בנפרד: */}
                 {!watchIs12Months && (
                     <input type="hidden" {...register("Amount")} value={monthly} />
                 )}

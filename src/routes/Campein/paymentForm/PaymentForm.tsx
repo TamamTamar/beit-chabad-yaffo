@@ -94,7 +94,7 @@ const PaymentForm = ({ monthlyAmount }: PaymentFormProps) => {
       </div>
 
       {step === 1 && (
-             <PaymentFormStep1
+        <PaymentFormStep1
           register={register}
           handleSubmit={handleSubmit}
           onSubmit={onSubmit}
@@ -102,7 +102,6 @@ const PaymentForm = ({ monthlyAmount }: PaymentFormProps) => {
           watchMonthlyAmount={watchMonthlyAmount}
           watchIs12Months={watchIs12Months}
           setValue={setValue}
-          watch={watch} // ← הוסף שורה זו
         />
       )}
 
