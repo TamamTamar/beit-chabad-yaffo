@@ -52,6 +52,27 @@
                         display: flex;
                         align-items: center;
                         justify-content: space-evenly;
+
+
+                        .currency-caption {
+                            font-size: 0.75rem;
+                        }
+
+                        .tashlumim-select {
+                            padding: 8px 12px;
+                            border-radius: 6px;
+                            font-size: 0.9rem;
+                            background: #e8d3d9;
+                            // color: #68001f;
+                            cursor: pointer;
+                            transition: border-color 0.2s;
+
+                            &:focus {
+                                border-color: #a33d00;
+                                outline: none;
+                            }
+
+                        }
                     }
                 }
 
@@ -59,8 +80,11 @@
                     background: none;
                     border: none;
                     outline: none;
-                    font-size: 24px;
+                    font-size: 34px;
                     width: 100%;
+                    padding: 0 10px;
+                    align-self: self-end;
+
 
                     &:focus {
                         box-shadow: none;
@@ -96,7 +120,7 @@
 
         .amount-text {
             margin: 10px 0;
-            font-size: 18px;
+            font-size: 24px;
             color: #333;
 
             @media (max-width: 768px) {

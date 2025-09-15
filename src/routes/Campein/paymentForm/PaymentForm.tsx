@@ -102,6 +102,7 @@ const PaymentForm = ({ monthlyAmount }: PaymentFormProps) => {
           watchMonthlyAmount={watchMonthlyAmount}
           watchIs12Months={watchIs12Months}
           setValue={setValue}
+          watch={watch} // ← הוסף שורה זו
         />
       )}
 
