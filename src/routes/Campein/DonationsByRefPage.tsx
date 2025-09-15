@@ -6,21 +6,40 @@ import "./DonationList.scss";
 import { getDonationsByRef } from "../../services/donation-service";
 import { settingsService } from "../../services/setting-service";
 
+// נרחיב מקומית את הטיפוס כדי לשמור גם את המטבע מכל תרומה
+type AggWithCurrency = AggregatedDonation & {
+    currency?: number | null; // 1=ILS, 2=USD, undefined/null => ILS
+};
+
 const DonationsByRefPage: FC = () => {
     const [searchParams] = useSearchParams();
     const ref = (searchParams.get("ref") || "").trim();
 
     const [goal, setGoal] = useState<number>(0);
     const [refName, setRefName] = useState<string>(""); // שם ידידותי ל-ref
-    const [donations, setDonations] = useState<AggregatedDonation[]>([]);
+    const [donations, setDonations] = useState<AggWithCurrency[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [visibleCount, setVisibleCount] = useState(9);
+    const ils = new Intl.NumberFormat("he-IL", {
+        style: "currency",
+        currency: "ILS",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+    });
 
-    const ils = useMemo(
-        () => new Intl.NumberFormat("he-IL", { style: "currency", currency: "ILS", maximumFractionDigits: 0 }),
-        []
-    );
+    const usd = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+    });
+
+    const formatByCurrency = (amount: number, currency?: number | null) => {
+        if (currency === 2) return usd.format(amount || 0);
+        return ils.format(amount || 0);
+    };
+
 
     useEffect(() => {
         let mounted = true;
@@ -50,11 +69,21 @@ const DonationsByRefPage: FC = () => {
                 const nameVal: string =
                     nameRes.status === "fulfilled" ? String(nameRes.value || "") : "";
 
+                // בניית כרטיסים (כולל Currency לכל תרומה)
+                const agg: AggWithCurrency[] = rawDonations.map((item) => {
+                    const name =
+                        [item.FirstName, item.LastName].filter(Boolean).join(" ") || "—";
 
-                // בניית כרטיסים
-                const agg: AggregatedDonation[] = rawDonations.map((item) => {
-                    const name = [item.FirstName, item.LastName].filter(Boolean).join(" ") || "—";
-                    const pastTotal = (item.Amount ?? 0) * (item.Tashlumim ?? 1);
+                    const amount = Number(item.Amount ?? 0);
+                    const tashlumim = Number(item.Tashlumim ?? 1);
+                    const pastTotal = amount * tashlumim;
+
+                    // מטבע מה־DB: אם חסר/ריק → ILS (1)
+                    const currency =
+                        item.currency === undefined || item.currency === null
+                            ? 1
+                            : Number(item.currency) || 1;
+
                     return {
                         name,
                         pastTotal,
@@ -62,6 +91,7 @@ const DonationsByRefPage: FC = () => {
                         combinedTotal: pastTotal,
                         lizchut: (item.lizchut || "").toString().trim(),
                         comment: (item.Comments || "").toString().trim(),
+                        currency,
                     };
                 });
 
@@ -78,10 +108,12 @@ const DonationsByRefPage: FC = () => {
             }
         })();
 
-        return () => { mounted = false; };
+        return () => {
+            mounted = false;
+        };
     }, [ref]);
 
-    // סכומים/אחוז/מונה
+    // סכומים/אחוז/מונה (נשארים ב־₪ כפי שהיה)
     const totals = useMemo(() => {
         const amount = donations.reduce((s, d) => s + (d.combinedTotal || 0), 0);
         const remaining = Math.max((goal || 0) - amount, 0);
@@ -108,8 +140,6 @@ const DonationsByRefPage: FC = () => {
                                 {refName ? `השותפים של ${refName}` : "השותפים שלנו"}
                             </h2>
 
-
-
                             <div className="donation-total">
                                 <span className="donation-total-title">סה״כ נתרם:</span>{" "}
                                 <strong>{ils.format(totals.amount)}</strong>{" "}
@@ -126,13 +156,12 @@ const DonationsByRefPage: FC = () => {
                                 <span className="donation-total-sep">•</span>{" "}
                                 <span className="don">{totals.count} תורמים</span>
                             </div>
+
                             {/* ← כפתור חזרה לדף הבית */}
                             <Link to="/" className="back-home-btn" aria-label="לכל השותפים">
                                 לכל השותפים
                             </Link>
                         </div>
-
-
 
                         {donations.length === 0 ? (
                             <p className="donor-message">
@@ -141,13 +170,20 @@ const DonationsByRefPage: FC = () => {
                         ) : (
                             <>
                                 {visibleDonations.map((d, idx) => (
-                                    <div className="donation-card" key={`${d.name}-${d.combinedTotal}-${idx}`}>
+                                    <div
+                                        className="donation-card"
+                                        key={`${d.name}-${d.combinedTotal}-${idx}`}
+                                    >
                                         <div className="donation-card-content">
                                             <div className="donor-row">
                                                 <span className="donor-name">{d.name}</span>
-                                                <span className="donor-amount">{ils.format(d.combinedTotal)}</span>
+                                                <span className="donor-amount">
+                                                    {formatByCurrency(d.combinedTotal, d.currency)}
+                                                </span>
                                             </div>
-                                            {d.lizchut && <div className="donor-message">לזכות: {d.lizchut}</div>}
+                                            {d.lizchut && (
+                                                <div className="donor-message">לזכות: {d.lizchut}</div>
+                                            )}
                                         </div>
                                     </div>
                                 ))}
@@ -155,13 +191,14 @@ const DonationsByRefPage: FC = () => {
                                 {visibleCount < donations.length && (
                                     <button
                                         className="show-more-btn"
-                                        onClick={() => setVisibleCount((v) => Math.min(v + 4, donations.length))}
+                                        onClick={() =>
+                                            setVisibleCount((v) => Math.min(v + 4, donations.length))
+                                        }
                                         aria-label="הצג עוד תרומות"
                                     >
                                         הצג עוד
                                     </button>
                                 )}
-
                             </>
                         )}
                     </div>

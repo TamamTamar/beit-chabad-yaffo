@@ -1,31 +1,58 @@
+// src/routes/Campein/DonationList.tsx
 import { FC, useEffect, useMemo, useState } from 'react';
 import { AggregatedDonation, Donation } from '../../@Types/chabadType';
 import { getAllDonations } from '../../services/donation-service';
 import { settingsService } from '../../services/setting-service';
 import './DonationList.scss';
 
+// מרחיב מקומית את הטיפוס כדי לשמור את המטבע לכל תרומה
+type AggWithCurrency = AggregatedDonation & {
+    currency?: number | null; // 1=ILS, 2=USD, undefined/null => ILS
+};
+
 const DonationList: FC = () => {
     const [dateOfBeggining, setDateOfBeggining] = useState<string>('');
-    const [donations, setDonations] = useState<AggregatedDonation[]>([]);
+    const [donations, setDonations] = useState<AggWithCurrency[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [visibleCount, setVisibleCount] = useState(9);
 
-    // פורמט כספי עקבי: he-IL + ILS (₪)
+    // פורמטרים
+
+
     const ils = useMemo(
         () =>
             new Intl.NumberFormat('he-IL', {
                 style: 'currency',
                 currency: 'ILS',
+                minimumFractionDigits: 0,
                 maximumFractionDigits: 0,
             }),
         []
     );
 
+    const usd = useMemo(
+        () =>
+            new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+            }),
+        []
+    );
+
+    // עוזר להצגת שם תורם
     const displayName = (d: Donation) =>
         (d.PublicName && d.PublicName.trim()) ||
         [d.FirstName, d.LastName].filter(Boolean).join(' ') ||
         '—';
+
+    // עיצוב לפי מטבע התרומה (ברירת מחדל: ₪)
+    const formatByCurrency = (amount: number, currency?: number | null) => {
+        if (currency === 2) return usd.format(amount || 0);
+        return ils.format(amount || 0);
+    };
 
     useEffect(() => {
         let mounted = true;
@@ -53,11 +80,17 @@ const DonationList: FC = () => {
                     return Number.isFinite(ts) && ts >= fromTimestamp;
                 });
 
-                const aggregated: AggregatedDonation[] = filtered.map((item) => {
+                const aggregated: AggWithCurrency[] = filtered.map((item) => {
                     const name = displayName(item);
-                    const monthly = item.Amount ?? 0;
-                    const monthsPaid = item.Tashlumim ?? 1;
+                    const monthly = Number(item.Amount ?? 0);
+                    const monthsPaid = Number(item.Tashlumim ?? 1);
                     const pastTotal = monthly * monthsPaid;
+
+                    // מטבע מה־DB: אם חסר/ריק → ILS (1)
+                    const currency =
+                        item.currency === undefined || item.currency === null
+                            ? 1
+                            : Number(item.currency) || 1;
 
                     return {
                         name,
@@ -66,6 +99,7 @@ const DonationList: FC = () => {
                         combinedTotal: pastTotal,
                         lizchut: (item.lizchut || '').toString().trim(),
                         comment: (item.Comments || '').toString().trim(),
+                        currency,
                     };
                 });
 
@@ -112,8 +146,6 @@ const DonationList: FC = () => {
                             <h2 className="donation-list-title">
                                 {uniqueDonorsCount.toLocaleString('he-IL')} השותפים שלנו
                             </h2>
-
-        
                         </div>
 
                         {visibleDonations.map((d, idx) => (
@@ -125,7 +157,7 @@ const DonationList: FC = () => {
                                     <div className="donor-row">
                                         <span className="donor-name">{d.name}</span>
                                         <span className="donor-amount">
-                                            {ils.format(d.combinedTotal)}
+                                            {formatByCurrency(d.combinedTotal, (d as AggWithCurrency).currency)}
                                         </span>
                                     </div>
                                     {d.lizchut && (

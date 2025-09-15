@@ -133,6 +133,7 @@ export type Donation = {
     // חדש מהשרת (virtual)
     PublicName?: string;
     DisplayAsAnonymous?: boolean;
+    currency?: string;
 };
 
 export type RefSummary = {
