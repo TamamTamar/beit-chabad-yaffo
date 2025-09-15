@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import patterns from "../../../validations/patterns";
 
 const PaymentFormStep1 = ({
@@ -12,6 +12,10 @@ const PaymentFormStep1 = ({
     watch,
 }) => {
     const monthlyAmountRef = useRef<HTMLInputElement | null>(null);
+
+    // --------- FX state (USD→ILS) ---------
+    const [fxRate, setFxRate] = useState<number | null>(null);
+    const [fxErr, setFxErr] = useState<string | null>(null);
 
     // נועל/משחרר תשלומים לפי מצב HK
     useEffect(() => {
@@ -49,6 +53,50 @@ const PaymentFormStep1 = ({
 
     const monthly = Number(watchMonthlyAmount) || 0;
 
+    // ---------- טעינת שער המרה כשנבחר דולר ----------
+    useEffect(() => {
+        let cancel = false;
+        async function loadRate() {
+            if (currency !== 2) {
+                if (!cancel) { setFxRate(null); setFxErr(null); }
+                return;
+            }
+            try {
+                setFxErr(null);
+                // מקור 1: ECB (Frankfurter) ללא מפתח
+                const r = await fetch("https://api.frankfurter.app/latest?from=USD&to=ILS");
+                if (!r.ok) throw new Error("rate http " + r.status);
+                const j = await r.json();
+                if (!cancel) setFxRate(Number(j?.rates?.ILS) || null);
+            } catch {
+                try {
+                    // גיבוי: exchangerate.host
+                    const r2 = await fetch("https://api.exchangerate.host/convert?from=USD&to=ILS&amount=1");
+                    if (!r2.ok) throw new Error("rate2 http " + r2.status);
+                    const j2 = await r2.json();
+                    if (!cancel) setFxRate(Number(j2?.result) || null);
+                } catch (err: any) {
+                    if (!cancel) setFxErr(err?.message || "rate error");
+                }
+            }
+        }
+        loadRate();
+        return () => { cancel = true; };
+    }, [currency]);
+
+    // ---------- חישוב התצוגה בצד שמאל ----------
+    // base = הסכום שמוצג כרגע בימין (חודשי×12 אם HK; אחרת סכום חד-פעמי)
+    const base = watchIs12Months ? (monthly * 12) : monthly;
+
+    // אם המטבע דולר ויש שער המרה — נציג בש"ח; אחרת נציג כרגיל (ILS או USD)
+    const leftAmountILS =
+        currency === 2 && fxRate ? Math.round(base * fxRate * 100) / 100 : base;
+
+    const leftDisplay =
+        currency === 2 && fxRate
+            ? leftAmountILS.toLocaleString("he-IL", { style: "currency", currency: "ILS", maximumFractionDigits: 2 })
+            : formatCurrency(base, currency);
+
     return (
         <div className="amount-info">
             <div className="amount-section">
@@ -74,7 +122,7 @@ const PaymentFormStep1 = ({
                                 ref={monthlyAmountRef}
                                 className="monthly-amount-input"
                                 onChange={handleAmountChange}
-                                value={watchIs12Months ? watchMonthlyAmount ?? "" : watchMonthlyAmount ?? ""}
+                                value={watchIs12Months ? (watchMonthlyAmount ?? "") : (watchMonthlyAmount ?? "")}
                                 maxLength={10}
                                 inputMode="decimal"
                             />
@@ -96,7 +144,6 @@ const PaymentFormStep1 = ({
                                     <option value={1}>₪ ILS</option>
                                     <option value={2}>$ USD</option>
                                 </select>
-                              
                             </div>
                         </div>
                     </div>
@@ -138,12 +185,11 @@ const PaymentFormStep1 = ({
 
                 {/* צד שמאל */}
                 <div className="left-side-amount">
-                    <p className="amount-text">בית חב״ד יפו מקבל:</p>
-                    <div className="for-year">
-                        {watchIs12Months
-                            ? formatCurrency(monthly * 12, currency)
-                            : formatCurrency(monthly, currency)}
-                    </div>
+                    <p className="amount-text">
+                        בית חב״ד יפו מקבל:
+                    </p>
+                    <div className="for-year">{leftDisplay}</div>
+
                 </div>
             </div>
 
