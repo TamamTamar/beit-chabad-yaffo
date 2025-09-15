@@ -9,14 +9,13 @@ const PaymentFormStep1 = ({
     watchMonthlyAmount,
     watchIs12Months,
     setValue,
+    watch,
 }) => {
     const monthlyAmountRef = useRef<HTMLInputElement | null>(null);
 
     // נועל/משחרר תשלומים לפי מצב HK
     useEffect(() => {
-        if (watchIs12Months) {
-            setValue("Tashlumim", 1); // HK תמיד תשלום אחד
-        }
+        if (watchIs12Months) setValue("Tashlumim", 1); // HK תמיד תשלום אחד
     }, [watchIs12Months, setValue]);
 
     useEffect(() => {
@@ -31,17 +30,20 @@ const PaymentFormStep1 = ({
             if (watchIs12Months) {
                 setValue("MonthlyAmount", num);
             } else {
-                // ב-Ragil זה סכום כל העסקה
                 setValue("Amount", num);
-                setValue("MonthlyAmount", num); // שומר תאימות אם נדרש בתצוגה
+                setValue("MonthlyAmount", num);
             }
         }
     };
 
-    const formatCurrency = (amount: number) =>
+    // בחירת מטבע: 1=שקל, 2=דולר
+    const currency = Number(watch("Currency")) || 1;
+    const symbol = currency === 2 ? "$" : "₪";
+
+    const formatCurrency = (amount: number, curr: number) =>
         (isNaN(amount) ? 0 : amount).toLocaleString("he-IL", {
             style: "currency",
-            currency: "ILS",
+            currency: curr === 2 ? "USD" : "ILS",
             maximumFractionDigits: 2,
         });
 
@@ -50,39 +52,60 @@ const PaymentFormStep1 = ({
     return (
         <div className="amount-info">
             <div className="amount-section">
+                {/* צד ימין */}
                 <div className="right-side-amount">
                     <div className="monthly-amount">
                         <p className="amount-text">תרומתך:</p>
 
-                        {/* שדה סכום – מתנהג לפי מצב */}
                         <div className="monthly-amount-wrapper">
+                            {/* input סכום */}
                             <input
                                 type="text"
-                                // כשHK – זה סכום חודשי; כשRagil – סכום כל העסקה
                                 {...register(watchIs12Months ? "MonthlyAmount" : "Amount", {
                                     required: true,
                                     min: 1,
                                     setValueAs: (v) => parseFloat(String(v).replace(",", ".")) || 0,
                                 })}
-                                placeholder={watchIs12Months ? "סכום חודשי" : "סכום כל העסקה"}
+                                placeholder={
+                                    watchIs12Months
+                                        ? `סכום חודשי (${symbol})`
+                                        : `סכום כל העסקה (${symbol})`
+                                }
                                 ref={monthlyAmountRef}
                                 className="monthly-amount-input"
                                 onChange={handleAmountChange}
-                                value={watchIs12Months ? (watchMonthlyAmount ?? "") : (watchMonthlyAmount ?? "")}
+                                value={watchIs12Months ? watchMonthlyAmount ?? "" : watchMonthlyAmount ?? ""}
                                 maxLength={10}
+                                inputMode="decimal"
                             />
+
+                            {/* בחירת מטבע */}
+                            <div className="currency-row" title="החלפת מטבע">
+                                <label htmlFor="Currency" className="currency-caption">מטבע</label>
+                                <select
+                                    id="Currency"
+                                    className="tashlumim-select"
+                                    aria-label="בחר/י מטבע לתרומה"
+                                    {...register("Currency", {
+                                        required: true,
+                                        setValueAs: (v) => parseInt(v, 10),
+                                    })}
+                                    value={currency}
+                                    onChange={(e) => setValue("Currency", parseInt(e.target.value, 10))}
+                                >
+                                    <option value={1}>₪ ILS</option>
+                                    <option value={2}>$ USD</option>
+                                </select>
+                              
+                            </div>
                         </div>
                     </div>
 
                     {/* צ'קבוקס HK */}
                     <label className="checkbox-label">
-                        <input
-                            type="checkbox"
-                            {...register("Is12Months")}
-                            className="checkbox-input"
-                        />
-                        מאשר/ת חיוב חודשי של ₪{monthly || 0} למשך 12 חודשים
-                        {monthly ? ` (סה״כ ${formatCurrency(monthly * 12)})` : ""}
+                        <input type="checkbox" {...register("Is12Months")} className="checkbox-input" />
+                        מאשר/ת חיוב חודשי של {formatCurrency(monthly, currency)} למשך 12 חודשים
+                        {monthly ? ` (סה״כ ${formatCurrency(monthly * 12, currency)})` : ""}
                     </label>
 
                     {/* תשלומים מוצגים רק כשלא HK */}
@@ -97,12 +120,14 @@ const PaymentFormStep1 = ({
                                 {...register("Tashlumim", { required: true })}
                                 defaultValue={1}
                             >
-                                <option value={1}>תשלום אחד - {formatCurrency(monthly)}</option>
+                                <option value={1}>
+                                    תשלום אחד - {formatCurrency(monthly, currency)}
+                                </option>
                                 {[...Array(11).keys()].map((i) => {
                                     const n = i + 2;
                                     return (
                                         <option key={n} value={n}>
-                                            {n} תשלומים - {formatCurrency((monthly / n) || 0)} לחודש
+                                            {n} תשלומים - {formatCurrency((monthly / n) || 0, currency)} לחודש
                                         </option>
                                     );
                                 })}
@@ -111,17 +136,18 @@ const PaymentFormStep1 = ({
                     )}
                 </div>
 
+                {/* צד שמאל */}
                 <div className="left-side-amount">
                     <p className="amount-text">בית חב״ד יפו מקבל:</p>
                     <div className="for-year">
                         {watchIs12Months
-                            ? formatCurrency(monthly * 12) // תצוגת תחזית שנתית ל-HK
-                            : formatCurrency(monthly)      // ב-Ragil זה סכום העסקה
-                        }
+                            ? formatCurrency(monthly * 12, currency)
+                            : formatCurrency(monthly, currency)}
                     </div>
                 </div>
             </div>
 
+            {/* טופס */}
             <form className="payment-form" onSubmit={handleSubmit(onSubmit)}>
                 <input
                     type="text"
@@ -163,8 +189,6 @@ const PaymentFormStep1 = ({
                 />
                 {errors.Phone && <span className="error">נא להזין טלפון</span>}
 
-        
-
                 {/* שדה הקדשה – לא חובה */}
                 <input
                     type="text"
@@ -175,7 +199,6 @@ const PaymentFormStep1 = ({
 
                 {/* שדות חבויים לשמירה הדוקה */}
                 <input type="hidden" {...register("MonthlyAmount")} value={monthly} />
-                {/* אם צריך לשמור גם Amount בנפרד: */}
                 {!watchIs12Months && (
                     <input type="hidden" {...register("Amount")} value={monthly} />
                 )}

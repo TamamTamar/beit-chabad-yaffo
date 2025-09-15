@@ -70,7 +70,7 @@ const PaymentForm = ({ monthlyAmount }: PaymentFormProps) => {
       PaymentType: data.Is12Months ? "HK" : "Ragil",
       Amount: isHK ? data.MonthlyAmount : data.Amount,
       Tashlumim: data.Is12Months ? 12 : data.Tashlumim,
-      Currency: 1,
+      Currency: data.Currency,
       Groupe: data.Groupe,
       Comment: `תרומה מאת ${data.FirstName} ${data.LastName}, טלפון: ${data.Phone}${ref ? `, ref: ${ref}` : ""}`,
       CallBack: "https://node-beit-chabad-yaffo-production.up.railway.app/api/payment/payment-callback",
@@ -94,7 +94,7 @@ const PaymentForm = ({ monthlyAmount }: PaymentFormProps) => {
       </div>
 
       {step === 1 && (
-        <PaymentFormStep1
+             <PaymentFormStep1
           register={register}
           handleSubmit={handleSubmit}
           onSubmit={onSubmit}
@@ -102,6 +102,7 @@ const PaymentForm = ({ monthlyAmount }: PaymentFormProps) => {
           watchMonthlyAmount={watchMonthlyAmount}
           watchIs12Months={watchIs12Months}
           setValue={setValue}
+          watch={watch} // ← הוסף שורה זו
         />
       )}
 
