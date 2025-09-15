@@ -124,7 +124,7 @@ const PaymentFormStep1 = ({
                                 onChange={handleAmountChange}
                                 value={watchIs12Months ? (watchMonthlyAmount ?? "") : (watchMonthlyAmount ?? "")}
                                 maxLength={10}
-                                inputMode="decimal"
+                                inputMode="numeric"
                             />
 
                             {/* בחירת מטבע */}
@@ -220,6 +220,7 @@ const PaymentFormStep1 = ({
                     })}
                     placeholder="אימייל"
                     className="form-input"
+                    inputMode="email"
                 />
                 {errors.Mail && <span className="error">נא להזין אימייל</span>}
 
@@ -232,6 +233,7 @@ const PaymentFormStep1 = ({
                     })}
                     placeholder="טלפון"
                     className="form-input"
+                    inputMode="tel"
                 />
                 {errors.Phone && <span className="error">נא להזין טלפון</span>}
 
