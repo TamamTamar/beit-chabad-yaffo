@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useSearch } from '../../hooks/useSearch';
 
 import { Donation } from '../../@Types/chabadType';
-import { getAllDonations } from '../../services/donation-service';
+import { getAllDonations } from '../../services/payment-service';
 import './AdminDonation.scss'; // ייבוא קובץ Sass חדש
 
 const AdminDonation = () => {
@@ -35,8 +35,8 @@ const AdminDonation = () => {
             donations.filter(donation =>
                 donation.FirstName.toLowerCase().includes(lowercasedSearchTerm) ||
                 donation.LastName.toLowerCase().includes(lowercasedSearchTerm)
-        
-        ));
+
+            ));
     }, [searchTerm, donations]);
 
     return (
@@ -65,15 +65,15 @@ const AdminDonation = () => {
                                     <Table.Cell>{donation.LastName}</Table.Cell>
                                     <Table.Cell>{donation.Amount.toFixed(2)}</Table.Cell>
                                     <Table.Cell>{donation.Tashlumim}</Table.Cell>
-                        
+
                                     <Table.Cell>
                                         {donation.lizchut ? (
-                                          donation.lizchut
+                                            donation.lizchut
                                         ) : (
                                             '-'
                                         )}
                                     </Table.Cell>
-                                     <Table.Cell>{donation.Comments}</Table.Cell>
+                                    <Table.Cell>{donation.Comments}</Table.Cell>
                                 </Table.Row>
                             ))}
                         </Table.Body>

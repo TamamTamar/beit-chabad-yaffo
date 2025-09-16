@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Table, Spinner } from "flowbite-react";
 import { settingsService } from "../../services/setting-service";
-import { getAllDonationsByRef } from "../../services/donation-service";
+import { getAllDonationsByRef } from "../../services/payment-service";
 
 // אם יש לך טיפוס גלובלי, אפשר להעביר לקובץ types
 type TotalsByRef = { ref: string; totalAmount: number; donationCount: number };

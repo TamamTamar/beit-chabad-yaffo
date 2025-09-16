@@ -118,6 +118,7 @@ export type AggregatedDonation = {
     futureTotal: number;
     combinedTotal: number;
     lizchut: string;
+    comment: string;
     
 };
 

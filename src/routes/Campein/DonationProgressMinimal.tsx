@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { getAllDonations } from '../../services/donation-service';
+import { getAllDonations } from '../../services/payment-service';
 import { settingsService } from '../../services/setting-service';
 import './DonationProgressMinimal.scss';
 
