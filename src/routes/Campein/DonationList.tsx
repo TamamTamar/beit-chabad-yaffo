@@ -8,7 +8,6 @@ import {
 } from "../../services/payment-service";
 
 const DonationList: FC = () => {
-    const [dateOfBeggining, setDateOfBeggining] = useState<string>("");
     const [donations, setDonations] = useState<AggWithCurrency[]>([]);
     const [uniqueDonorsCount, setUniqueDonorsCount] = useState<number>(0);
     const [error, setError] = useState<string | null>(null);
@@ -17,31 +16,25 @@ const DonationList: FC = () => {
 
     useEffect(() => {
         let mounted = true;
-
         (async () => {
             try {
                 setLoading(true);
                 setError(null);
 
-                // ← קריאה יחידה לשכבת ה־view מה-service
-                const { donations, uniqueDonorsCount, dateOfBeginning } = await getAllDonationsView();
+                const { donations, uniqueDonorsCount } = await getAllDonationsView(); // ← הכל מוכן
                 if (!mounted) return;
 
                 setDonations(donations);
                 setUniqueDonorsCount(uniqueDonorsCount);
-                setDateOfBeggining(dateOfBeginning); // רק אם את משתמשת בשדה הזה בהמשך
             } catch (err: any) {
-                console.error("[DonationList] error:", err?.message || err);
+                console.error("[DonationList]", err?.message || err);
                 if (!mounted) return;
                 setError("נכשלה טעינת התרומות");
             } finally {
                 if (mounted) setLoading(false);
             }
         })();
-
-        return () => {
-            mounted = false;
-        };
+        return () => { mounted = false; };
     }, []);
 
     const visibleDonations = useMemo(

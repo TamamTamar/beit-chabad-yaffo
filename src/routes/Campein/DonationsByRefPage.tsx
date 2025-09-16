@@ -3,27 +3,20 @@ import { FC, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import "./DonationList.scss";
 import {
-    // פונקציות/טיפוסים מה-service שלך (באותו סגנון ששמרנו)
     getDonationsByRefView,
     formatByCurrency,
     formatILS,
     AggWithCurrency,
+    Totals,
 } from "../../services/payment-service";
 
 const DonationsByRefPage: FC = () => {
-    const [searchParams] = useSearchParams();
-    const ref = (searchParams.get("ref") || "").trim();
+    const [sp] = useSearchParams();
+    const ref = (sp.get("ref") || "").trim();
 
     const [refName, setRefName] = useState<string>("");
     const [donations, setDonations] = useState<AggWithCurrency[]>([]);
-    const [totals, setTotals] = useState<{
-        amount: number;
-        count: number;
-        goal: number;
-        remaining: number;
-        percent: number;
-    } | null>(null);
-
+    const [totals, setTotals] = useState<Totals | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [visibleCount, setVisibleCount] = useState(9);
@@ -31,34 +24,30 @@ const DonationsByRefPage: FC = () => {
     useEffect(() => {
         let mounted = true;
         (async () => {
-            if (!ref) {
-                setError("לא נבחר ref");
-                setLoading(false);
-                return;
-            }
             try {
+                if (!ref) {
+                    setError("לא נבחר ref");
+                    setLoading(false);
+                    return;
+                }
                 setLoading(true);
                 setError(null);
 
-                // ← קריאה יחידה לשכבת ה־view מה-service
-                const res = await getDonationsByRefView(ref);
+                const res = await getDonationsByRefView(ref); // ← כל המידע בקריאה אחת
                 if (!mounted) return;
 
                 setDonations(res.donations);
                 setRefName(res.refName);
                 setTotals(res.totals);
             } catch (e: any) {
-                console.error("[DonationsByRefPage] error:", e?.message || e);
+                console.error("[DonationsByRefPage]", e?.message || e);
                 if (!mounted) return;
-                setError("נכשלה טעינת תרומות או היעד לפי ref");
+                setError("נכשלה טעינת תרומות/יעד לפי ref");
             } finally {
                 if (mounted) setLoading(false);
             }
         })();
-
-        return () => {
-            mounted = false;
-        };
+        return () => { mounted = false; };
     }, [ref]);
 
     const visibleDonations = useMemo(
@@ -99,17 +88,17 @@ const DonationsByRefPage: FC = () => {
                                 )}
                                 <span className="donation-total-sep">•</span>{" "}
                                 <span className="don">{totals.count} תורמים</span>
+                                <Link to="/" className="back-home-btn" aria-label="לכל השותפים">
+                                    לכל השותפים
+                                </Link>
                             </div>
-
-                            {/* ← כפתור חזרה לדף הבית */}
-                            <Link to="/" className="back-home-btn" aria-label="לכל השותפים">
-                                לכל השותפים
-                            </Link>
                         </div>
 
                         {donations.length === 0 ? (
                             <p className="donor-message">
-                                {totals.goal > 0 ? `נתרם 0 מתוך ${formatILS(totals.goal)}` : `לא הוגדר יעד`}
+                                {totals.goal > 0
+                                    ? `נתרם 0 מתוך ${formatILS(totals.goal)}`
+                                    : `לא הוגדר יעד`}
                             </p>
                         ) : (
                             <>

@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { getAllDonations } from '../../services/payment-service';
+import { getAllDonations, getUsdToIlsRate } from '../../services/payment-service';
 import { settingsService } from '../../services/setting-service';
 import './DonationProgressMinimal.scss';
 
@@ -24,9 +24,12 @@ const DonationProgressMinimal: FC<Props> = ({ goal = 600_000 }) => {
     (async () => {
       try {
         setLoading(true);
-        const [settingsDate, donations] = await Promise.all([
+
+        // מביאים תאריך התחלה + תרומות + שער USD→ILS במקביל
+        const [settingsDate, donations, usdToIls] = await Promise.all([
           settingsService.getDonationsStart(),
           getAllDonations(),
+          getUsdToIlsRate(),
         ]);
 
         const dateStr =
@@ -36,21 +39,27 @@ const DonationProgressMinimal: FC<Props> = ({ goal = 600_000 }) => {
 
         const fromTs = dateStr ? new Date(`${dateStr}T00:00:00Z`).getTime() : 0;
 
-        const total = (donations || [])
+        const totalIls = (donations || [])
           .filter((d) => {
             const ts = d?.createdAt ? new Date(d.createdAt).getTime() : 0;
             return Number.isFinite(ts) && ts >= fromTs;
           })
           .reduce((sum, d) => {
-            const amount = d?.Amount ?? 0;
-            const tashlumim = d?.Tashlumim ?? 0;
+            const amount = Number(d?.Amount ?? 0);
+            const tashlumim = Number(d?.Tashlumim ?? 0);
+            // שמירה על הלוגיקה שלך: ברירת מחדל 12, ותקרה 12
             const capped = tashlumim > 0 ? Math.min(tashlumim, 12) : 12;
-            return sum + amount * capped;
+
+            // המרה לשקלים במידה והתרומה בדולר (currency === 2)
+            const isUSD = Number(d?.currency) === 2;
+            const inIls = (amount * capped) * (isUSD ? usdToIls : 1);
+
+            return sum + inIls;
           }, 0);
 
         if (!mounted) return;
         setStartDate(dateStr);
-        setRaised(total);
+        setRaised(totalIls);
         setError(null);
       } catch (e) {
         console.error('שגיאה בעת שליפת הנתונים:', e);

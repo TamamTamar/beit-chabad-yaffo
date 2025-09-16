@@ -1,4 +1,4 @@
-// src/services/donation-service.ts
+// src/services/payment-service.ts
 import axios from "axios";
 import { Donation, RefSummary, AggregatedDonation } from "../@Types/chabadType";
 import { settingsService } from "./setting-service";
@@ -17,44 +17,77 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// ───────────────────────────────────────────────────────────────────────────────
+// ── שערי מט"ח (USD→ILS) עם קאש ──
+
+type RateCache = { value: number; fetchedAt: number };
+let usdIlsCache: RateCache | null = null;
+const RATE_TTL_MIN = 30; // תוקף קאש בדקות
+
+export const getUsdToIlsRate = async (): Promise<number> => {
+  const now = Date.now();
+  if (usdIlsCache && now - usdIlsCache.fetchedAt < RATE_TTL_MIN * 60_000) {
+  
+    return usdIlsCache.value;
+  }
+
+  try {
+    // Frankfurter: חינמי, ללא מפתח
+    const { data } = await axios.get("https://api.frankfurter.app/latest", {
+      params: { from: "USD", to: "ILS" },
+    });
+    const rate = Number(data?.rates?.ILS);
+    if (Number.isFinite(rate) && rate > 0) {
+      usdIlsCache = { value: rate, fetchedAt: now };
+   
+      return rate;
+    }
+  } catch (err) {
+    console.warn("[getUsdToIlsRate] using fallback:", (err as any)?.message || err);
+  }
+
+  // fallback אם ה-API לא זמין
+  const fallback = 3.7;
+  usdIlsCache = { value: fallback, fetchedAt: now };
+
+  return fallback;
+};
+
+// ───────────────────────────────────────────────────────────────────────────────
 // ── API גולמי ──
-// כל התרומות
+
 export const getAllDonations = async (): Promise<Donation[]> => {
   const { data } = await api.get("/nedarim/payments");
   return data as Donation[];
 };
 
-// סיכומי תרומות לפי ref (לשימוש אדמין/דשבורד)
 export const getAllDonationsByRef = async (): Promise<RefSummary[]> => {
   const { data } = await api.get("/donations-by-ref");
   return data as RefSummary[];
 };
 
-// תרומות לפי ref
 export const getDonationsByRef = async (ref: string): Promise<Donation[]> => {
-  const { data } = await api.get(`/donations/${ref}`); // שימוש ב-instance כדי לקבל Authorization
+  const { data } = await api.get(`/donations/${ref}`);
   return data as Donation[];
 };
 
 // ───────────────────────────────────────────────────────────────────────────────
-// ── עזרי תצוגה דקים (לוגיקה משותפת) ──
+// ── עזרי תצוגה (לוגיקה משותפת) ──
 
-// 1=ILS, 2=USD
-export type CurrencyCode = 1 | 2;
+export type CurrencyCode = 1 | 2; // 1=ILS, 2=USD
 
 export type AggWithCurrency = AggregatedDonation & {
-  currency?: number | null; // 1=ILS, 2=USD (ברירת מחדל ILS)
+  currency?: number | null;
 };
 
 export type Totals = {
-  amount: number;    // סכום מצטבר (₪)
-  count: number;     // כמות תורמים
+  amount: number;    // סה״כ נתרם (₪)
+  count: number;     // מס' כרטיסים/תורמים
   goal: number;      // יעד (₪)
-  remaining: number; // כמה חסר (₪)
+  remaining: number; // חסר ליעד (₪)
   percent: number;   // 0..100
 };
 
-// פורמטרים
 const ilsFmt = new Intl.NumberFormat("he-IL", {
   style: "currency",
   currency: "ILS",
@@ -73,7 +106,6 @@ export const formatUSD = (n: number) => usdFmt.format(n || 0);
 export const formatByCurrency = (amount: number, currency?: number | null) =>
   (Number(currency) as CurrencyCode) === 2 ? formatUSD(amount) : formatILS(amount);
 
-// עוזרים למיפוי תרומה → אובייקט תצוגה
 const displayName = (d: Donation) =>
   (d.PublicName && d.PublicName.trim()) ||
   [d.FirstName, d.LastName].filter(Boolean).join(" ") ||
@@ -97,19 +129,44 @@ const mapDonationToAgg = (d: Donation): AggWithCurrency => {
   };
 };
 
-export const computeTotals = (donations: AggWithCurrency[], goal: number): Totals => {
-  const amount = donations.reduce((sum, d) => sum + (d.combinedTotal || 0), 0);
-  const remaining = Math.max(goal - amount, 0);
-  const percent = goal > 0 ? Math.min((amount / goal) * 100, 100) : 0;
-  return { amount, count: donations.length, goal, remaining, percent };
+// חישוב totals בשקלים (אפשר להעביר שער מותאם)
+export const computeTotals = (
+  donations: AggWithCurrency[],
+  goal: number,
+  usdToIlsRate = 3.7
+): Totals => {
+  const amountInIls = donations.reduce((sum, d) => {
+    const value = d.combinedTotal || 0;
+    return sum + (d.currency === 2 ? value * usdToIlsRate : value);
+  }, 0);
+
+  const remaining = Math.max(goal - amountInIls, 0);
+  const percent = goal > 0 ? Math.min((amountInIls / goal) * 100, 100) : 0;
+
+  return { amount: amountInIls, count: donations.length, goal, remaining, percent };
 };
 
-// ── פונקציות View דקות לשימוש בקומפוננטות ──
+// גרסה אסינכרונית שמביאה שער עדכני אוטומטית + לוגים
+export const computeTotalsILSAsync = async (
+  donations: AggWithCurrency[],
+  goal: number
+): Promise<Totals> => {
+  const rate = await getUsdToIlsRate(); // 1$ → ₪
 
-// כל התרומות מאז תאריך התחלה (כמו בדף הכללי)
+  // לוג בדיקה: כמה מסכום התרומות בדולר וכמה בשקלים לפני ההמרה
+  const usdSum = donations.reduce((s, d) => s + (d.currency === 2 ? (d.combinedTotal || 0) : 0), 0);
+  const ilsSum = donations.reduce((s, d) => s + (d.currency !== 2 ? (d.combinedTotal || 0) : 0), 0);
+
+
+  return computeTotals(donations, goal, rate);
+};
+
+// ───────────────────────────────────────────────────────────────────────────────
+// ── פונקציות View לשימוש בקומפוננטות ──
+
 export const getAllDonationsView = async () => {
   const [dateRaw, raw] = await Promise.all([
-    settingsService.getDonationsStart(), // תאריך התחלה מהשרת
+    settingsService.getDonationsStart(), // תאריך התחלה מה־DB
     getAllDonations(),
   ]);
 
@@ -131,7 +188,6 @@ export const getAllDonationsView = async () => {
   return { donations, uniqueDonorsCount, dateOfBeginning: dateStr };
 };
 
-// תרומות לפי ref + יעד/שם + totals (כמו בדף byRef)
 export const getDonationsByRefView = async (ref: string) => {
   const [donRes, goalRes, nameRes] = await Promise.allSettled([
     getDonationsByRef(ref),
@@ -145,7 +201,9 @@ export const getDonationsByRefView = async (ref: string) => {
   const refName: string = nameRes.status === "fulfilled" ? String(nameRes.value || "") : "";
 
   const donations = raw.map(mapDonationToAgg);
-  const totals = computeTotals(donations, goal);
+
+  // totals בשקלים, כולל המרת תרומות דולר לפי שער עדכני (עם לוגים)
+  const totals = await computeTotalsILSAsync(donations, goal);
 
   return { donations, refName, totals };
 };
