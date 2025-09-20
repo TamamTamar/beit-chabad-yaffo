@@ -44,18 +44,15 @@ const DonationProgressMinimal: FC<Props> = ({ goal = 600_000 }) => {
             const ts = d?.createdAt ? new Date(d.createdAt).getTime() : 0;
             return Number.isFinite(ts) && ts >= fromTs;
           })
+                    // ...existing code...
           .reduce((sum, d) => {
-            const amount = Number(d?.Amount ?? 0);
-            const tashlumim = Number(d?.Tashlumim ?? 0);
-            // שמירה על הלוגיקה שלך: ברירת מחדל 12, ותקרה 12
-            const capped = tashlumim > 0 ? Math.min(tashlumim, 12) : 12;
-
-            // המרה לשקלים במידה והתרומה בדולר (currency === 2)
-            const isUSD = Number(d?.currency) === 2;
-            const inIls = (amount * capped) * (isUSD ? usdToIls : 1);
-
-            return sum + inIls;
+              const amount = Number(d?.Amount ?? 0);
+              const tashlumim = Number(d?.Tashlumim ?? 1); // ברירת מחדל 1
+              // אין תקרה 12
+              const inIls = (amount * tashlumim) * (Number(d?.currency) === 2 ? usdToIls : 1);
+              return sum + inIls;
           }, 0);
+          // ...existing code...
 
         if (!mounted) return;
         setStartDate(dateStr);
