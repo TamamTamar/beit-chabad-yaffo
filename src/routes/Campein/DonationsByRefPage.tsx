@@ -111,7 +111,7 @@ const DonationsByRefPage: FC = () => {
                                                     {formatByCurrency(d.combinedTotal, d.currency)}
                                                 </span>
                                             </div>
-                                            {d.lizchut && <div className="donor-message">לזכות: {d.lizchut}</div>}
+                                            {d.lizchut && <div className="donor-message">{d.lizchut}</div>}
                                         </div>
                                     </div>
                                 ))}
