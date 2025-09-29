@@ -198,49 +198,48 @@
                 margin-top: 2px;
             }
 
-            .vip-donors-bar__header {
+            .vip-donors-bar-header {
                 display: flex;
                 align-items: center;
                 gap: 8px;
             }
 
-            .vip-donors-bar__title {
+            .vip-donors-bar-title {
                 color: #68001f;
                 font-weight: 800;
                 font-size: 1rem;
             }
 
-            .vip-donors-bar__chips {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 8px;
+            .vip-donors-bar-chips {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 6px;
             }
 
             .vip-chip {
                 display: inline-flex;
                 align-items: center;
+                justify-content: space-between;
                 gap: 10px;
                 padding: 8px 12px;
                 border-radius: 999px;
-                border: 2px solid #f58b28; // צבע כתום בולט
+                border: 2px solid #f58b28;
                 background: linear-gradient(90deg, #fffbe6 60%, #ffe0b2 100%);
                 box-shadow: 0 4px 14px rgba(245, 139, 40, 0.13);
                 cursor: default;
                 transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-
-           
             }
 
-            .vip-chip__name {
+            .vip-chip-name {
                 font-weight: 800;
-                color: #f58b28; // כתום בולט
+                color: #f58b28;
                 max-width: 40ch;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
 
-            .vip-chip__amount {
+            .vip-chip-amount {
                 font-weight: 900;
                 color: #fff;
                 background: #f58b28;
@@ -249,16 +248,26 @@
                 border: 2px solid #f7a046;
                 box-shadow: 0 2px 8px #f7a04644;
             }
+
+            /* --- מובייל בלבד: כל צ'יפ יתפוס את כל הרוחב --- */
+            @media (max-width: 600px) {
+                .vip-donors-bar-chips {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    gap: 6px;
+                }
+
+                .vip-chip {
+                    width: 100%;
+                    justify-content: space-between;
+                    /* השם בצד אחד והסכום בצד שני */
+                }
+
+                .vip-chip-name {
+                    max-width: 28ch;
+                    /* למנוע שבירת עיצוב */
+                }
+            }
         }
-    }
-}
-
-@media (max-width: 600px) {
-    .vip-chip {
-        padding: 7px 10px;
-    }
-
-    .vip-chip__name {
-        max-width: 28ch;
     }
 }

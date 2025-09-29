@@ -38,15 +38,13 @@ const DonationList: FC = () => {
         };
     }, []);
 
-    // --- זיהוי תורם 10,000+ (מנורמל ל-ILS אם קיים) ---
     const isBigDonor = (d: AggWithCurrency) => {
         const normIls = (d as any).combinedTotalILS;
         if (typeof normIls === "number") return normIls >= BIG_DONOR_THRESHOLD_ILS;
         if (d.currency === 1) return d.combinedTotal >= BIG_DONOR_THRESHOLD_ILS;
-        return d.combinedTotal >= BIG_DONOR_THRESHOLD_ILS; // fallback זמני
+        return d.combinedTotal >= BIG_DONOR_THRESHOLD_ILS;
     };
 
-    // --- שליפת תאריך לצורך מיון ---
     const getEpoch = (d: AggWithCurrency): number => {
         const raw =
             (d as any).lastDonationAt ??
@@ -58,7 +56,6 @@ const DonationList: FC = () => {
         return Number.isFinite(t) ? t : 0;
     };
 
-    // --- חלוקה ל-VIP ושאר תרומות ---
     const { bigDonors, regularDonors } = useMemo(() => {
         const big: AggWithCurrency[] = [];
         const rest: AggWithCurrency[] = [];
@@ -69,7 +66,6 @@ const DonationList: FC = () => {
         return { bigDonors: big, regularDonors: rest };
     }, [donations]);
 
-    // --- מיון שאר התרומות לפי תאריך (חדש->ישן) ---
     const regularSortedByDate = useMemo(
         () => [...regularDonors].sort((a, b) => getEpoch(b) - getEpoch(a)),
         [regularDonors]
@@ -99,11 +95,16 @@ const DonationList: FC = () => {
 
                         {/* --- VIP BAR --- */}
                         {bigDonors.length > 0 && (
-                            <section className="vip-donors-bar" aria-label="תורמים מעל 10,000 ש״ח">
-                                <div className="vip-donors-bar__header">
-                                    <span className="vip-donors-bar__title">שותפים מיוחדים</span>
+                            <section
+                                className="vip-donors-bar"
+                                aria-label="תורמים מעל 10,000 ש״ח"
+                            >
+                                <div className="vip-donors-bar-header">
+                                    <span className="vip-donors-bar-title">שותפים מיוחדים</span>
                                 </div>
-                                <div className="vip-donors-bar__chips" role="list">
+
+                                {/* שימי לב לשינוי שם הקלאס כאן */}
+                                <div className="vip-donors-bar-chips" role="list">
                                     {bigDonors.map((d, idx) => (
                                         <button
                                             key={`vip-${d.name}-${d.combinedTotal}-${idx}`}
@@ -115,8 +116,8 @@ const DonationList: FC = () => {
                                                 d.currency
                                             )}`}
                                         >
-                                            <span className="vip-chip__name">{d.name}</span>
-                                            <span className="vip-chip__amount">
+                                            <span className="vip-chip-name">{d.name}</span>
+                                            <span className="vip-chip-amount">
                                                 {formatByCurrency(d.combinedTotal, d.currency)}
                                             </span>
                                         </button>
@@ -127,7 +128,10 @@ const DonationList: FC = () => {
 
                         {/* --- כרטיסים רגילים (מסודרים לפי תאריך) --- */}
                         {visibleRegular.map((d, idx) => (
-                            <div className="donation-card" key={`reg-${d.name}-${getEpoch(d)}-${idx}`}>
+                            <div
+                                className="donation-card"
+                                key={`reg-${d.name}-${getEpoch(d)}-${idx}`}
+                            >
                                 <div className="donation-card-content">
                                     <div className="donor-row">
                                         <span className="donor-name">{d.name}</span>
@@ -135,7 +139,9 @@ const DonationList: FC = () => {
                                             {formatByCurrency(d.combinedTotal, d.currency)}
                                         </span>
                                     </div>
-                                    {d.lizchut && <div className="donor-message">{d.lizchut}</div>}
+                                    {d.lizchut && (
+                                        <div className="donor-message">{d.lizchut}</div>
+                                    )}
                                 </div>
                             </div>
                         ))}
@@ -144,7 +150,9 @@ const DonationList: FC = () => {
                             <button
                                 className="show-more-btn"
                                 onClick={() =>
-                                    setVisibleCount((v) => Math.min(v + 4, regularSortedByDate.length))
+                                    setVisibleCount((v) =>
+                                        Math.min(v + 4, regularSortedByDate.length)
+                                    )
                                 }
                                 aria-label="הצג עוד תרומות"
                             >
