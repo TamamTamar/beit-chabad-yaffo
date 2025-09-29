@@ -4,8 +4,8 @@ export const urlPattern = {
 };
 
 export const emailPattern = {
-    value: /\S+@gmail\.\S+/,
-    message: "Only Gmail addresses are allowed",
+    value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,}$/,
+    message: "נא להזין כתובת אימייל תקינה",
 };
 
 export const passwordPattern = {
