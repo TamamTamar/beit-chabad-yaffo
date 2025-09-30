@@ -1,21 +1,24 @@
 import { createBrowserRouter } from "react-router-dom";
 import Root from "../layout/BeitChabadLayout";
-import CreateNewParasha from "./createParasha/createNewParasha";
-import EditParasha from "./editParasha/EditParasha";
-import ParashaDetail from "./BeitHabad/ParashaDetail";
-import ParashaList from "./BeitHabad/ParashaList";
-import ShabatForm from "./BeitHabad/ShabatForm";
 import AdminDonation from "./admin/AdminDonation";
 import ChabadDashboard from "./admin/ChabadDashboard";
 import AskRabbiPage from "./AskRabbiPage";
 import BeitChabadPage from "./BeitHabad/BeitChabadPage";
 import BranchesSection from "./BeitHabad/BranchesSection";
+import ParashaDetail from "./BeitHabad/ParashaDetail";
+import ParashaList from "./BeitHabad/ParashaList";
+import ShabatForm from "./BeitHabad/ShabatForm";
 import AboutCampein from "./Campein/AboutCampein";
 import CampeinPage from "./Campein/CampeinPage";
-import Error from "./Error";
-import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
-import Login from "./Login";
 import SetDateOfBeginning from "./Campein/SetDateOfBeginning";
+
+import CreateNewParasha from "./createParasha/createNewParasha";
+import EditParasha from "./editParasha/EditParasha";
+import Error from "./Error";
+import Login from "./Login";
+import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
+import CaparotPayment from "./CaparotPayment";
+import CaparotDonation from "./CaparotDonation";
 
 
 
@@ -106,6 +109,14 @@ export const router = createBrowserRouter([
                 path: "beit-chabad",
                 element: <BeitChabadPage />,
             },
+        {
+            path: "caparot",
+            element: <CaparotDonation />,
+        },
+            {
+                path: "caparotDonation/:amount",
+            element: <CaparotPayment />,
+        },
 
 
         ],
