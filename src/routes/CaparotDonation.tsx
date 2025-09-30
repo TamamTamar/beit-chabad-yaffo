@@ -10,8 +10,8 @@ type CaparotDonationProps = {
     amountQueryKey?: string;     // ברירת מחדל: "amount"
     minCustom?: number;          // ברירת מחדל: 5
     maxCustom?: number;          // ברירת מחדל: 100000
-    step?: number;   
-      // ברירת מחדל: 1
+    step?: number;
+    // ברירת מחדל: 1
 };
 
 const DEFAULT_AMOUNTS = [30, 50, 100, 180];
@@ -78,7 +78,7 @@ const CaparotDonation: React.FC<CaparotDonationProps> = ({
                     >
                         <span className="amount-currency">₪</span>
                         <span className="amount-number">{amt}</span>
-                        
+
                     </button>
                 ))}
             </div>
@@ -106,14 +106,18 @@ const CaparotDonation: React.FC<CaparotDonationProps> = ({
                         <div className="input-with-suffix">
                             <input
                                 id="custom-amount-field"
-                                type="number"
+                                type="text"
                                 inputMode="numeric"
                                 pattern="[0-9]*"
                                 min={minCustom}
                                 max={maxCustom}
                                 step={step}
                                 value={customRaw}
-                                onChange={(e) => setCustomRaw(e.target.value)}
+                                onChange={e => {
+                                    // קולט רק ספרות
+                                    const onlyNums = e.target.value.replace(/[^0-9]/g, "");
+                                    setCustomRaw(onlyNums);
+                                }}
                                 placeholder={`סכום חופשי`}
                                 aria-invalid={selected === "custom" ? !customValid : undefined}
                             />
