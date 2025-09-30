@@ -1,0 +1,47 @@
+.thank-you-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    background: #fffdf9;
+    padding: 20px;
+
+    .thank-you-card {
+        background: #fff;
+        border: 2px solid #f7a046;
+        border-radius: 16px;
+        padding: 40px 30px;
+        text-align: center;
+        color: #68001f;
+        max-width: 400px;
+        width: 100%;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin: 6px 0;
+        }
+
+        .home-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f58b28, #68001f);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            transition: background 0.2s ease;
+
+            &:hover {
+                background: linear-gradient(135deg, #68001f, #f58b28);
+            }
+        }
+    }
+}

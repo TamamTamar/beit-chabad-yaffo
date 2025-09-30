@@ -51,9 +51,9 @@ $bg-grad: linear-gradient(180deg, #fffdf9 0%, #fff7ef 100%);
         inset: 0;
         transform: translateX(-100%);
         background: linear-gradient(90deg,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.7) 50%,
-                rgba(255, 255, 255, 0) 100%);
+                #ffffff00 0%,
+                #ffffffb3 50%,
+                #ffffff00 100%);
         animation: shimmer 1.4s infinite;
     }
 }
@@ -205,4 +205,71 @@ color: red;
         animation: none !important;
         transition: none !important;
     }
+}
+
+
+.free-amount-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: #fff;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    padding: 8px 12px;
+    max-width: 280px;
+    margin: 0 auto 12px;
+
+    &:focus-within {
+        border-color: #f58b28;
+        box-shadow: 0 0 0 3px rgba(245, 139, 40, 0.18);
+    }
+    
+
+    .currency-select {
+        background: #f5dce4;
+        /* ורוד עדין תואם שפה */
+        border: 1px solid #c7b6be;
+        border-radius: 10px;
+        padding: 8px 12px;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        appearance: none;
+        cursor: pointer;
+        min-width: 110px;
+
+        &:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(245, 139, 40, 0.25);
+        }
+    }
+
+    .free-amount-input {
+        flex: 1;
+        text-align: right;
+        border: none;
+        font-size: 1.6rem;
+        font-weight: 800;
+        outline: none;
+        background: transparent;
+        color: #000;
+        direction: ltr;
+        /* מציג את המספרים נקי */
+    }
+}
+
+/* אופציונלי: תיאור קטן "מטבע" מעל הסלקט */
+.currency-caption {
+    display: block;
+    font-weight: 800;
+    margin: 0 auto 6px;
+    color: $main-text;
+    text-align: center;
+}
+
+/* אם תרצי להסתיר/להראות הודעות כברירת מחדל דרך CSS בלבד */
+.ok-div,
+.wait-pay {
+    display: none;
 }

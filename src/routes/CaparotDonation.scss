@@ -1,173 +1,183 @@
+/* ========= בסיס ========= */
 .caparot-card {
-    font-family: "Heebo", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
-    color: #68001f;
-
-    border-radius: 16px;
-    padding: 20px;
+    background: #fffdf9;
     max-width: 560px;
     margin: 0 auto;
+    padding: 20px;
+    border-radius: 16px;
+    color: #68001f;
+    font-family: "Heebo", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
 
     .caparot-title {
-        margin: 0 0;
-        font-size: 2rem;
+        margin: 0 0 10px;
+        font-size: 1.9rem;
         font-weight: 900;
-        letter-spacing: 0.2px;
-        color: #68001f;
         text-align: center;
-    }
-    .logo {
-        display: block;
-        margin: 0 auto 12px;
-        height: 100px;
+        color: #68001f;
     }
 
+    .logo {
+        display: block;
+        margin: 0 auto 16px;
+        height: 84px;
+        object-fit: contain;
+    }
+
+    /* רשת הסכומים – שומרת על יחס גם במסכים צרים */
     .amount-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(140px, 1fr));
         gap: 12px;
-        margin-bottom: 14px;
+        margin-bottom: 16px;
     }
 
     .amount-box {
-        place-items: center;
-        height: 96px;
+        align-items: center;
+        height: 86px;
         border-radius: 14px;
         border: 2px solid #f7a046;
         background: #fffdf9;
-        cursor: pointer;
-        transition: transform 0.08s ease, box-shadow 0.15s ease, border-color 0.15s ease, background 0.15s ease;
-        user-select: none;
+        transition: transform .08s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease;
 
         .amount-number {
-            font-size: 1.9rem;
-            line-height: 1;
+            font-size: 1.7rem;
             font-weight: 800;
             color: #68001f;
+            line-height: 1;
         }
 
         .amount-currency {
-            font-size: 0.9rem;
-            opacity: 0.85;
+            font-size: .9rem;
             margin-top: 4px;
             color: #68001f;
+            opacity: .85;
+            font-weight: 800;
         }
 
         &:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 12px rgba(104, 0, 31, 0.08);
             border-color: #f58b28;
+            box-shadow: 0 6px 12px rgba(104, 0, 31, .08);
         }
 
         &.is-selected {
             border-color: #68001f;
             background: #f1bb89;
-            box-shadow: 0 8px 16px rgba(104, 0, 31, 0.15);
+            box-shadow: 0 8px 16px rgba(104, 0, 31, .12);
         }
     }
 
+    /* כפתור "סכום חופשי" – יותר שטוח וקליל */
     .custom-amount {
-        font-size: 1.5rem;
         width: 100%;
-        height: 56px;
+        height: 52px;
         border-radius: 12px;
-        border: 2px solid #a33d00;
-        background: #f58b28;
-        color: #fff;
-        font-weight: 800;
-        letter-spacing: 0.2px;
-        cursor: pointer;
-        transition: background 0.15s ease, border-color 0.15s ease, transform 0.08s ease;
+        border: 2px solid #f7a046;
+        background: #fff7ef;
+        color: #68001f;
+        font-weight: 900;
+        letter-spacing: .2px;
+        margin: 6px 0 10px;
+        transition: transform .08s ease, border-color .15s ease, background .15s ease;
 
         &:hover {
-            background: #f1bb89;
             transform: translateY(-1px);
             border-color: #f58b28;
+            background: #fff3e6;
         }
 
         &.is-selected {
-            background: #f1bb89;
+            background: #edc49e;
             border-color: #68001f;
-            box-shadow: 0 6px 14px rgba(104, 0, 31, 0.12);
+            box-shadow: 0 6px 12px rgba(104, 0, 31, .08);
         }
     }
 
+    /* ========= קפסולה של סכום חופשי =========
+     במקום שני מסגרות – קונטיינר אחד נקי (input + select) */
     .custom-input-row {
         display: grid;
-        grid-template-columns: 1fr auto;
         gap: 10px;
-        margin-top: 10px;
+        margin-top: 0;
+    }
+
+    .free-amount-group {
+        display: flex;
         align-items: center;
-    }
-
-    .input-with-suffix {
-        position: relative;
         width: 100%;
+        height: 52px;
+        border: 2px solid #e5d8cc;
+        border-radius: 14px;
+        background: #ffffff;
+        box-shadow: 0 2px 0 0 rgba(104, 0, 31, .06) inset;
+        overflow: hidden;
+        /* חשוב לעיגול מושלם */
 
-        input {
-            width: 100%;
-            height: 48px;
-            padding: 0 44px 0 12px;
-            border-radius: 10px;
-            border: 1.5px solid #ccc;
-            background: #fff;
-            color: #68001f;
-            font-weight: 700;
-            transition: border-color 0.15s ease, box-shadow 0.15s ease;
-
-            &:focus {
-                outline: none;
-                border-color: #f58b28;
-                box-shadow: 0 0 0 3px rgba(245, 139, 40, 0.18);
-            }
-
-            &[aria-invalid="true"] {
-                border-color: #a33d00;
-                box-shadow: 0 0 0 3px rgba(163, 61, 0, 0.15);
-                background: #fff7ef;
-            }
-        }
-
-        .suffix {
-            position: absolute;
-            inset-inline-end: 12px;
-            inset-block: 0;
-            display: grid;
-            place-items: center;
-            font-weight: 800;
-            color: #68001f;
-            pointer-events: none;
+        /* מפריד אנכי דק בין input ל-select */
+        &::before {
+            content: "";
+            width: 1px;
+            height: 60%;
+            background: #e8e2db;
+            margin-inline-start: auto;
         }
     }
 
-    .continue-btn {
-        min-width: 160px;
-        height: 48px;
-        padding: 0 16px;
-        border: none;
-        border-radius: 10px;
-        color: #fff;
-        background: #f58b28;
+    .free-amount-input {
+        flex: 1;
+        height: 100%;
+        border: 0;
+        outline: none;
+        padding: 0 14px;
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #68001f;
+        background: transparent;
+        text-align: center;
+        direction: ltr;
+        /* מספר נקי */
+    }
+
+    .currency-select {
+        height: 100%;
+        min-width: 92px;
+        padding: 0 12px;
+        border: 0;
+        outline: none;
+        background: #f7f5f2;
+        color: #68001f;
         font-weight: 800;
         cursor: pointer;
-        transition: transform 0.08s ease, background 0.15s ease;
+        appearance: none;
+    }
+
+    /* כפתור המשך – מלא ורחב */
+    .continue-btn {
+        height: 52px;
+        border: none;
+        border-radius: 12px;
+        background: #f58b28;
+        color: #fff;
+        font-weight: 900;
+        transition: transform .08s ease, background .15s ease;
 
         &:hover:not(:disabled) {
-            background: linear-gradient(135deg, #68001f, #f58b28);
             transform: translateY(-1px);
+            background:#f59e4d;
         }
 
         &:disabled {
-            opacity: 0.5;
+            opacity: .55;
             cursor: not-allowed;
-            filter: grayscale(15%);
         }
     }
 
+    /* תמונה */
     .caparot-image-wrap {
-        margin-top: 12px;
+        margin-top: 18px;
+        border: 1px solid #f7a046;
         border-radius: 12px;
         overflow: hidden;
-        border: 1px solid #f7a046;
         background: #fafafa;
 
         .caparot-image {
@@ -177,21 +187,74 @@
             object-fit: cover;
         }
     }
+}
 
-    .visually-hidden {
-        position: absolute !important;
-        height: 1px;
-        width: 1px;
-        overflow: hidden;
-        clip: rect(1px, 1px, 1px, 1px);
-        white-space: nowrap;
+/* ========= מובייל ========= */
+@media (max-width: 480px) {
+    .caparot-card {
+        padding: 16px;
+
+        .caparot-title {
+            font-size: 1.6rem;
+            margin-bottom: 6px;
+        }
+
+        .logo {
+            height: 70px;
+            margin-bottom: 12px;
+        }
+
+        .amount-grid {
+            gap: 10px;
+        }
+
+        .amount-box {
+            height: 78px;
+
+            .amount-number {
+                font-size: 1.5rem;
+            }
+        }
+
+        .custom-amount {
+            height: 48px;
+            font-size: 1.05rem;
+        }
+
+        .free-amount-group {
+            height: 48px;
+        }
+
+        .free-amount-input {
+            font-size: 1.2rem;
+            padding: 0 10px;
+        }
+
+        .currency-select {
+            min-width: 86px;
+            padding: 0 10px;
+        }
+
+        .continue-btn {
+            height: 48px;
+            font-size: 1rem;
+        }
     }
 }
 
-@media (min-width: 520px) {
+/* מסכים צרים מאד */
+@media (max-width: 340px) {
     .caparot-card {
-        .amount-box {
-            height: 110px;
+        .amount-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .free-amount-group {
+            flex-direction: row;
+        }
+
+        .currency-select {
+            min-width: 80px;
         }
     }
 }

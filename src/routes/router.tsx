@@ -19,6 +19,7 @@ import Login from "./Login";
 import ProtectedRouteAdmin from "./ProtectedRouteAdmin";
 import CaparotPayment from "./CaparotPayment";
 import CaparotDonation from "./CaparotDonation";
+import ThankYouPage from "./ThankYouPage";
 
 
 
@@ -114,9 +115,13 @@ export const router = createBrowserRouter([
             element: <CaparotDonation />,
         },
             {
-                path: "caparotDonation/:amount",
+                path: "caparotDonation/:currency/:amount",
             element: <CaparotPayment />,
         },
+            {
+                path: "/thank-you",
+                element: <ThankYouPage />,
+            },
 
 
         ],

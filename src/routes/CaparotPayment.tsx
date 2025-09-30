@@ -9,15 +9,21 @@ import "./CaparotPayment.scss"; // 👈 הוסף/י את זה
 const CaparotPayment: FC = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const navigate = useNavigate();
+  const { amount: amountParam, currency: currencyParam } =
+    useParams<{ amount: string; currency: string }>();
 
-  const { amount: amountParam } = useParams<{ amount: string }>(); // ← קורא מהנתיב
-  const amount = Number(amountParam) || 0;                          // ← מספר
+  const amount = Number(amountParam) || 0;
+  const currency: "1" | "2" = currencyParam === "2" ? "2" : "1";
+
+  const symbol = currency === "2" ? "$" : "₪"; // 🔹 דינמי לסימון נכון
+
 
   const paymentData = createFullKaparotPayload({
     Mosad: "7013920",
     ApiValid: "zidFYCLaNi",
     Amount: amount,
     Tashlumim: 1,
+    Currency: currency,
   });
 
   const handleBack = () => navigate(-1);
@@ -111,7 +117,7 @@ const CaparotPayment: FC = () => {
   return (
     <div className="iframe-container" dir="rtl">
       <div className="amount-banner">
-        סכום לתשלום: {amount} ₪
+        סכום לתשלום: {amount} {symbol}
       </div>
 
       <div id="WaitNedarimFrame">טוען...</div>

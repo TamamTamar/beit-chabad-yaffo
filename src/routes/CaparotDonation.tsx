@@ -6,19 +6,16 @@ type CaparotDonationProps = {
     imageSrc?: string;
     title?: string;
     amounts?: number[];
-    paymentPath?: string;        // ברירת מחדל: "/donate"
-    amountQueryKey?: string;     // ברירת מחדל: "amount"
-    minCustom?: number;          // ברירת מחדל: 5
-    maxCustom?: number;          // ברירת מחדל: 100000
+    minCustom?: number;
+    maxCustom?: number;
     step?: number;
-    // ברירת מחדל: 1
 };
 
 const DEFAULT_AMOUNTS = [30, 50, 100, 180];
 
 const CaparotDonation: React.FC<CaparotDonationProps> = ({
     imageSrc = "/caparot.jpg",
-    title = "פדיון כפרות", // ← כאן
+    title = "פדיון כפרות בית חב״ד יפו",
     amounts = DEFAULT_AMOUNTS,
     minCustom = 0,
     maxCustom = 100000,
@@ -28,6 +25,9 @@ const CaparotDonation: React.FC<CaparotDonationProps> = ({
 
     const [selected, setSelected] = useState<number | "custom" | null>(null);
     const [customRaw, setCustomRaw] = useState<string>("");
+
+    // 🔹 מטבע לסכום החופשי בלבד
+    const [customCurrency, setCustomCurrency] = useState<1 | 2>(1);
 
     const customValue = useMemo(() => {
         const n = Number(customRaw.replace(/[^\d.]/g, ""));
@@ -41,7 +41,7 @@ const CaparotDonation: React.FC<CaparotDonationProps> = ({
         customValue <= maxCustom;
 
     const goToPayment = (amount: number) => {
-        navigate(`/caparotDonation/${amount}`);
+        navigate(`/caparotDonation/${customCurrency}/${amount}`);
     };
 
 
@@ -50,10 +50,7 @@ const CaparotDonation: React.FC<CaparotDonationProps> = ({
         goToPayment(amt);
     };
 
-    const handleCustomClick = () => {
-        setSelected("custom");
-    };
-
+    const handleCustomClick = () => setSelected("custom");
     const handleContinue = () => {
         if (selected === "custom" && customValid && customValue !== null) {
             goToPayment(customValue);
@@ -62,11 +59,10 @@ const CaparotDonation: React.FC<CaparotDonationProps> = ({
 
     return (
         <section className="caparot-card" aria-labelledby="caparot-title">
-            <h2 id="caparot-title" className="caparot-title">
-                {title}
-            </h2>
+            <h2 id="caparot-title" className="caparot-title">{title}</h2>
             <img className="logo" src="/logo-nav.jpg" alt="logo" />
 
+            {/* כפתורי סכומים קבועים — תמיד ₪ */}
             <div className="amount-grid" role="group" aria-label="בחירת סכום">
                 {amounts.slice(0, 4).map((amt) => (
                     <button
@@ -78,17 +74,15 @@ const CaparotDonation: React.FC<CaparotDonationProps> = ({
                     >
                         <span className="amount-currency">₪</span>
                         <span className="amount-number">{amt}</span>
-
                     </button>
                 ))}
             </div>
 
+            {/* סכום חופשי */}
             <div className="custom-wrapper">
                 <button
                     type="button"
-                    className={
-                        "custom-amount" + (selected === "custom" ? " is-selected" : "")
-                    }
+                    className={"custom-amount" + (selected === "custom" ? " is-selected" : "")}
                     onClick={handleCustomClick}
                     aria-pressed={selected === "custom"}
                     aria-controls="custom-amount-row"
@@ -99,42 +93,33 @@ const CaparotDonation: React.FC<CaparotDonationProps> = ({
 
                 {selected === "custom" && (
                     <div className="custom-input-row" id="custom-amount-row">
-                        <label className="visually-hidden" htmlFor="custom-amount-field">
-                            הקלדת סכום חופשי
-                        </label>
-
-                        <div className="input-with-suffix">
+                        <div className="free-amount-group">
                             <input
-                                id="custom-amount-field"
                                 type="text"
                                 inputMode="numeric"
                                 pattern="[0-9]*"
-                                min={minCustom}
-                                max={maxCustom}
-                                step={step}
+                                className="free-amount-input"
+                                placeholder="0"
                                 value={customRaw}
-                                onChange={e => {
-                                    // קולט רק ספרות
-                                    const onlyNums = e.target.value.replace(/[^0-9]/g, "");
-                                    setCustomRaw(onlyNums);
-                                }}
-                                placeholder={`סכום חופשי`}
-                                aria-invalid={selected === "custom" ? !customValid : undefined}
+                                onChange={(e) => setCustomRaw(e.target.value.replace(/[^0-9]/g, ""))}
                             />
-                            <span className="suffix">₪</span>
+                            <select
+                                className="currency-select"
+                                aria-label="בחר/י מטבע"
+                                value={customCurrency}
+                                onChange={(e) => setCustomCurrency(Number(e.target.value) as 1 | 2)}
+                            >
+                                <option value={1}>ILS ₪</option>
+                                <option value={2}>USD $</option>
+                            </select>
                         </div>
 
-                        <button
-                            type="button"
-                            className="continue-btn"
-                            onClick={handleContinue}
-                            disabled={!customValid}
-                            title={!customValid ? `סכום בין ${minCustom} ל-${maxCustom}` : "המשך לתשלום"}
-                        >
+                        <button type="button" className="continue-btn" onClick={handleContinue} disabled={!customValid}>
                             המשך לתשלום
                         </button>
                     </div>
                 )}
+
             </div>
 
             <div className="caparot-image-wrap">

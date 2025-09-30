@@ -36,6 +36,7 @@ export function createFullKaparotPayload(params: {
     ApiValid: string;    // חובה
     Amount: number;      // חובה
     Tashlumim?: number;  // ברירת מחדל 1
+    Currency?: "1" | "2"; // חדש: 1=שקל, 2=דולר
 }): KaparotFullPayload {
     return {
         Mosad: params.Mosad,
@@ -52,7 +53,7 @@ export function createFullKaparotPayload(params: {
         Phone: "",
         Mail: "",
         Day: "",
-        Currency: "1", // ברירת מחדל שקל
+        Currency: params.Currency ?? "1", // ← במקום שהיה קבוע ל-1
         Groupe: "",
         Comment: "כפרות",
         Param1: "",
