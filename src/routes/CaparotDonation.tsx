@@ -18,7 +18,7 @@ const DEFAULT_AMOUNTS = [30, 50, 100, 180];
 
 const CaparotDonation: React.FC<CaparotDonationProps> = ({
     imageSrc = "/caparot.jpg",
-    title = "פדיון כפרות - בית חב״ד יפו", // ← כאן
+    title = "פדיון כפרות", // ← כאן
     amounts = DEFAULT_AMOUNTS,
     minCustom = 0,
     maxCustom = 100000,
@@ -61,11 +61,11 @@ const CaparotDonation: React.FC<CaparotDonationProps> = ({
     };
 
     return (
-        <section className="caparot-card" dir="rtl" aria-labelledby="caparot-title">
+        <section className="caparot-card" aria-labelledby="caparot-title">
             <h2 id="caparot-title" className="caparot-title">
                 {title}
             </h2>
-            <img className="logo" src="/logo-nav.svg" alt="logo" />
+            <img className="logo" src="/logo-nav.jpg" alt="logo" />
 
             <div className="amount-grid" role="group" aria-label="בחירת סכום">
                 {amounts.slice(0, 4).map((amt) => (
