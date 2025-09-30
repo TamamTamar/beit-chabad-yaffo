@@ -22,7 +22,7 @@ const CaparotPayment: FC = () => {
 
   const handleBack = () => navigate(-1);
   const onPaymentSuccess = () => {
-    alert("התשלום נקלט בהצלחה!");
+
     navigate("/"); // אפשר לשנות יעד אחרי תשלום
   };
 
