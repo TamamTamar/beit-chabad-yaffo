@@ -18,9 +18,9 @@ const DEFAULT_AMOUNTS = [30, 50, 100, 180];
 
 const CaparotDonation: React.FC<CaparotDonationProps> = ({
     imageSrc = "/caparot.jpg",
-    title = "פדיון כפרות",
+    title = "פדיון כפרות - בית חב״ד יפו", // ← כאן
     amounts = DEFAULT_AMOUNTS,
-    minCustom = 30,
+    minCustom = 0,
     maxCustom = 100000,
     step = 1,
 }) => {
@@ -65,6 +65,7 @@ const CaparotDonation: React.FC<CaparotDonationProps> = ({
             <h2 id="caparot-title" className="caparot-title">
                 {title}
             </h2>
+            <img className="logo" src="/logo-nav.svg" alt="logo" />
 
             <div className="amount-grid" role="group" aria-label="בחירת סכום">
                 {amounts.slice(0, 4).map((amt) => (
@@ -75,8 +76,9 @@ const CaparotDonation: React.FC<CaparotDonationProps> = ({
                         onClick={() => handlePreset(amt)}
                         aria-pressed={selected === amt}
                     >
-                        <span className="amount-number">{amt}</span>
                         <span className="amount-currency">₪</span>
+                        <span className="amount-number">{amt}</span>
+                        
                     </button>
                 ))}
             </div>
@@ -112,7 +114,7 @@ const CaparotDonation: React.FC<CaparotDonationProps> = ({
                                 step={step}
                                 value={customRaw}
                                 onChange={(e) => setCustomRaw(e.target.value)}
-                                placeholder={`מינ' ${minCustom}₪`}
+                                placeholder={`סכום חופשי`}
                                 aria-invalid={selected === "custom" ? !customValid : undefined}
                             />
                             <span className="suffix">₪</span>
