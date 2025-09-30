@@ -14,8 +14,8 @@ const CaparotPayment: FC = () => {
   const amount = Number(amountParam) || 0;                          // ← מספר
 
   const paymentData = createFullKaparotPayload({
-    Mosad: "1234567",
-    ApiValid: "ABC1234567",
+    Mosad: "7013920",
+    ApiValid: "zidFYCLaNi",
     Amount: amount,
     Tashlumim: 1,
   });
